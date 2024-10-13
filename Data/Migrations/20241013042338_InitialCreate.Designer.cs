@@ -11,7 +11,7 @@ using Plantech.Data;
 namespace Plantech.Data.Migrations
 {
     [DbContext(typeof(PlantechContext))]
-    [Migration("20241011235726_InitialCreate")]
+    [Migration("20241013042338_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -602,54 +602,6 @@ namespace Plantech.Data.Migrations
                     b.ToTable("ordens_compras", (string)null);
                 });
 
-            modelBuilder.Entity("Plantech.Models.Permisso", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("id");
-
-                    b.Property<int?>("CanCreate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasDefaultValue(0)
-                        .HasColumnName("can_create");
-
-                    b.Property<int?>("CanDelete")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasDefaultValue(0)
-                        .HasColumnName("can_delete");
-
-                    b.Property<int?>("CanRead")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasDefaultValue(0)
-                        .HasColumnName("can_read");
-
-                    b.Property<int?>("CanUpdate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasDefaultValue(0)
-                        .HasColumnName("can_update");
-
-                    b.Property<int>("CargoId")
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("cargo_id");
-
-                    b.Property<int>("TelaId")
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("tela_id");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CargoId");
-
-                    b.HasIndex("TelaId");
-
-                    b.ToTable("permissoes", (string)null);
-                });
-
             modelBuilder.Entity("Plantech.Models.Plantio", b =>
                 {
                     b.Property<int>("Id")
@@ -682,23 +634,6 @@ namespace Plantech.Data.Migrations
                     b.HasIndex(new[] { "HortalicaId" }, "idx_plantios_hortalica_id");
 
                     b.ToTable("plantios", (string)null);
-                });
-
-            modelBuilder.Entity("Plantech.Models.Tela", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("id");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasColumnName("nome");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("telas", (string)null);
                 });
 
             modelBuilder.Entity("Plantech.Models.Usuario", b =>
@@ -967,23 +902,6 @@ namespace Plantech.Data.Migrations
                     b.Navigation("Funcionario");
                 });
 
-            modelBuilder.Entity("Plantech.Models.Permisso", b =>
-                {
-                    b.HasOne("Plantech.Models.Cargo", "Cargo")
-                        .WithMany("Permissos")
-                        .HasForeignKey("CargoId")
-                        .IsRequired();
-
-                    b.HasOne("Plantech.Models.Tela", "Tela")
-                        .WithMany("Permissos")
-                        .HasForeignKey("TelaId")
-                        .IsRequired();
-
-                    b.Navigation("Cargo");
-
-                    b.Navigation("Tela");
-                });
-
             modelBuilder.Entity("Plantech.Models.Plantio", b =>
                 {
                     b.HasOne("Plantech.Models.Funcionario", "Funcionario")
@@ -1021,8 +939,6 @@ namespace Plantech.Data.Migrations
             modelBuilder.Entity("Plantech.Models.Cargo", b =>
                 {
                     b.Navigation("Funcionarios");
-
-                    b.Navigation("Permissos");
                 });
 
             modelBuilder.Entity("Plantech.Models.Cliente", b =>
@@ -1100,11 +1016,6 @@ namespace Plantech.Data.Migrations
                     b.Navigation("Colheita");
 
                     b.Navigation("InsumosPlantios");
-                });
-
-            modelBuilder.Entity("Plantech.Models.Tela", b =>
-                {
-                    b.Navigation("Permissos");
                 });
 
             modelBuilder.Entity("Plantech.Models.Usuario", b =>

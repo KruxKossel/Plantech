@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Plantech.Controllers
 {
-    [Authorize(Roles = "Vendedor")]
+    [Authorize(Roles = "Vendedor, Administrador")]
     public class VendedorController(ILogger<VendedorController> logger) : Controller
     {
         private readonly ILogger<VendedorController> _logger = logger;

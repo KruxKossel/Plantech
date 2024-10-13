@@ -94,19 +94,6 @@ namespace Plantech.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "telas",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    nome = table.Column<string>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_telas", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "usuarios",
                 columns: table => new
                 {
@@ -168,34 +155,6 @@ namespace Plantech.Data.Migrations
                         name: "FK_lotes_hortalicas_hortalicas_hortalica_id",
                         column: x => x.hortalica_id,
                         principalTable: "hortalicas",
-                        principalColumn: "id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "permissoes",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    cargo_id = table.Column<int>(type: "INTEGER", nullable: false),
-                    tela_id = table.Column<int>(type: "INTEGER", nullable: false),
-                    can_create = table.Column<int>(type: "INTEGER", nullable: true, defaultValue: 0),
-                    can_read = table.Column<int>(type: "INTEGER", nullable: true, defaultValue: 0),
-                    can_update = table.Column<int>(type: "INTEGER", nullable: true, defaultValue: 0),
-                    can_delete = table.Column<int>(type: "INTEGER", nullable: true, defaultValue: 0)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_permissoes", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_permissoes_cargos_cargo_id",
-                        column: x => x.cargo_id,
-                        principalTable: "cargos",
-                        principalColumn: "id");
-                    table.ForeignKey(
-                        name: "FK_permissoes_telas_tela_id",
-                        column: x => x.tela_id,
-                        principalTable: "telas",
                         principalColumn: "id");
                 });
 
@@ -676,16 +635,6 @@ namespace Plantech.Data.Migrations
                 column: "funcionario_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_permissoes_cargo_id",
-                table: "permissoes",
-                column: "cargo_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_permissoes_tela_id",
-                table: "permissoes",
-                column: "tela_id");
-
-            migrationBuilder.CreateIndex(
                 name: "idx_plantios_data",
                 table: "plantios",
                 column: "data_plantio");
@@ -757,9 +706,6 @@ namespace Plantech.Data.Migrations
                 name: "insumos_plantios");
 
             migrationBuilder.DropTable(
-                name: "permissoes");
-
-            migrationBuilder.DropTable(
                 name: "culturas_perdidas");
 
             migrationBuilder.DropTable(
@@ -767,9 +713,6 @@ namespace Plantech.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "ordens_compras");
-
-            migrationBuilder.DropTable(
-                name: "telas");
 
             migrationBuilder.DropTable(
                 name: "colheitas");

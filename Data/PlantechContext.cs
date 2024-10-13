@@ -49,11 +49,7 @@ public partial class PlantechContext : DbContext
 
     public virtual DbSet<OrdensCompra> OrdensCompras { get; set; }
 
-    public virtual DbSet<Permisso> Permissoes { get; set; }
-
     public virtual DbSet<Plantio> Plantios { get; set; }
-
-    public virtual DbSet<Tela> Telas { get; set; }
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
@@ -405,34 +401,6 @@ public partial class PlantechContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
-        modelBuilder.Entity<Permisso>(entity =>
-        {
-            entity.ToTable("permissoes");
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.CanCreate)
-                .HasDefaultValue(0)
-                .HasColumnName("can_create");
-            entity.Property(e => e.CanDelete)
-                .HasDefaultValue(0)
-                .HasColumnName("can_delete");
-            entity.Property(e => e.CanRead)
-                .HasDefaultValue(0)
-                .HasColumnName("can_read");
-            entity.Property(e => e.CanUpdate)
-                .HasDefaultValue(0)
-                .HasColumnName("can_update");
-            entity.Property(e => e.CargoId).HasColumnName("cargo_id");
-            entity.Property(e => e.TelaId).HasColumnName("tela_id");
-
-            entity.HasOne(d => d.Cargo).WithMany(p => p.Permissos)
-                .HasForeignKey(d => d.CargoId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
-
-            entity.HasOne(d => d.Tela).WithMany(p => p.Permissos)
-                .HasForeignKey(d => d.TelaId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
-        });
 
         modelBuilder.Entity<Plantio>(entity =>
         {
@@ -459,13 +427,6 @@ public partial class PlantechContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
-        modelBuilder.Entity<Tela>(entity =>
-        {
-            entity.ToTable("telas");
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Nome).HasColumnName("nome");
-        });
 
         modelBuilder.Entity<Usuario>(entity =>
         {

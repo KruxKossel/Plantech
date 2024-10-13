@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Plantech.Controllers
 {
-    [Authorize(Roles = "Agricultor")]
+    [Authorize(Roles = "Agricultor, Administrador, Vendedor")]
     public class HortalicasController(IHortalicaService hortalicaService, IWebHostEnvironment webHostEnvironment) : Controller
     {
         private readonly IHortalicaService _hortalicaService = hortalicaService;
@@ -19,6 +19,7 @@ namespace Plantech.Controllers
 
         // GET: Hortalicas
         [HttpGet]
+        [Authorize(Roles = "Agricultor, Administrador, Vendedor")]
         public async Task<IActionResult> Index()
         {
             var hortalicas = await _hortalicaService.ListarHortalicasAsync();
@@ -27,6 +28,7 @@ namespace Plantech.Controllers
 
         // GET: Hortalicas/Details/5
         [HttpGet]
+        [Authorize(Roles = "Agricultor, Administrador, Vendedor")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -45,6 +47,7 @@ namespace Plantech.Controllers
 
         // GET: Hortalicas/Create
         [HttpGet]
+        [Authorize(Roles = "Agricultor, Administrador")]
         public IActionResult Create()
         {
             return View();
@@ -53,6 +56,7 @@ namespace Plantech.Controllers
         // POST: Hortalicas/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+         [Authorize(Roles = "Agricultor, Administrador")]
         public async Task<IActionResult> Create(HortalicaViewModel model)
         {
             if (ModelState.IsValid)
@@ -86,6 +90,7 @@ namespace Plantech.Controllers
 
         // GET: Hortalicas/Edit/5
         [HttpGet]
+        [Authorize(Roles = "Agricultor, Administrador")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -115,6 +120,7 @@ namespace Plantech.Controllers
         // POST: Hortalicas/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Agricultor, Administrador")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Descricao,Observacoes")] HortalicaViewModel model)
         {
             if (id != model.Id)
@@ -161,6 +167,7 @@ namespace Plantech.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Agricultor, Administrador")]
         public async Task<IActionResult> EditImagem(int id, [Bind("Id, Nome, ImagemArquivo")] HortalicaViewModel model)
         {
             if (id != model.Id)
@@ -233,6 +240,7 @@ namespace Plantech.Controllers
 
 
         [HttpGet]
+        [Authorize(Roles = "Agricultor, Administrador")]
         public async Task<IActionResult> EditImagem(int? id)
         {
             if (id == null)
@@ -259,6 +267,7 @@ namespace Plantech.Controllers
 
 
         // GET: Hortalicas/Delete/5
+        [Authorize(Roles = "Agricultor, Administrador")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -278,6 +287,7 @@ namespace Plantech.Controllers
         // POST: Hortalicas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Agricultor, Administrador")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await _hortalicaService.DeletarHortalicaAsync(id);

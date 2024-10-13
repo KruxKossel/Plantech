@@ -12,6 +12,4 @@ public partial class Cargo
     public string? Descricao { get; set; }
 
     public virtual ICollection<Funcionario> Funcionarios { get; set; } = new List<Funcionario>();
-
-    public virtual ICollection<Permisso> Permissos { get; set; } = new List<Permisso>();
 }
