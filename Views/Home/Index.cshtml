@@ -2,12 +2,63 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="jumbotron">
-    <h1>Bem-vindo a Plantech</h1>
-    <p class="lead">Aqui você encontrará as melhores soluções para sua Fazenda Urbana.</p>
-    <p>
-        <a asp-controller="Login" asp-action="Login" class="btn btn-primary btn-lg">Faça Login</a>
-    </p>
-</div>
+
+@if (User.Identity.IsAuthenticated)
+{
+    @if (User.IsInRole("Administrador"))
+    {
+        <h1>Selecione qual operação deseja gerenciar!</h1>
+        <hr>
+        <div>
+            <a asp-controller="Administrador" asp-action="Index"class="btn btn-primary">Gerenciamento</a>
+        </div>
+        <hr>
+        <div>
+            <a asp-controller="Agricultor" asp-action="Index"class="btn btn-primary">Ir para a fazenda</a>
+        </div>
+        <hr>
+        <div>
+            <a asp-controller="Comprador" asp-action="Index"class="btn btn-primary">Ir para a compra</a>
+        </div>
+        <hr>
+        <div>
+            <a asp-controller="Vendedor" asp-action="Index"class="btn btn-primary">Ir para a venda</a>
+        </div>
+         <hr>
+    }
+    @if (User.IsInRole("Agricultor"))
+    {
+        <h1>Olá Agricultor, comece as atividades!</h1>
+        <div>
+            <a asp-controller="Agricultor" asp-action="Index"class="btn btn-primary">Ir para a fazenda</a>
+        </div>
+    }
+    @if (User.IsInRole("Comprador"))
+    {
+        <h1>Olá Comprador, comece as atividades!</h1>
+        <div>
+            <a asp-controller="Comprador" asp-action="Index"class="btn btn-primary">Ir para a compra</a>
+        </div>
+    }
+    @if (User.IsInRole("Vendedor"))
+    {
+        <h1>Olá Vendedor, comece as atividades!</h1>
+        <div>
+            <a asp-controller="Vendedor" asp-action="Index"class="btn btn-primary">Ir para a venda</a>
+        </div>
+    }
+}
+else
+{
+    <div class="jumbotron">
+        <h1>Bem-vindo a Plantech</h1>
+            <p class="lead">Aqui você encontrará as melhores soluções para sua Fazenda Urbana.</p>
+            <p>
+                <a asp-controller="Login" asp-action="Login" class="btn btn-primary btn-lg">Faça Login</a>
+            </p>
+        </div>
+    }
+
+
 
 
