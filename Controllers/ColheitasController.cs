@@ -10,14 +10,9 @@ using Plantech.Models;
 
 namespace Plantech.Controllers
 {
-    public class ColheitasController : Controller
+    public class ColheitasController(PlantechContext context) : Controller
     {
-        private readonly PlantechContext _context;
-
-        public ColheitasController(PlantechContext context)
-        {
-            _context = context;
-        }
+        private readonly PlantechContext _context = context;
 
         // GET: Colheitas
         public async Task<IActionResult> Index()
