@@ -27,6 +27,8 @@ builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IFuncionarioRepository, FuncionarioRepository>();
 builder.Services.AddScoped<IHortalicaService, HortalicaService>();
 builder.Services.AddScoped<IHortalicaRepository, HortalicaRepository>();
+builder.Services.AddScoped<IPlantioRepository, PlantioRepository>();
+builder.Services.AddScoped<IPlantioService, PlantioService>();
 
 var app = builder.Build();
 
