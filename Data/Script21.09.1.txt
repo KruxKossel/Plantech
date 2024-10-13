@@ -1,0 +1,309 @@
+-- Tabela cargos
+CREATE TABLE cargos (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    funcao TEXT NOT NULL CHECK (funcao IN ('Administrador', 'Agricultor', 'Vendedor', 'Comprador')),
+    descricao TEXT
+);
+
+-- tabela de telas
+CREATE TABLE telas (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome TEXT NOT NULL
+);
+
+
+-- Tabela permissoes
+CREATE TABLE permissoes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    cargo_id INTEGER NOT NULL,
+    tela_id INTEGER NOT NULL,
+    can_create INTEGER DEFAULT 0,
+    can_read INTEGER DEFAULT 0,
+    can_update INTEGER DEFAULT 0,
+    can_delete INTEGER DEFAULT 0,
+    FOREIGN KEY (cargo_id) REFERENCES cargos(id),
+    FOREIGN KEY (tela_id) REFERENCES telas(id)
+);
+
+
+-- Tabela clientes
+CREATE TABLE clientes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    cnpj TEXT UNIQUE NOT NULL,
+    razao_social TEXT NOT NULL,
+    endereco TEXT,
+    telefone TEXT,
+    email TEXT,
+    status TEXT NOT NULL CHECK (status IN ('ativo', 'inativo'))
+);
+
+-- Tabela fornecedores
+CREATE TABLE fornecedores (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    cnpj TEXT UNIQUE NOT NULL,
+    razao_social TEXT NOT NULL,
+    cidade TEXT,
+    endereco TEXT,
+    email TEXT UNIQUE,
+    status TEXT NOT NULL CHECK (status IN ('ativo', 'inativo'))
+);
+
+-- Tabela usuarios
+CREATE TABLE usuarios (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome_usuario TEXT UNIQUE NOT NULL CHECK (LENGTH(nome_usuario) <= 50),
+    email TEXT UNIQUE NOT NULL CHECK (email LIKE '%_@__%.__%'),
+    senha TEXT NOT NULL, -- Armazene a senha como um hash
+    salt TEXT NOT NULL, -- Adicionando coluna para salt
+    status TEXT NOT NULL CHECK (status IN ('ativo', 'inativo'))
+);
+
+-- Tabela funcionarios
+CREATE TABLE funcionarios (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    cpf TEXT UNIQUE NOT NULL,
+    nome TEXT NOT NULL,
+    usuario_id INTEGER NOT NULL,
+    cargo_id INTEGER NOT NULL,
+    status TEXT NOT NULL CHECK (status IN ('ativo', 'inativo')),
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+    FOREIGN KEY (cargo_id) REFERENCES cargos(id)
+);
+
+-- Tabela hortalicas
+CREATE TABLE hortalicas (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome TEXT UNIQUE NOT NULL,
+    descricao TEXT,
+    observacoes TEXT,
+    caminho_imagem TEXT
+);
+
+-- Tabela lotes_hortalicas
+CREATE TABLE lotes_hortalicas (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    hortalica_id INTEGER NOT NULL,
+    quantidade INTEGER CHECK (quantidade >= 0),
+    preco_venda REAL CHECK (preco_venda >= 0),
+    data_entrada TEXT CHECK (data_entrada LIKE '____-__-__'),
+    data_validade TEXT CHECK (data_validade LIKE '____-__-__'),
+    status TEXT NOT NULL CHECK (status IN ('ativo', 'esgotado')),
+    nome TEXT NOT NULL,
+    FOREIGN KEY (hortalica_id) REFERENCES hortalicas(id)
+);
+
+-- Tabela colheitas
+CREATE TABLE colheitas (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    quantidade INTEGER CHECK (quantidade >= 0),
+    data_colheita TEXT CHECK (data_colheita LIKE '____-__-__'),
+    funcionario_id INTEGER NOT NULL,
+    lote_hortalica_id INTEGER,
+    lote_insumo_id INTEGER,
+    plantio_id  INTEGER NOT NULL,
+    FOREIGN KEY (funcionario_id) REFERENCES funcionarios(id),
+    FOREIGN KEY (lote_hortalica_id) REFERENCES lotes_hortalicas(id),
+    FOREIGN KEY (lote_insumo_id) REFERENCES lotes_insumos(id),
+    FOREIGN KEY (plantio_id) REFERENCES plantios(id)
+);
+
+
+-- Tabela culturas_perdidas
+CREATE TABLE culturas_perdidas (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome TEXT NOT NULL,
+    colheita_id INTEGER NOT NULL,
+    FOREIGN KEY (colheita_id) REFERENCES colheitas(id)
+);
+
+-- Tabela insumos
+CREATE TABLE insumos (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    fornecedor_id INTEGER, -- Permitir NULL para insumos derivados
+    nome TEXT NOT NULL,
+    descricao TEXT,
+    observacoes TEXT,
+    categoria TEXT,
+    tipo TEXT NOT NULL CHECK (tipo IN ('derivado', 'comprado')),
+    caminho_imagem TEXT,
+    FOREIGN KEY (fornecedor_id) REFERENCES fornecedores(id)
+);
+
+-- Tabela lotes_insumos
+CREATE TABLE lotes_insumos (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    insumo_id INTEGER NOT NULL,
+    quantidade INTEGER CHECK (quantidade >= 0),
+    preco_unitario REAL CHECK (preco_unitario >= 0),
+    data_entrada TEXT CHECK (data_entrada LIKE '____-__-__'),
+    data_validade TEXT CHECK (data_validade LIKE '____-__-__'),
+    status TEXT NOT NULL CHECK (status IN ('ativo', 'esgotado')),
+    nome TEXT NOT NULL,
+    FOREIGN KEY (insumo_id) REFERENCES insumos(id)
+);
+
+-- Tabela ordens_compras
+CREATE TABLE ordens_compras (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    total REAL CHECK (total >= 0),
+    status TEXT NOT NULL CHECK (status IN ('pendente', 'pago')),
+    funcionario_id INTEGER NOT NULL,
+    fornecedor_id INTEGER NOT NULL,
+    data_compra TEXT CHECK (data_compra LIKE '____-__-__'),
+    FOREIGN KEY (funcionario_id) REFERENCES funcionarios(id),
+    FOREIGN KEY (fornecedor_id) REFERENCES fornecedores(id)
+);
+
+
+
+-- Tabela plantios
+CREATE TABLE plantios (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    data_plantio TEXT CHECK (data_plantio LIKE '____-__-__'),
+    hortalica_id INTEGER NOT NULL,
+    funcionario_id INTEGER NOT NULL,
+    quantidade INTEGER CHECK (quantidade >= 0),
+    FOREIGN KEY (hortalica_id) REFERENCES hortalicas(id),
+    FOREIGN KEY (funcionario_id) REFERENCES funcionarios(id)
+);
+
+-- Tabela vendas
+CREATE TABLE vendas (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    data TEXT CHECK (data LIKE '____-__-__'),
+    total_vendas REAL CHECK (total_vendas >= 0),
+    quantidade_produtos INTEGER CHECK (quantidade_produtos >= 0),
+    pagamento TEXT,
+    cliente_id INTEGER NOT NULL,
+    funcionario_id INTEGER NOT NULL,
+    FOREIGN KEY (cliente_id) REFERENCES clientes(id),
+    FOREIGN KEY (funcionario_id) REFERENCES funcionarios(id)
+);
+
+-- Tabela hortalicas_vendas
+CREATE TABLE hortalicas_vendas (
+    venda_id INTEGER NOT NULL,
+    lote_id INTEGER NOT NULL,
+    quantidade INTEGER CHECK (quantidade >= 0),
+    preco_unitario REAL CHECK (preco_unitario >= 0),
+    PRIMARY KEY (venda_id, lote_id),
+    FOREIGN KEY (venda_id) REFERENCES vendas(id),
+    FOREIGN KEY (lote_id) REFERENCES lotes_hortalicas(id)
+);
+
+-- Tabela insumos_compras
+CREATE TABLE insumos_compras (
+    ordem_compra_id INTEGER NOT NULL,
+    insumo_id INTEGER NOT NULL, -- Adicionado insumo_id para associar o insumo à compra
+    lote_id INTEGER,
+    quantidade INTEGER CHECK (quantidade >= 0),
+    preco_unitario REAL CHECK (preco_unitario >= 0),
+    data_chegada TEXT CHECK (data_chegada LIKE '____-__-__'),
+    PRIMARY KEY (ordem_compra_id, lote_id),
+    FOREIGN KEY (ordem_compra_id) REFERENCES ordens_compras(id),
+    FOREIGN KEY (insumo_id) REFERENCES insumos(id), -- Foreign Key para insumo_id
+    FOREIGN KEY (lote_id) REFERENCES lotes_insumos(id)
+);
+
+
+-- Tabela hortalicas_perdidas
+CREATE TABLE hortalicas_perdidas (
+    cultura_perdida_id INTEGER NOT NULL,
+    hortalica_id INTEGER NOT NULL,
+    quantidade INTEGER CHECK (quantidade >= 0),
+    PRIMARY KEY (cultura_perdida_id, hortalica_id),
+    FOREIGN KEY (cultura_perdida_id) REFERENCES culturas_perdidas(id),
+    FOREIGN KEY (hortalica_id) REFERENCES hortalicas(id)
+);
+
+-- Tabela insumos_plantios
+CREATE TABLE insumos_plantios (
+    plantio_id INTEGER NOT NULL,
+    lote_id INTEGER NOT NULL,
+    quantidade INTEGER CHECK (quantidade >= 0),
+    PRIMARY KEY (plantio_id, lote_id),
+    FOREIGN KEY (plantio_id) REFERENCES plantios(id),
+    FOREIGN KEY (lote_id) REFERENCES lotes_insumos(id)
+);
+
+
+CREATE TABLE alertas (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    lote_id INTEGER NOT NULL,
+    tipo TEXT NOT NULL CHECK (tipo IN ('insumo', 'hortalica')),
+    mensagem TEXT NOT NULL,
+    data_criacao TEXT NOT NULL DEFAULT (date('now')),
+    UNIQUE (lote_id, tipo)
+);
+
+
+
+
+-- Índices para a tabela clientes
+CREATE INDEX idx_clientes_cnpj ON clientes(cnpj);
+CREATE INDEX idx_clientes_razao_social ON clientes(razao_social);
+
+-- Índices para a tabela fornecedores
+CREATE INDEX idx_fornecedores_cnpj ON fornecedores(cnpj);
+CREATE INDEX idx_fornecedores_razao_social ON fornecedores(razao_social);
+
+-- Índices para a tabela usuarios
+CREATE INDEX idx_usuarios_email ON usuarios(email);
+CREATE INDEX idx_usuarios_nome_usuario ON usuarios(nome_usuario);
+
+-- Índices para a tabela funcionarios
+CREATE INDEX idx_funcionarios_cpf ON funcionarios(cpf);
+CREATE INDEX idx_funcionarios_usuario_id ON funcionarios(usuario_id);
+CREATE INDEX idx_funcionarios_cargo_id ON funcionarios(cargo_id);
+
+-- Índices para a tabela hortalicas
+CREATE INDEX idx_hortalicas_nome ON hortalicas(nome);
+
+-- Índices para a tabela lotes_hortalicas
+CREATE INDEX idx_lotes_hortalicas_hortalica_id ON lotes_hortalicas(hortalica_id);
+
+-- Índices para a tabela colheitas
+CREATE INDEX idx_colheitas_funcionario_id ON colheitas(funcionario_id);
+CREATE INDEX idx_colheitas_lote_hortalica_id ON colheitas(lote_hortalica_id);
+CREATE INDEX idx_colheitas_plantio_id ON colheitas(plantio_id);
+CREATE INDEX idx_colheitas_lote_insumo_id ON colheitas(lote_insumo_id);
+
+
+-- Índices para a tabela insumos
+CREATE INDEX idx_insumos_nome ON insumos(nome);
+CREATE INDEX idx_insumos_fornecedor_id ON insumos(fornecedor_id);
+
+-- Índices para a tabela lotes_insumos
+CREATE INDEX idx_lotes_insumos_insumo_id ON lotes_insumos(insumo_id);
+
+-- Índices para a tabela ordens_compras
+CREATE INDEX idx_ordens_compras_data_compra ON ordens_compras(data_compra);
+CREATE INDEX idx_ordens_compras_funcionario_id ON ordens_compras(funcionario_id);
+CREATE INDEX idx_ordens_compras_fornecedor_id ON ordens_compras(fornecedor_id);
+
+-- Índices para a tabela plantios
+CREATE INDEX idx_plantios_data ON plantios(data_plantio);
+CREATE INDEX idx_plantios_hortalica_id ON plantios(hortalica_id);
+CREATE INDEX idx_plantios_funcionario_id ON plantios(funcionario_id);
+
+-- Índices para a tabela vendas
+CREATE INDEX idx_vendas_data ON vendas(data);
+CREATE INDEX idx_vendas_cliente_id ON vendas(cliente_id);
+CREATE INDEX idx_vendas_funcionario_id ON vendas(funcionario_id);
+
+-- Índices para a tabela hortalicas_vendas
+CREATE INDEX idx_hortalicas_vendas_venda_id ON hortalicas_vendas(venda_id);
+CREATE INDEX idx_hortalicas_vendas_lote_id ON hortalicas_vendas(lote_id);
+
+-- Índices para a tabela insumos_compras
+CREATE INDEX idx_insumos_compras_ordem_compra_id ON insumos_compras(ordem_compra_id);
+CREATE INDEX idx_insumos_compras_lote_id ON insumos_compras(lote_id);
+CREATE INDEX idx_insumos_compras_data_chegada ON insumos_compras(data_chegada);
+
+-- Índices para a tabela hortalicas_perdidas
+CREATE INDEX idx_hortalicas_perdidas_cultura_perdida_id ON hortalicas_perdidas(cultura_perdida_id);
+CREATE INDEX idx_hortalicas_perdidas_hortalica_id ON hortalicas_perdidas(hortalica_id);
+
+-- Índices para a tabela insumos_plantios
+CREATE INDEX idx_insumos_plantios_plantio_id ON insumos_plantios(plantio_id);
+CREATE INDEX idx_insumos_plantios_lote_id ON insumos_plantios(lote_id);

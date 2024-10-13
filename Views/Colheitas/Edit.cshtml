@@ -1,0 +1,59 @@
+@model Plantech.Models.Colheita
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Colheita</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Quantidade" class="control-label"></label>
+                <input asp-for="Quantidade" class="form-control" />
+                <span asp-validation-for="Quantidade" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataColheita" class="control-label"></label>
+                <input asp-for="DataColheita" class="form-control" />
+                <span asp-validation-for="DataColheita" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FuncionarioId" class="control-label"></label>
+                <select asp-for="FuncionarioId" class="form-control" asp-items="ViewBag.FuncionarioId"></select>
+                <span asp-validation-for="FuncionarioId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LoteHortalicaId" class="control-label"></label>
+                <select asp-for="LoteHortalicaId" class="form-control" asp-items="ViewBag.LoteHortalicaId"></select>
+                <span asp-validation-for="LoteHortalicaId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LoteInsumoId" class="control-label"></label>
+                <select asp-for="LoteInsumoId" class="form-control" asp-items="ViewBag.LoteInsumoId"></select>
+                <span asp-validation-for="LoteInsumoId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PlantioId" class="control-label"></label>
+                <select asp-for="PlantioId" class="form-control" asp-items="ViewBag.PlantioId"></select>
+                <span asp-validation-for="PlantioId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

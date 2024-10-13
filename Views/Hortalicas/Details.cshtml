@@ -1,0 +1,30 @@
+@model Plantech.DTOs.HortalicaDTO
+@{
+    ViewData["Title"] = "Detalhes da Hortaliça";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div>
+    <h4>Hortaliça</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">Nome</dt>
+        <dd class="col-sm-10">@Model.Nome</dd>
+        <dt class="col-sm-2">Descrição</dt>
+        <dd class="col-sm-10">@Model.Descricao</dd>
+        <dt class="col-sm-2">Observações</dt>
+        <dd class="col-sm-10">@Model.Observacoes</dd>
+        <dt class="col-sm-2">Caminho da Imagem</dt>
+        <dd class="col-sm-10">
+            @if (!string.IsNullOrEmpty(Model.CaminhoImagem))
+            {
+                <img src="~/images/@Model.CaminhoImagem" class="img-thumbnail" />
+            }
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Editar</a> |
+    <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+</div>

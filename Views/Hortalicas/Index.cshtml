@@ -1,0 +1,48 @@
+@model IEnumerable<Plantech.DTOs.HortalicaDTO>
+@{
+    ViewData["Title"] = "Lista de Hortaliças";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div>
+    <a asp-controller="Agricultor" asp-action="Index" class="btn btn-primary">Voltar a Home</a>
+</div>
+<hr>
+<p>
+    <a asp-action="Create" class="btn btn-primary">Adicionar Hortaliça</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Descrição</th>
+            <th>Observações</th>
+            <th>Imagem</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Nome</td>
+            <td>@item.Descricao</td>
+            <td>@item.Observacoes</td>
+            <td>
+                @if (!string.IsNullOrEmpty(item.CaminhoImagem))
+                {
+                    <img src="~/images/@item.CaminhoImagem" class="img-thumbnail" style="max-width: 100px; max-height: 100px;" />
+                }
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-secondary">Editar</a> |
+                <a asp-action="EditImagem" asp-route-id="@item.Id" class="btn btn-secondary">Editar Imagem</a> |
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Detalhes</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Deletar</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

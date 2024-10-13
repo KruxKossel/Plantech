@@ -1,0 +1,4 @@
+
+
+
+Criar trigger que atualiza quantidade dos Lotes caso a quantidade da colheita seja atualizada, assim como cultura e hortaliças perdidas

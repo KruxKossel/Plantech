@@ -1,0 +1,62 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Plantech.Data;
+using Plantech.Interfaces;
+using Plantech.Models;
+
+namespace Plantech.Repositories
+{
+    public class HortalicaRepository : IHortalicaRepository
+    {
+        private readonly PlantechContext _context;
+
+        public HortalicaRepository(PlantechContext context)
+        {
+            _context = context;
+        }
+
+        public async Task AdicionarAsync(Hortalica hortalica)
+        {
+            await _context.Hortalicas.AddAsync(hortalica);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task AtualizarAsync(Hortalica hortalica)
+        {
+            // Desanexar quaisquer entidades rastreadas com o mesmo ID
+            var local = _context.Set<Hortalica>()
+                        .Local
+                        .FirstOrDefault(entry => entry.Id.Equals(hortalica.Id));
+            
+            if (local != null)
+            {
+                _context.Entry(local).State = EntityState.Detached;
+            }
+            
+            _context.Entry(hortalica).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
+
+
+        public async Task DeletarAsync(int id)
+        {
+            var hortalica = await _context.Hortalicas.FindAsync(id);
+            if (hortalica != null)
+            {
+                _context.Hortalicas.Remove(hortalica);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<Hortalica> ObterPorIdAsync(int id)
+        {
+            return await _context.Hortalicas.FindAsync(id);
+        }
+
+        public async Task<List<Hortalica>> ListarAsync()
+        {
+            return await _context.Hortalicas.ToListAsync();
+        }
+    }
+}

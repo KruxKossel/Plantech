@@ -1,0 +1,17 @@
+# Compiled object files
+*.dll
+*.exe
+*.obj
+*.pdb
+
+# ASP.NET files
+*.config
+
+# Visual Studio files
+.vscode/
+*.suo
+*.user
+
+# Build directories
+bin/
+obj/

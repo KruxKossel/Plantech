@@ -1,0 +1,44 @@
+@model Plantech.DTOs.HortalicaDTO
+@{
+    ViewData["Title"] = "Deletar Hortaliça";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<h3>Você realmente deseja deletar esta hortaliça?</h3>
+<div>
+    <h4>Hortaliça</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Nome
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Nome
+        </dd>
+        <dt class="col-sm-2">
+            Descrição
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Descricao
+        </dd>
+        <dt class="col-sm-2">
+            Observações
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Observacoes
+        </dd>
+        <dt class="col-sm-2">
+            Caminho da Imagem
+        </dt>
+        <dd class="col-sm-10">
+            <img src="~/images/@Model.CaminhoImagem" alt="@Model.Nome" class="img-fluid" />
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger">Deletar</button> |
+        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
