@@ -14,7 +14,8 @@
             <dd class=" IMG col-sm-10">
                 @if (!string.IsNullOrEmpty(Model.CaminhoImagem))
                 {
-                    <img src="~/images/@Model.CaminhoImagem" class="img-thumbnail" />
+                    <img src="~/images/@Model.CaminhoImagem" class="img-thumbnail mt-2"
+                        style="object-fit: cover; width: 800px; height: 400px;" />
                 }
             </dd>
             <dt class="col-sm-2 ms-3">Descrição:</dt>
