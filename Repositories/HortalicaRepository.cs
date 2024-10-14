@@ -7,14 +7,9 @@ using Plantech.Models;
 
 namespace Plantech.Repositories
 {
-    public class HortalicaRepository : IHortalicaRepository
+    public class HortalicaRepository(PlantechContext context) : IHortalicaRepository
     {
-        private readonly PlantechContext _context;
-
-        public HortalicaRepository(PlantechContext context)
-        {
-            _context = context;
-        }
+        private readonly PlantechContext _context = context;
 
         public async Task AdicionarAsync(Hortalica hortalica)
         {
