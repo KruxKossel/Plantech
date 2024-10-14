@@ -40,8 +40,6 @@
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="Nome" />
             <div class="form-group">
-
-
                 <input asp-for="ImagemArquivo" class="form-control" type="file" />
                 <span asp-validation-for="ImagemArquivo" class="text-danger"></span>
                 @if (!string.IsNullOrEmpty(Model.CaminhoImagem))
