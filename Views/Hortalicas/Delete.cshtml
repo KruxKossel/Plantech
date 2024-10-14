@@ -8,9 +8,9 @@
 <h3>Você realmente deseja deletar esta hortaliça?</h3>
 <div>
     <hr />
-    <div class="card p-5" style="width: 1000px; height: 400px;">
-        <dl class=" row">
-            <div class="col-6">
+    <div class="card p-5" style="width: 1000px; height: 450px;">
+        <dl class="row" style="height: 100%; overflow-y: auto;">
+            <div class="col-6" style="max-height: 100%; overflow-y: auto;">
                 <dt class="">
                     Nome
                 </dt>
@@ -33,15 +33,16 @@
 
             <dd class="col-6">
                 <img src="~/images/@Model.CaminhoImagem" alt="@Model.Nome"
-                    style="width: 450px;height: 300px; object-fit: cover; border-radius: 10px;" />
+                    style="width: 450px; height: 300px; object-fit: cover; border-radius: 10px;" />
             </dd>
         </dl>
     </div>
-    
-    <form asp-action="Delete" style="margin-top: 30px;">
+
+
+    <form asp-action="Delete" style="margin-top: 20px;">
         <input type="hidden" asp-for="Id" />
         <a asp-action="Index" class="btn btn-primary">Cancelar</a>
-        <button type="submit" class="btn btn-danger">Deletar</button> 
+        <button type="submit" class="btn btn-danger">Deletar</button>
 
     </form>
 </div>
