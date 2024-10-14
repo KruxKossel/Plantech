@@ -50,13 +50,73 @@
 }
 else
 {
-    <div class="jumbotron">
-        <h1>Bem-vindo a Plantech</h1>
-            <p class="lead">Aqui você encontrará as melhores soluções para sua Fazenda Urbana.</p>
-            <p>
-                <a asp-controller="Login" asp-action="Login" class="btn btn-primary btn-lg">Faça Login</a>
-            </p>
+
+
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/animate.css" />
+    <link rel="stylesheet" href="~/css/main.css" />
+    <link rel="stylesheet" href="~/css/responsivel.css" />
+
+<body>
+    <section class="header">
+        <div class="container">
+            <nav class="navbar navbar col-one">
+                <!--Logo-->
+                <a class="navbar-brand wow fadeIn ">
+                    <img class="img-logo" src="~/images/logo.png" width="160px" />
+                </a>
+
+                <!--Botão para fazer login-->
+                <div id="ir" class="login wow fadeIn">
+                    <!-- Link para a página de login usando Razor Pages -->
+                 <a asp-controller="Login" asp-action="Login" class="btn btn-primary btn-lg">Faça Login</a> 
+                </div>
+            </nav>
         </div>
+    </section>
+
+    <section class="banner">
+        <div class="container">
+            <div class="row">
+                <!--Fundo verde escuro -->
+                <div class="cor wow fadeIn">
+                    <div class="col-12">
+                        <div class="d-flex text-banner">
+                            <!--Lado Esquerdo Títulos-->
+                            <h1 class="wow fadeInLeft"><b>Faça parte da <br>Fazenda do <br>Futuro</b></h1>
+                            <div class="wow fadeInLeft delay-02s">
+                                <p>
+                                    <ul>
+                                        <li>Sustentabilidade</li>
+                                        <li>Tecnologia de Ponta</li>
+                                        <li>Segurança Alimentar</li>
+                                    </ul>
+                                </p>
+                                <div class="endereco">
+                                    <img src="~/images/ico.png" alt="" />
+                                    <p>Ed. Algoritimos Suites.Cobertura<br />São Paulo, SP</p>
+                                </div>
+                            </div>
+
+                            <!--Imagem do lado direito-->
+                            <div class="d-flex img-banner wow fadeIn delay-03s no-mobile">
+                                <img src="/images/img-fundo.jpg" alt="" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Arquivos de script do Razor Pages -->
+    <script type="text/javascript" src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="~/js/wow.min.js"></script>
+    <script type="text/javascript" src="~/js/login.js"></script>
+    <script>new WOW().init();</script>
+</body>
+
+
     }
 
 
