@@ -3,27 +3,29 @@
     ViewData["Title"] = "Detalhes da Hortaliça";
 }
 
-<h2>@ViewData["Title"]</h2>
+<h2 class="text-center mb-3 mt-3">@ViewData["Title"]</h2>
 
-<div>
-    <h4>Hortaliça</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">Nome</dt>
-        <dd class="col-sm-10">@Model.Nome</dd>
-        <dt class="col-sm-2">Descrição</dt>
-        <dd class="col-sm-10">@Model.Descricao</dd>
-        <dt class="col-sm-2">Observações</dt>
-        <dd class="col-sm-10">@Model.Observacoes</dd>
-        <dt class="col-sm-2">Caminho da Imagem</dt>
-        <dd class="col-sm-10">
-            @if (!string.IsNullOrEmpty(Model.CaminhoImagem))
-            {
-                <img src="~/images/@Model.CaminhoImagem" class="img-thumbnail" />
-            }
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Index" class="btn btn-secondary">Voltar</a>
-</div>
+<section>
+    <div>
+        <dl class="conteudo row">
+            <h2>
+                <dd class="col-sm-11 text-center">@Model.Nome</dd>
+            </h2>
+            <dd class=" IMG col-sm-10">
+                @if (!string.IsNullOrEmpty(Model.CaminhoImagem))
+                {
+                    <img src="~/images/@Model.CaminhoImagem" class="img-thumbnail" />
+                }
+            </dd>
+            <dt class="col-sm-2 ms-3">Descrição:</dt>
+            <dd class="col-sm-11 ms-3">@Model.Descricao</dd>
+            <dt class="col-sm-2 ms-3">Observações:</dt>
+            <dd class="col-sm-11 ms-3">@Model.Observacoes</dd>
+
+        </dl>
+    </div>
+    <div class="text-end ">
+        <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+    </div>
+
+</section>

@@ -6,6 +6,8 @@
     <title>@ViewData["Title"] - Plantech</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+     <link rel="stylesheet" href="~/css/edit.css" asp-append-version="true" />
+      <link rel="stylesheet" href="~/css/detalhes.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Plantech.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/Chart.min.css">
 </head>
@@ -46,14 +48,10 @@
             @RenderBody()
         </main>
     </div>
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - Plantech - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+       <script src="~/js/Create.js" asp-append-version="true"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
