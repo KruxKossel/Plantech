@@ -13,36 +13,10 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
+            <div class="container-fluid" style="background-color: rgb(1, 109, 10); margin-top: -10px; margin-bottom: -10px;">
                 <a class="navbar-brand wow fadeIn" asp-area="" asp-controller="Home" asp-action="Index">
-                    <img class="img-logo" src="~/images/logo.png" width="160px" />
+                    <img class="img-logo" src="~/images/logo.png" width="100px" />
                 </a>
-                
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end">
-                @* <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between"> *@
-                    @* <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                    </ul> *@
-                    <ul class="navbar-nav">
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <li class="nav-item ">
-                                <a class="nav-link text-dark btn btn-outline-success"  asp-area="" asp-controller="Login" asp-action="Logout">Logout</a>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark btn btn-outline-success" asp-area="" asp-controller="Login" asp-action="Login">Login</a>
-                            </li>
-                        }
-                    </ul>
-                </div>
             </div>
         </nav>
     </header>
