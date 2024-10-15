@@ -57,6 +57,10 @@
   scroll-behavior: smooth;
 }
 
+#log{
+  display: none;
+}
+
 /*--------------------------------------------------------------
 # General Styling & Shared Classes
 --------------------------------------------------------------*/
@@ -1006,7 +1010,6 @@ section,
     width: 100vw!important;
     margin-left: -11px !important;
   }
-
 }
 
 @keyframes fadeInUp {
