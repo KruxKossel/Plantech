@@ -56,7 +56,7 @@ namespace Plantech.Controllers
         // POST: Hortalicas/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-         [Authorize(Roles = "Agricultor, Administrador")]
+        [Authorize(Roles = "Agricultor, Administrador")]
         public async Task<IActionResult> Create(HortalicaViewModel model)
         {
             if (ModelState.IsValid)

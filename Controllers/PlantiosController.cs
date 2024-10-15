@@ -10,16 +10,12 @@ using Plantech.Models;
 
 namespace Plantech.Controllers
 {
-    public class PlantiosController : Controller
+    public class PlantiosController(PlantechContext context) : Controller
     {
-        private readonly PlantechContext _context;
-
-        public PlantiosController(PlantechContext context)
-        {
-            _context = context;
-        }
+        private readonly PlantechContext _context = context;
 
         // GET: Plantios
+
         public async Task<IActionResult> Index()
         {
             var plantechContext = _context.Plantios.Include(p => p.Funcionario).Include(p => p.Hortalica);

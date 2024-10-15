@@ -3,42 +3,46 @@
     ViewData["Title"] = "Deletar Hortaliça";
 }
 
-<h2>@ViewData["Title"]</h2>
+<h2>@ViewData["Title"]</h2><br>
 
 <h3>Você realmente deseja deletar esta hortaliça?</h3>
 <div>
-    <h4>Hortaliça</h4>
     <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            Nome
-        </dt>
-        <dd class="col-sm-10">
-            @Model.Nome
-        </dd>
-        <dt class="col-sm-2">
-            Descrição
-        </dt>
-        <dd class="col-sm-10">
-            @Model.Descricao
-        </dd>
-        <dt class="col-sm-2">
-            Observações
-        </dt>
-        <dd class="col-sm-10">
-            @Model.Observacoes
-        </dd>
-        <dt class="col-sm-2">
-            Caminho da Imagem
-        </dt>
-        <dd class="col-sm-10">
-            <img src="~/images/@Model.CaminhoImagem" alt="@Model.Nome" class="img-fluid" />
-        </dd>
-    </dl>
+    <div class="card p-5" style="width: 1000px; height: 450px;">
+        <dl class="row" style="height: 100%; overflow-y: auto;">
+            <div class="col-6" style="max-height: 100%; overflow-y: auto;">
+                <dt class="">
+                    Nome
+                </dt>
+                <dd class="mb-4">
+                    @Model.Nome
+                </dd>
+                <dt class="">
+                    Descrição
+                </dt>
+                <dd class="mb-4">
+                    @Model.Descricao
+                </dd>
+                <dt class="">
+                    Observações
+                </dt>
+                <dd class="">
+                    @Model.Observacoes
+                </dd>
+            </div>
 
-    <form asp-action="Delete">
+            <dd class="col-6">
+                <img src="~/images/@Model.CaminhoImagem" alt="@Model.Nome"
+                    style="width: 450px; height: 300px; object-fit: cover; border-radius: 10px;" />
+            </dd>
+        </dl>
+    </div>
+
+
+    <form asp-action="Delete" style="margin-top: 20px;">
         <input type="hidden" asp-for="Id" />
-        <button type="submit" class="btn btn-danger">Deletar</button> |
-        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+        <a asp-action="Index" class="btn btn-primary">Cancelar</a>
+        <button type="submit" class="btn btn-danger">Deletar</button>
+
     </form>
 </div>

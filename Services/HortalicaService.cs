@@ -7,14 +7,9 @@ using Plantech.Models;
 
 namespace Plantech.Services
 {
-    public class HortalicaService : IHortalicaService
+    public class HortalicaService(IHortalicaRepository hortalicaRepository) : IHortalicaService
     {
-        private readonly IHortalicaRepository _hortalicaRepository;
-
-        public HortalicaService(IHortalicaRepository hortalicaRepository)
-        {
-            _hortalicaRepository = hortalicaRepository;
-        }
+        private readonly IHortalicaRepository _hortalicaRepository = hortalicaRepository;
 
         public async Task CreateHortalicaAsync(HortalicaDTO hortalicaDto)
         {

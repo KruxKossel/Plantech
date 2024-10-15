@@ -1,0 +1,169 @@
+/* Adicionar as cores de todo projeto*/
+:root {
+    --color-background: #ffffff;
+    --color-text: #b1f965;
+    --color-white: #ffffff;
+}
+
+/* Corpo do projeto */
+html,
+body {
+    font-family: 'PoppinsRegular', 'Rubik', sans-serif;
+    background-color: var(--color-background);
+}
+
+b {
+    font-family: 'PoppinsMedium', 'Rubik', sans-serif;
+}
+
+p {
+    color: var(--color-text);
+}
+
+/* Container Topo -----------------------*/
+
+/*Barra pesquisa*/
+.Pesquisa input {
+    width: 450px;
+}
+
+.search-input {
+    padding-left: 30px;
+    background-image: url('../img/lupa\ \(1\).png');
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    background-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    height: 30px;
+    width: 200px;
+    box-sizing: border-box;
+}
+
+/* Icones dos botao */
+.social-buttons {
+    display: flex;
+    gap: 20px;
+}
+
+.social-button {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    text-decoration: none;
+}
+
+.social-button img {
+    width: 40px;
+    height: 40px;
+}
+
+.social-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.facebook {
+    background-color: #1877F2;
+}
+
+.whatsapp {
+    background-color: #25D366;
+}
+
+/* -------------FIM Icones-----------------*/
+
+/*Botao login*/
+.login button {
+    margin-left: 50px;
+    padding: 10px 20px;
+    border: none;
+    background: transparent;
+    outline: none;
+    background-color: #07942f;
+    border-radius: 10px;
+    color: white;
+}
+
+.login button:hover {
+    border-radius: 10px;
+    color: rgb(0, 0, 0);
+    background-color: #85eba2;
+}
+
+.login button:active {
+    background-color: #85eba2;
+}
+/* ------------------FIM Container Topo-----------------*/
+
+
+/* Container Verde escuro*/
+.cor {
+    margin-top: 40px;
+    background: rgb(2, 62, 10);
+    width: 100%;
+    height: 500px;
+    border-radius: 8px;
+    padding: 40px;
+}
+
+/* Container principal*/
+.banner {
+    padding-top: 40px;
+    padding-bottom: 200px;
+}
+
+.text-banner {
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.text-banner h1 {
+    padding:10px;
+    color: var(--color-text);
+    font-size: 60px;
+    margin-bottom: 20px;
+}
+li{
+    margin-left: -10px;
+}
+
+.img-banner img {
+    border-top-left-radius: 40px;
+    border-bottom-left-radius: 40px;
+    padding: 15px;
+    height: 450px;
+    margin-top: -450px;
+    width: 700px;
+    margin-left: 440px;
+}
+
+li {
+    color: var(--color-text);
+}
+
+.endereco {
+    display: flex;
+}
+
+.endereco img {
+    margin-left: 20px;
+    width: 30px;
+    height: 40px;
+}
+
+.endereco p {
+    margin-left: 20px;
+}
+
+/*-----------FIM do Container ----------------------------------*/
+
+
