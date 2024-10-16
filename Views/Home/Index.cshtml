@@ -24,12 +24,61 @@
 <!-- Main CSS File -->
 <link href="assets/css/main.css" rel="stylesheet">
 
+
+@if (User.Identity.IsAuthenticated)
+{
+    @if (User.IsInRole("Administrador"))
+    {
+        <h1>Selecione qual operação deseja gerenciar!</h1>
+        <hr>
+        <div>
+            <a asp-controller="Administrador" asp-action="Index" class="btn btn-primary">Gerenciamento</a>
+        </div>
+        <hr>
+        <div>
+            <a asp-controller="Agricultor" asp-action="Index" class="btn btn-primary">Ir para a fazenda</a>
+        </div>
+        <hr>
+        <div>
+            <a asp-controller="Comprador" asp-action="Index" class="btn btn-primary">Ir para a compra</a>
+        </div>
+        <hr>
+        <div>
+            <a asp-controller="Vendedor" asp-action="Index" class="btn btn-primary">Ir para a venda</a>
+        </div>
+        <hr>
+    }
+    @if (User.IsInRole("Agricultor"))
+    {
+        <h1>Olá Agricultor, comece as atividades!</h1>
+        <div>
+            <a asp-controller="Agricultor" asp-action="Index" class="btn btn-primary">Ir para a fazenda</a>
+        </div>
+    }
+    @if (User.IsInRole("Comprador"))
+    {
+        <h1>Olá Comprador, comece as atividades!</h1>
+        <div>
+            <a asp-controller="Comprador" asp-action="Index" class="btn btn-primary">Ir para a compra</a>
+        </div>
+    }
+    @if (User.IsInRole("Vendedor"))
+    {
+        <h1>Olá Vendedor, comece as atividades!</h1>
+        <div>
+            <a asp-controller="Vendedor" asp-action="Index" class="btn btn-primary">Ir para a venda</a>
+        </div>
+    }
+}
+else
+{
+
 <body class="index-page">
 
     <header id="header" class="header d-flex align-items-center fixed-top">
         <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
 
-            <a href="index.html" class="logo d-flex align-items-center">
+            <a  asp-controller="Home" asp-action="Index" class="logo d-flex align-items-center">
                 <!-- Uncomment the line below if you also wish to use an image logo -->
                 <!-- <img src="assets/img/logo.png" alt=""> -->
                 <h1 class="sitename" style="margin-left: 10px;">Plantech</h1>
@@ -37,7 +86,7 @@
 
             <nav id="navmenu" class="navmenu">
                 <ul>
-                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a  asp-controller="Home" asp-action="Index" class="active">Home</a></li>
                     <li><a href="about.html">About</a></li>
                     <li><a href="services.html">Services</a></li>
                     <li><a href="portfolio.html">Portfolio</a></li>
@@ -63,7 +112,20 @@
                         </ul>
                     </li>
                     <li><a href="contact.html">Contact</a></li>
-                    <li> <a asp-controller="Login" asp-action="Login">Faça Login</a></li>
+                    <ul class="navbar-nav">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item ">
+                                <a asp-controller="Login" asp-action="Logout">Logout</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a asp-controller="Login" asp-action="Login">Login</a>
+                            </li>
+                        }
+                    </ul>
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
             </nav>
@@ -126,62 +188,7 @@
 
         </section><!-- /Hero Section -->
 
-        @if (User.Identity.IsAuthenticated)
-        {
-            @if (User.IsInRole("Administrador"))
-            {
-                <h1>Selecione qual operação deseja gerenciar!</h1>
-                <hr>
-                <div>
-                    <a asp-controller="Administrador" asp-action="Index" class="btn btn-primary">Gerenciamento</a>
-                </div>
-                <hr>
-                <div>
-                    <a asp-controller="Agricultor" asp-action="Index" class="btn btn-primary">Ir para a fazenda</a>
-                </div>
-                <hr>
-                <div>
-                    <a asp-controller="Comprador" asp-action="Index" class="btn btn-primary">Ir para a compra</a>
-                </div>
-                <hr>
-                <div>
-                    <a asp-controller="Vendedor" asp-action="Index" class="btn btn-primary">Ir para a venda</a>
-                </div>
-                <hr>
-            }
-            @if (User.IsInRole("Agricultor"))
-            {
-                <h1>Olá Agricultor, comece as atividades!</h1>
-                <div>
-                    <a asp-controller="Agricultor" asp-action="Index" class="btn btn-primary">Ir para a fazenda</a>
-                </div>
-            }
-            @if (User.IsInRole("Comprador"))
-            {
-                <h1>Olá Comprador, comece as atividades!</h1>
-                <div>
-                    <a asp-controller="Comprador" asp-action="Index" class="btn btn-primary">Ir para a compra</a>
-                </div>
-            }
-            @if (User.IsInRole("Vendedor"))
-            {
-                <h1>Olá Vendedor, comece as atividades!</h1>
-                <div>
-                    <a asp-controller="Vendedor" asp-action="Index" class="btn btn-primary">Ir para a venda</a>
-                </div>
-            }
-        }
-        else
-        {
-            <br><br>
-            <div class="jumbotron">
-                <h1>Bem-vindo a Plantech</h1>
-                <p class="lead">Aqui você encontrará as melhores soluções para sua Fazenda Urbana.</p>
-                <p>
-                    <a asp-controller="Login" asp-action="Login" class="btn btn-primary btn-lg">Faça Login</a>
-                </p>
-            </div>
-        }
+
         <!-- Featured Services Section -->
         <section id="featured-services" class="featured-services section">
 
@@ -493,8 +500,7 @@
     <script src="assets/js/main.js"></script>
 
 </body>
-
-    }
+}
 
 
 
