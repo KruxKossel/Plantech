@@ -1,11 +1,12 @@
 @model Plantech.ViewModels.LoginViewModel
 @{
-    ViewData["Title"] = "Login";
+    Layout = "_Layout";
 }
 
-    <link rel="stylesheet" href="./css/animate.css">
-    <link rel="stylesheet" href="./css/login.css">
-    <link rel="stylesheet" href="./css/responsivel.css">
+@section Styles {
+    <link rel="stylesheet" href="~/css/login.css">
+}
+
     <div class="d-flex justify-content-center align-items-center" style="height: 88h;">
 
 <div class="row">
