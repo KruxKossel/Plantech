@@ -1,8 +1,15 @@
 @model Plantech.DTOs.HortalicaDTO
 @{
-    ViewData["Title"] = "Detalhes da Hortaliça";
+    Layout = "_Layout";
 }
-<link rel="stylesheet" href="~/css/detalhes.css" asp-append-version="true" />
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/detalhes.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/edit.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/detalhes.css" asp-append-version="true" />
+}
+
 <h2 class="text-center mb-3 mt-3">@ViewData["Title"]</h2>
 
 <section>

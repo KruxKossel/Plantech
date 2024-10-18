@@ -1,6 +1,12 @@
 @model IEnumerable<Plantech.DTOs.PlantioDTO>
 
+@{
+    Layout = "_Layout";
+}
 
+@section Styles {
+    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
+}
 
 <div class="jumbotron">
     <h1>Bem-vindo Agricultor</h1>
@@ -15,7 +21,7 @@
 </div>
 
 @section Scripts {
-    
+
     <script>
         var ctx = document.getElementById('graficoPlantios').getContext('2d');
         var datas = @Html.Raw(Json.Serialize(Model.Select(p => p.DataPlantio?.ToString("yyyy-MM-dd"))));
