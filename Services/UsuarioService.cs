@@ -73,24 +73,37 @@ namespace Plantech.Services
 
         private static string HashPassword(string password, out string salt)
         {
-            using (var rng = new RNGCryptoServiceProvider())
-            {
-                var saltBytes = new byte[16];
-                rng.GetBytes(saltBytes);
-                salt = Convert.ToBase64String(saltBytes);
-            }
+            // Gerando salt com RandomNumberGenerator
+            var saltBytes = new byte[16];
+            RandomNumberGenerator.Fill(saltBytes);
+            salt = Convert.ToBase64String(saltBytes);
 
+            // Concatenando senha e salt
             var saltedPassword = password + salt;
             var hashBytes = SHA256.HashData(Encoding.UTF8.GetBytes(saltedPassword));
+
+            // Retornando o hash da senha
             return Convert.ToBase64String(hashBytes);
         }
 
+
+        // Método para verificar se a senha fornecida corresponde ao hash armazenado
         private static bool VerifyPasswordHash(string password, string hashedPassword, string salt)
         {
+            // Concatenando a senha fornecida com o sal armazenado
             var saltedPassword = password + salt;
+
+            // Gerando o hash da senha concatenada com o sal usando SHA256
             var hashBytes = SHA256.HashData(Encoding.UTF8.GetBytes(saltedPassword));
+
+            // Convertendo o hash gerado para uma string Base64
             var computedHash = Convert.ToBase64String(hashBytes);
+
+            // Comparando o hash gerado com o hash armazenado
+            // Retorna verdadeiro se forem iguais, falso caso contrário
+            
             return computedHash == hashedPassword;
         }
+
     }
 }

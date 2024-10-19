@@ -8,14 +8,17 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 
 namespace Plantech.Controllers
 {
     [Authorize(Roles = "Agricultor, Administrador, Vendedor")]
-    public class HortalicasController(IHortalicaService hortalicaService, IWebHostEnvironment webHostEnvironment) : Controller
+    public class HortalicasController(IHortalicaService hortalicaService, 
+                                        IWebHostEnvironment webHostEnvironment, IMapper mapper) : Controller
     {
         private readonly IHortalicaService _hortalicaService = hortalicaService;
         private readonly IWebHostEnvironment _webHostEnvironment = webHostEnvironment;
+        private readonly IMapper _mapper = mapper;
 
         // GET: Hortalicas
         [HttpGet]
@@ -72,6 +75,8 @@ namespace Plantech.Controllers
                         await model.ImagemArquivo.CopyToAsync(fileStream);
                     }
                 }
+
+                
 
                 var hortalicaDto = new HortalicaDTO
                 {

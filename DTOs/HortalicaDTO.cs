@@ -1,16 +1,18 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Plantech.Models;
 
-namespace Plantech.DTOs
+namespace Plantech.DTOs;
+
+public partial class HortalicaDTO
 {
-    public class HortalicaDTO
-    {
-        public int Id { get; set; }
-        public string Nome { get; set; }
-        public string? Descricao { get; set; }
-        public string? Observacoes { get; set; }
-        public string? CaminhoImagem { get; set; }
-    }
+    public int Id { get; set; }
+
+    public string Nome { get; set; } = null!;
+
+    public string? Descricao { get; set; }
+
+    public string? Observacoes { get; set; }
+
+    public string? CaminhoImagem { get; set; }
 }
