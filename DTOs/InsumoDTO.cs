@@ -20,10 +20,4 @@ public partial class InsumoDTO
     public string Tipo { get; set; } = null!;
 
     public string? CaminhoImagem { get; set; }
-
-    public virtual Fornecedore? Fornecedor { get; set; }
-
-    public virtual ICollection<InsumosCompra> InsumosCompras { get; set; } = new List<InsumosCompra>();
-
-    public virtual ICollection<LotesInsumo> LotesInsumos { get; set; } = new List<LotesInsumo>();
 }

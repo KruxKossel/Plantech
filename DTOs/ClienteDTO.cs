@@ -19,6 +19,4 @@ public partial class ClienteDTO
     public string? Email { get; set; }
 
     public string Status { get; set; } = null!;
-
-    public virtual ICollection<Venda> Venda { get; set; } = new List<Venda>();
 }
