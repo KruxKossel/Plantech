@@ -3,10 +3,6 @@
 }
 
 
-
-
-
-
 @if (User.Identity.IsAuthenticated)
 {
   @if (User.IsInRole("Administrador"))
@@ -32,6 +28,7 @@
   }
   @if (User.IsInRole("Agricultor"))
   {
+    <br><br>
     <h1>Olá Agricultor, comece as atividades!</h1>
     <div>
       <a asp-controller="Agricultor" asp-action="Index" class="btn btn-primary">Ir para a fazenda</a>
@@ -39,6 +36,7 @@
   }
   @if (User.IsInRole("Comprador"))
   {
+    <br><br>
     <h1>Olá Comprador, comece as atividades!</h1>
     <div>
       <a asp-controller="Comprador" asp-action="Index" class="btn btn-primary">Ir para a compra</a>
@@ -46,6 +44,7 @@
   }
   @if (User.IsInRole("Vendedor"))
   {
+    <br><br>
     <h1>Olá Vendedor, comece as atividades!</h1>
     <div>
       <a asp-controller="Vendedor" asp-action="Index" class="btn btn-primary">Ir para a venda</a>
@@ -57,8 +56,6 @@ else
 {
 
   Layout = "_LayoutLogout";
-
-
 
         <!-- Hero Start -->
         <div class="container-fluid py-5 mb-5 hero-header">
