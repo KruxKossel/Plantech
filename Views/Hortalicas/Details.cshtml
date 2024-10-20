@@ -12,9 +12,6 @@
 
 <section>
     <div>
-        <dl class="conteudo row">
-            <h2>
-                <dd class="col-sm-11 text-center">@Model.Nome</dd>
             </h2>
             <dd class=" IMG col-sm-10">
                 @if (!string.IsNullOrEmpty(Model.CaminhoImagem))
@@ -30,8 +27,8 @@
 
         </dl>
     </div>
-    <div class="text-end ">
-        <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+    <div class=" ">
+        <a asp-action="Index" class="btn btn-secondary mt-3" style="width: 200px; margin-left: 10px;">Voltar</a>
     </div>
 
 </section>
