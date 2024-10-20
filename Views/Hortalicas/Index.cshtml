@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="~/css/edit.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
 }
+
+
 @if (User.IsInRole("Agricultor") || User.IsInRole("Administrador"))
 {
     <h2>@ViewData["Title"]</h2>
