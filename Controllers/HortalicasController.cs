@@ -20,14 +20,83 @@ namespace Plantech.Controllers
         private readonly IWebHostEnvironment _webHostEnvironment = webHostEnvironment;
         private readonly IMapper _mapper = mapper;
 
-        // GET: Hortalicas
+
         [HttpGet]
         [Authorize(Roles = "Agricultor, Administrador, Vendedor")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> RelatorioImpressao(string filtro)
         {
             var hortalicas = await _hortalicaService.ListarHortalicasAsync();
+
+            if (!string.IsNullOrEmpty(filtro))
+            {
+                // Aplica o filtro
+                hortalicas = hortalicas.Where(h => h.Nome.Contains(filtro, StringComparison.OrdinalIgnoreCase)
+                                                 || h.Descricao.Contains(filtro, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            return View(hortalicas); // Renderiza a View RelatorioImpressao.cshtml com os dados filtrados
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Agricultor, Administrador, Vendedor")]
+        public async Task<IActionResult> ExportarExcel(string filtro)
+        {
+            var hortalicas = await _hortalicaService.ListarHortalicasAsync();
+
+            if (!string.IsNullOrEmpty(filtro))
+            {
+                // Aplica o filtro
+                hortalicas = hortalicas.Where(h => h.Nome.Contains(filtro, StringComparison.OrdinalIgnoreCase)
+                                                 || h.Descricao.Contains(filtro, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            using (var workbook = new ClosedXML.Excel.XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add("Hortalicas");
+                var currentRow = 1;
+
+                // Cabeçalhos
+                worksheet.Cell(currentRow, 1).Value = "Nome";
+                worksheet.Cell(currentRow, 2).Value = "Descrição";
+                worksheet.Cell(currentRow, 3).Value = "Observações";
+
+                // Dados filtrados ou todos
+                foreach (var hortalica in hortalicas)
+                {
+                    currentRow++;
+                    worksheet.Cell(currentRow, 1).Value = hortalica.Nome;
+                    worksheet.Cell(currentRow, 2).Value = hortalica.Descricao;
+                    worksheet.Cell(currentRow, 3).Value = hortalica.Observacoes;
+                }
+
+                using (var stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    var content = stream.ToArray();
+                    return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Hortalicas.xlsx");
+                }
+            }
+        }
+
+
+        [HttpGet]
+        [Authorize(Roles = "Agricultor, Administrador, Vendedor")]
+        public async Task<IActionResult> Index(string filtro)
+        {
+            ViewData["FiltroAtual"] = filtro;
+
+            var hortalicas = await _hortalicaService.ListarHortalicasAsync();
+
+            if (!string.IsNullOrEmpty(filtro))
+            {
+                // Aplica o filtro
+                hortalicas = hortalicas.Where(h => h.Nome.Contains(filtro, StringComparison.OrdinalIgnoreCase)
+                                                 || h.Descricao.Contains(filtro, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
             return View(hortalicas);
         }
+
 
         // GET: Hortalicas/Details/5
         [HttpGet]
@@ -236,7 +305,7 @@ namespace Plantech.Controllers
             {
                 Console.WriteLine($"Chave: {state.Key}, Erros: {string.Join(",", state.Value.Errors.Select(e => e.ErrorMessage))}");
             }
-            
+
             return View(model);
         }
 
