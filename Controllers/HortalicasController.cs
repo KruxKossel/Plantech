@@ -9,6 +9,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
+using Plantech.Models;
 
 namespace Plantech.Controllers
 {
@@ -145,20 +146,10 @@ namespace Plantech.Controllers
                     }
                 }
 
-                
-
-                var hortalicaDto = new HortalicaDTO
-                {
-                    Nome = model.Nome,
-                    Descricao = model.Descricao,
-                    Observacoes = model.Observacoes,
-                    CaminhoImagem = uniqueFileName
-                };
-
-                await _hortalicaService.CreateHortalicaAsync(hortalicaDto);
+                var hortalica = _mapper.Map<HortalicaDTO>(model);
+                await _hortalicaService.CreateHortalicaAsync(hortalica);
                 return RedirectToAction(nameof(Index));
             }
-
             return View(model);
         }
 
@@ -177,15 +168,7 @@ namespace Plantech.Controllers
             {
                 return NotFound();
             }
-
-            var model = new HortalicaViewModel
-            {
-                Id = hortalica.Id,
-                Nome = hortalica.Nome,
-                Descricao = hortalica.Descricao,
-                Observacoes = hortalica.Observacoes,
-                CaminhoImagem = hortalica.CaminhoImagem // Carregar o caminho da imagem existente
-            };
+            var model = _mapper.Map<HortalicaViewModel>(hortalica);
 
             return View(model);
         }
@@ -308,9 +291,6 @@ namespace Plantech.Controllers
 
             return View(model);
         }
-
-
-
 
 
         [HttpGet]

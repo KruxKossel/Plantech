@@ -28,6 +28,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IFuncionarioRepository, FuncionarioRepository>();
+builder.Services.AddScoped<IFornecedoresRepository, FornecedoresRepository>();
+builder.Services.AddScoped<IFornecedorService, FornecedoreService>();
 builder.Services.AddScoped<IHortalicaService, HortalicaService>();
 builder.Services.AddScoped<IHortalicaRepository, HortalicaRepository>();
 builder.Services.AddScoped<IPlantioRepository, PlantioRepository>();

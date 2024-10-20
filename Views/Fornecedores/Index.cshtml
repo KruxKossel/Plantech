@@ -1,0 +1,81 @@
+@model IEnumerable<Plantech.DTOs.FornecedoreDTO>
+
+@{
+    ViewData["Title"] = "Index";
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/detalhes.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/edit.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
+}
+<h1>Fornecedores</h1>
+
+<p>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Cnpj)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RazaoSocial)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cidade)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Endereco)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cnpj)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RazaoSocial)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cidade)
+            </td>
+            <td >
+                @Html.DisplayFor(modelItem => item.Endereco)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            @if(item.Status == "ativo"){
+            <td class="text-info text-black p-1">
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            }else{
+            <td class="text-warning text-black p-1">
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            }
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Editar</a> |
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Detalhes</a> |
+                <form asp-action="Delete" asp-route-id="@item.Id" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-warning">Mudar Status</button>
+                </form>
+            </td>
+        </tr>
+}
+    </tbody>
+
+</table>
+    <div class="text-end" style="margin-right: 15px;">
+        <br>
+        <a asp-action="Create" class="btn btn-primary">Adicionar Fornecedor</a><br><br>
+    </div>
