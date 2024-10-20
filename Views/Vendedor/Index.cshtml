@@ -2,12 +2,14 @@
     ViewData["Title"] = "Home Vendedor";
 }
 
+<br><br>
 <div class="jumbotron">
     <h1>Bem-vindo Vendedor</h1>
     <br>
+    @if (User.IsInRole("Administrador")) {
+
     <p>
-        <a asp-controller="Hortalicas" asp-action="Index" class="btn btn-primary btn-lg">Hortaliças</a>
-        <hr>
         <a asp-controller="LotesHortalicas" asp-action="Index" class="btn btn-primary btn-lg">Lotes</a>
     </p>
+}
 </div>
