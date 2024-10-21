@@ -6,7 +6,7 @@
 
 <h1>Details</h1>
 
-<div>
+@* <div>
     <h4>Insumo</h4>
     <hr />
     <dl class="row">
@@ -58,3 +58,33 @@
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+<h2 class="text-center mb-3 mt-3">@ViewData["Title"]</h2> *@
+
+<section>
+    <div>
+            </h2>
+            <dd class=" IMG col-sm-10">
+                @if (!string.IsNullOrEmpty(Model.CaminhoImagem))
+                {
+                    <img src="~/images/@Model.CaminhoImagem" class="img-thumbnail mt-2"
+                        style="object-fit: cover; width: 800px; height: 400px;" />
+                }
+            </dd>
+            <dt class="col-sm-2 ms-3">Nome:</dt>
+            <dd class="col-sm-11 ms-3">@Model.Nome</dd>
+            <dt class="col-sm-2 ms-3">Categoria:</dt>
+            <dd class="col-sm-11 ms-3">@Model.Categoria</dd>
+            <dt class="col-sm-2 ms-3">Descrição:</dt>
+            <dd class="col-sm-11 ms-3">@Model.Descricao</dd>
+            <dt class="col-sm-2 ms-3">Observações:</dt>
+            <dd class="col-sm-11 ms-3">@Model.Observacoes</dd>
+            <dt class="col-sm-2 ms-3">Tipo:</dt>
+            <dd class="col-sm-11 ms-3">@Model.Tipo</dd>
+
+        </dl>
+    </div>
+    <div class=" ">
+        <a asp-action="Index" class="btn btn-secondary mt-3" style="width: 200px; margin-left: 10px;">Voltar</a>
+    </div>
+
+</section>

@@ -1,16 +1,14 @@
-
-using System.Diagnostics;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Plantech.DTOs;
 using Plantech.Interfaces;
-using Plantech.Models;
 using Plantech.ViewModels;
 
 namespace Plantech.Controllers
 {
+    
     public class InsumosController(IInsumoService insumoRepository, IMapper mapper, IWebHostEnvironment webHostEnvironment) : Controller
     {
         private readonly IInsumoService _insumoService = insumoRepository;
@@ -52,30 +50,29 @@ namespace Plantech.Controllers
     public async Task<IActionResult> Create(InsumoViewModel insumoVM)
     {
         if (ModelState.IsValid)
+        {
+            string uniqueFileName = null;
+            if (insumoVM.ImagemArquivo != null)
             {
-                string uniqueFileName = null;
-                if (insumoVM.ImagemArquivo != null)
+                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + insumoVM.ImagemArquivo.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
-                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
-                    uniqueFileName = Guid.NewGuid().ToString() + "_" + insumoVM.ImagemArquivo.FileName;
-                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await insumoVM.ImagemArquivo.CopyToAsync(fileStream);
-                    }
+                    await insumoVM.ImagemArquivo.CopyToAsync(fileStream);
                 }
             }
-        
-        if (ModelState.IsValid)
-        {
+
             var insumoDto = _mapper.Map<InsumoDTO>(insumoVM);
+            insumoDto.CaminhoImagem = uniqueFileName; 
             await _insumoService.CreateAsync(insumoDto);
+            
             return RedirectToAction(nameof(Index));
         }
+
         return View(insumoVM);
     }
-
-
         // GET: Insumos/Edit/5
          public async Task<IActionResult> Edit(int id)
     {
@@ -86,7 +83,8 @@ namespace Plantech.Controllers
         }
         var fornecedores = await _insumoService.ListarFornecedoresAsync(); 
         ViewData["FornecedorId"] = new SelectList(fornecedores, "Id", "Cnpj");
-        return View(insumo);
+        var insumoVM = _mapper.Map<InsumoViewModel>(insumo);
+        return View(insumoVM);
     }
 
     [HttpPost]
@@ -119,9 +117,60 @@ namespace Plantech.Controllers
             await _insumoService.AtualizarAsync(insumoDto);
             return RedirectToAction(nameof(Index));
         }
-        return View(insumoDto);
+        return View(insumoVM);
     }
-        // GET: Insumos/Delete/5
+       public async Task<IActionResult> EditImagem(int id, [Bind("Id, Nome, ImagemArquivo")] InsumoViewModel insumoVM)
+        {
+    if (ModelState.IsValid)
+    {
+        string uniqueFileName = null;
+
+        if (insumoVM.ImagemArquivo != null)
+        {
+            string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+            uniqueFileName = Guid.NewGuid().ToString() + "_" + insumoVM.ImagemArquivo.FileName;
+            string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+            
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await insumoVM.ImagemArquivo.CopyToAsync(fileStream);
+            }
+        }
+        else
+        {
+            // Se a imagem não foi enviada, mantenha o caminho atual da imagem
+            uniqueFileName = insumoVM.CaminhoImagem; // Ou como você estiver gerenciando o caminho
+        }
+
+        var insumoDto = _mapper.Map<InsumoDTO>(insumoVM);
+        insumoDto.CaminhoImagem = uniqueFileName; // Atualize o DTO com o novo caminho da imagem
+
+        await _insumoService.AtualizarAsync(insumoDto);
+        
+        return RedirectToAction(nameof(Index));
+    }
+
+    return View(insumoVM);
+        }
+        
+        [HttpGet]
+        public async Task<IActionResult> EditImagem(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var insumoDto = await _insumoService.ObterPorIdAsync(id.Value);
+            if (insumoDto == null)
+            {
+                return NotFound();
+            }
+
+            var insumoVM = _mapper.Map<InsumoViewModel>(insumoDto);
+            return View(insumoVM);
+        }   
+        
         public async Task<IActionResult> Delete(int id)
         {
             if (id == null)

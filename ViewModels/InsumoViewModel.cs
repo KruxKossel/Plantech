@@ -10,7 +10,7 @@ public partial class InsumoViewModel
     public int Id { get; set; }
 
     [DisplayName("Cnpj Fornecedor")]
-    public string  FornecedorId { get; set; } = null!; 
+    public int?  FornecedorId { get; set; } = null!; 
 
     public string Nome { get; set; } = null!;
 
@@ -22,6 +22,7 @@ public partial class InsumoViewModel
 
     public string Tipo { get; set; } = null!;
 
+    public string? CaminhoImagem { get; set; }
     [Display(Name = "Imagem")]
     public IFormFile? ImagemArquivo { get; set; }
 }

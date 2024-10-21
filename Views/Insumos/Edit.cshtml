@@ -3,64 +3,76 @@
 @{
     ViewData["Title"] = "Edit";
 }
+@section Styles {
+    <link rel="stylesheet" href="~/css/detalhes.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/edit.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
+}
 
 <h1>Edit</h1>
-
 <h4>Insumo</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
+
             <div class="form-group">
                 <label asp-for="FornecedorId" class="control-label"></label>
                 <select asp-for="FornecedorId" class="form-control" asp-items="ViewBag.FornecedorId"></select>
-                <span asp-validation-for="FornecedorId" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Nome" class="control-label"></label>
                 <input asp-for="Nome" class="form-control" />
                 <span asp-validation-for="Nome" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Descricao" class="control-label"></label>
                 <input asp-for="Descricao" class="form-control" />
                 <span asp-validation-for="Descricao" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Observacoes" class="control-label"></label>
                 <input asp-for="Observacoes" class="form-control" />
                 <span asp-validation-for="Observacoes" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Categoria" class="control-label"></label>
                 <input asp-for="Categoria" class="form-control" />
                 <span asp-validation-for="Categoria" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Tipo" class="control-label"></label>
                 <input asp-for="Tipo" class="form-control" />
                 <span asp-validation-for="Tipo" class="text-danger"></span>
             </div>
+
             <div class="col-6">
+                <br>
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="Nome" />
+
                 <div class="form-group">
                     <label asp-for="ImagemArquivo" class="control-label"></label>
-                    <input asp-for="ImagemArquivo" class="form-control" type="file" id="imageUpload"
-                        onchange="previewImage(event)" />
+                    <input asp-for="ImagemArquivo" class="form-control" type="file" />
                     <span asp-validation-for="ImagemArquivo" class="text-danger"></span>
+
+                    @if (!string.IsNullOrEmpty(Model.CaminhoImagem))
+                    {
+                        <img src="~/images/@Model.CaminhoImagem" class="img-thumbnail mt-2"
+                            style="object-fit: cover; width: 800px; height: 480px;" />
+                    }
                 </div>
 
-                <img id="imagePreview" src="" alt="Imagem selecionada"
-                    style="display:none; width: 640px; height: 440px; border: 2px solid #ccc; margin-top: 10px;" />
-
-                <div class="form-group text-end mt-3">
-                    <button type="submit" class="btn btn-primary">Adicionar</button>
+                <div class="mt-4 text-end form-group">
+                    <button type="submit" class="btn btn-primary" style="margin-left: -20px; width: 150px">Salvar</button>
                 </div>
-
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -71,5 +83,5 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <partial name="_ValidationScriptsPartial" />
 }
