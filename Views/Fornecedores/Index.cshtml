@@ -3,6 +3,8 @@
 @{
     ViewData["Title"] = "Index";
 }
+@if (User.IsInRole("Comprador") || User.IsInRole("Administrador"))
+{
 @section Styles {
     <link rel="stylesheet" href="~/css/detalhes.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/edit.css" asp-append-version="true" />
@@ -97,3 +99,4 @@
         <br>
         <a asp-action="Create" class="btn btn-primary">Adicionar Fornecedor</a><br><br>
     </div>
+}

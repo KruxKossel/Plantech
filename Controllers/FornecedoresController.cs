@@ -1,8 +1,7 @@
 using AutoMapper;
-using DocumentFormat.OpenXml.Drawing;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Plantech.Data;
 using Plantech.DTOs;
 using Plantech.Interfaces;
 using Plantech.ViewModels;
@@ -22,12 +21,14 @@ namespace Plantech.Controllers
         }
 
         // GET: Fornecedores
+        [Authorize(Roles = "Administrador, Comprador")]
         public async Task<IActionResult> Index()
         {
             return View(await _fornecedorService.ListarAsync());
         }
 
         // GET: Fornecedores/Details/5
+        [Authorize(Roles = "Administrador, Comprador")]
         public async Task<IActionResult> Details(int id)
         {
             if (id == null)
@@ -44,6 +45,7 @@ namespace Plantech.Controllers
         }
 
         // GET: Fornecedores/Create
+        [Authorize(Roles = "Administrador, Comprador")]
         public IActionResult Create()
         {
             return View();
@@ -52,6 +54,7 @@ namespace Plantech.Controllers
         // POST: Fornecedores/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Administrador, Comprador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Cnpj,RazaoSocial,Cidade,Endereco,Email,Status")] FornecedoreViewModel fornecedore)
@@ -66,6 +69,7 @@ namespace Plantech.Controllers
         }
 
         // GET: Fornecedores/Edit/5
+        [Authorize(Roles = "Administrador, Comprador")]
         public async Task<IActionResult> Edit(int id)
         {
             if (id == null)
@@ -85,6 +89,7 @@ namespace Plantech.Controllers
         // POST: Fornecedores/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Administrador, Comprador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Cnpj,RazaoSocial,Cidade,Endereco,Email,Status")] FornecedoreViewModel fornecedoreVM)
@@ -118,6 +123,7 @@ namespace Plantech.Controllers
 
     
         // POST: Fornecedores/Delete/5
+        [Authorize(Roles = "Administrador, Comprador")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)

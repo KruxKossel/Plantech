@@ -4,8 +4,9 @@
     ViewData["Title"] = "Index";
 }
 <br><br>
+@if (User.IsInRole("Comprador") || User.IsInRole("Administrador"))
+{
 <h2>Lista de Insumos</h2>
-
 <p>
 </p>
 <div class="card-index">
@@ -64,6 +65,7 @@
                 <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
             </td>
         </tr>
+}
 }
     </tbody>
 </table>

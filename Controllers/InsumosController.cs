@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,7 @@ namespace Plantech.Controllers
         }
 
         // GET: Insumos/Details/5
+        [Authorize(Roles = "Administrador, Comprador")]
         public async Task<IActionResult> Details(int id)
         {
             if (id == null){
@@ -38,43 +40,44 @@ namespace Plantech.Controllers
 
             return View(insumo);
         }
-
- public async Task<IActionResult> Create()
-    {
-        var fornecedores = await _insumoService.ListarFornecedoresAsync(); 
-        ViewData["FornecedorId"] = new SelectList(fornecedores, "Id", "Cnpj");
-        return View();
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(InsumoViewModel insumoVM)
-    {
-        if (ModelState.IsValid)
-        {
-            string uniqueFileName = null;
-            if (insumoVM.ImagemArquivo != null)
+        [Authorize(Roles = "Administrador, Comprador")]
+        public async Task<IActionResult> Create()
             {
-                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
-                uniqueFileName = Guid.NewGuid().ToString() + "_" + insumoVM.ImagemArquivo.FileName;
-                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    await insumoVM.ImagemArquivo.CopyToAsync(fileStream);
-                }
+                var fornecedores = await _insumoService.ListarFornecedoresAsync(); 
+                ViewData["FornecedorId"] = new SelectList(fornecedores, "Id", "Cnpj");
+                return View();
             }
+            [Authorize(Roles = " Administrador, Comprador")]
+            [HttpPost]
+            [ValidateAntiForgeryToken]
+            public async Task<IActionResult> Create(InsumoViewModel insumoVM)
+            {
+                if (ModelState.IsValid)
+                {
+                    string uniqueFileName = null;
+                    if (insumoVM.ImagemArquivo != null)
+                    {
+                        string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+                        uniqueFileName = Guid.NewGuid().ToString() + "_" + insumoVM.ImagemArquivo.FileName;
+                        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                        
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await insumoVM.ImagemArquivo.CopyToAsync(fileStream);
+                        }
+                    }
 
-            var insumoDto = _mapper.Map<InsumoDTO>(insumoVM);
-            insumoDto.CaminhoImagem = uniqueFileName; 
-            await _insumoService.CreateAsync(insumoDto);
-            
-            return RedirectToAction(nameof(Index));
-        }
+                    var insumoDto = _mapper.Map<InsumoDTO>(insumoVM);
+                    insumoDto.CaminhoImagem = uniqueFileName; 
+                    await _insumoService.CreateAsync(insumoDto);
+                    
+                    return RedirectToAction(nameof(Index));
+                }
 
-        return View(insumoVM);
-    }
+                return View(insumoVM);
+            }
         // GET: Insumos/Edit/5
+         [Authorize(Roles = "Administrador, Comprador")]
          public async Task<IActionResult> Edit(int id)
     {
         var insumo = await _insumoService.ObterPorIdAsync(id);
@@ -87,7 +90,7 @@ namespace Plantech.Controllers
         var insumoVM = _mapper.Map<InsumoViewModel>(insumo);
         return View(insumoVM);
     }
-
+        [Authorize(Roles = "Administrador, Comprador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, InsumoViewModel insumoVM)
@@ -189,6 +192,7 @@ namespace Plantech.Controllers
         }
 
         // POST: Insumos/Delete/5
+        [Authorize(Roles = "Administrador, Comprador")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
