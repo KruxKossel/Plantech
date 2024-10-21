@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Plantech.Models;
+namespace Plantech.ViewModels;
 
 public partial class FornecedoreViewModel
 {

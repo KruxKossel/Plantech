@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Plantech.Data;
 using Plantech.DTOs;
 using Plantech.Interfaces;
-using Plantech.Models;
+using Plantech.ViewModels;
 
 namespace Plantech.Controllers
 {
@@ -78,7 +78,8 @@ namespace Plantech.Controllers
             {
                 return NotFound();
             }
-            return View(fornecedorDTO);
+            var fornecedorVM = _mapper.Map<FornecedoreViewModel>(fornecedorDTO);
+            return View(fornecedorVM);
         }
 
         // POST: Fornecedores/Edit/5

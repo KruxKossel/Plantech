@@ -1,15 +1,13 @@
-@model Plantech.DTOs.FornecedoreDTO
+@model Plantech.ViewModels.FornecedoreViewModel
 
 @{
     ViewData["Title"] = "Edit";
 }
-
-<h1>Edit</h1>
-
-<h4>Fornecedore</h4>
+<br><br>
+<h4>Editar Fornecedor</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="card col-6 p-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
@@ -39,22 +37,24 @@
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <br>
                 <select asp-for="Status" class="form-control">
                         <option value="ativo">Ativo</option>
                         <option value="inativo">Inativo</option>
                 </select>
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
-            <div class="form-group">
+        <br>                <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
+<div>
+<br>
+    <a asp-action="Index" class="btn btn-warning">Voltar Para Fornecedores</a>
+</div>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

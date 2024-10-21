@@ -9,7 +9,7 @@ public partial class InsumoViewModel
 {
     public int Id { get; set; }
 
-    [DisplayName("Cnpj Fornecedor")]
+    [DisplayName("Fornecedor")]
     public int?  FornecedorId { get; set; } = null!; 
 
     public string Nome { get; set; } = null!;

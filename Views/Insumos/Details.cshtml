@@ -3,8 +3,12 @@
 @{
     ViewData["Title"] = "Details";
 }
-
-<h1>Details</h1>
+@section Styles {
+    <link rel="stylesheet" href="~/css/detalhes.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/edit.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/detalhes.css" asp-append-version="true" />
+}
 
 @* <div>
     <h4>Insumo</h4>
@@ -62,8 +66,8 @@
 
 <section>
     <div>
-            </h2>
-            <dd class=" IMG col-sm-10">
+           
+            <dd class=" IMG col-sm-8">
                 @if (!string.IsNullOrEmpty(Model.CaminhoImagem))
                 {
                     <img src="~/images/@Model.CaminhoImagem" class="img-thumbnail mt-2"

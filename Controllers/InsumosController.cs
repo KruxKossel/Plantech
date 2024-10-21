@@ -17,6 +17,7 @@ namespace Plantech.Controllers
     private readonly IWebHostEnvironment _webHostEnvironment = webHostEnvironment;
         // GET: Insumos
         public async Task<IActionResult> Index(){
+            
             var insumos = await _insumoService.ListarAsync();  
             return View(insumos);
         }
@@ -87,19 +88,18 @@ namespace Plantech.Controllers
         return View(insumoVM);
     }
 
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, InsumoViewModel insumoVM)
-    {
-        var insumoDto = _mapper.Map<InsumoDTO>(insumoVM);
-        if (id != insumoDto.Id)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, InsumoViewModel insumoVM)
         {
-            return NotFound();
-        }
-
-        if (ModelState.IsValid)
+            if (id != insumoVM.Id)
             {
-                string uniqueFileName = null;
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                string uniqueFileName = insumoVM.CaminhoImagem;
                 if (insumoVM.ImagemArquivo != null)
                 {
                     string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
@@ -110,66 +110,67 @@ namespace Plantech.Controllers
                         await insumoVM.ImagemArquivo.CopyToAsync(fileStream);
                     }
                 }
+                var insumoDto = _mapper.Map<InsumoDTO>(insumoVM);
+                insumoDto.CaminhoImagem = uniqueFileName;
+                await _insumoService.AtualizarAsync(insumoDto);
+                return RedirectToAction(nameof(Index));
             }
-        
-        if (ModelState.IsValid)
-        {
-            await _insumoService.AtualizarAsync(insumoDto);
-            return RedirectToAction(nameof(Index));
-        }
-        return View(insumoVM);
-    }
-       public async Task<IActionResult> EditImagem(int id, [Bind("Id, Nome, ImagemArquivo")] InsumoViewModel insumoVM)
-        {
-    if (ModelState.IsValid)
-    {
-        string uniqueFileName = null;
-
-        if (insumoVM.ImagemArquivo != null)
-        {
-            string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
-            uniqueFileName = Guid.NewGuid().ToString() + "_" + insumoVM.ImagemArquivo.FileName;
-            string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-            
-            using (var fileStream = new FileStream(filePath, FileMode.Create))
-            {
-                await insumoVM.ImagemArquivo.CopyToAsync(fileStream);
-            }
-        }
-        else
-        {
-            // Se a imagem não foi enviada, mantenha o caminho atual da imagem
-            uniqueFileName = insumoVM.CaminhoImagem; // Ou como você estiver gerenciando o caminho
-        }
-
-        var insumoDto = _mapper.Map<InsumoDTO>(insumoVM);
-        insumoDto.CaminhoImagem = uniqueFileName; // Atualize o DTO com o novo caminho da imagem
-
-        await _insumoService.AtualizarAsync(insumoDto);
-        
-        return RedirectToAction(nameof(Index));
-    }
-
-    return View(insumoVM);
-        }
-        
-        [HttpGet]
-        public async Task<IActionResult> EditImagem(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var insumoDto = await _insumoService.ObterPorIdAsync(id.Value);
-            if (insumoDto == null)
-            {
-                return NotFound();
-            }
-
-            var insumoVM = _mapper.Map<InsumoViewModel>(insumoDto);
+            var fornecedores = await _insumoService.ListarFornecedoresAsync();
+            ViewData["FornecedorId"] = new SelectList(fornecedores, "Id", "Cnpj", insumoVM.FornecedorId);
             return View(insumoVM);
-        }   
+        }
+
+        //     [HttpPost]
+        // [ValidateAntiForgeryToken]
+        // public async Task<IActionResult> EditImagem(int id, [Bind("Id, Nome, ImagemArquivo")] InsumoViewModel insumoVM)
+        // {
+        //     if (id != insumoVM.Id)
+        //     {
+        //         return NotFound();
+        //     }
+
+        //     if (ModelState.IsValid)
+        //     {
+        //         string uniqueFileName = insumoVM.CaminhoImagem; 
+        //         if (insumoVM.ImagemArquivo != null)
+        //         {
+        //             string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+        //             uniqueFileName = Guid.NewGuid().ToString() + "_" + insumoVM.ImagemArquivo.FileName;
+        //             string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+        //             using (var fileStream = new FileStream(filePath, FileMode.Create))
+        //             {
+        //                 await insumoVM.ImagemArquivo.CopyToAsync(fileStream);
+        //             }
+        //         }
+
+        //         var insumoDto = _mapper.Map<InsumoDTO>(insumoVM);
+        //         insumoDto.CaminhoImagem = uniqueFileName;
+        //         await _insumoService.AtualizarAsync(insumoDto);
+        //         return RedirectToAction(nameof(Index));
+        //     }
+
+        //     return View(insumoVM);
+        // }
+
+        
+        // [HttpGet]
+        // public async Task<IActionResult> EditImagem(int? id)
+        // {
+        //     if (id == null)
+        //     {
+        //         return NotFound();
+        //     }
+
+        //     var insumoDto = await _insumoService.ObterPorIdAsync(id.Value);
+        //     if (insumoDto == null)
+        //     {
+        //         return NotFound();
+        //     }
+
+        //     var insumoVM = _mapper.Map<InsumoViewModel>(insumoDto);
+        //     return View(insumoVM);
+        // }   
         
         public async Task<IActionResult> Delete(int id)
         {
