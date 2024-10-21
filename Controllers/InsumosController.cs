@@ -1,42 +1,37 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
+using System.Diagnostics;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Plantech.Data;
+using Plantech.DTOs;
+using Plantech.Interfaces;
 using Plantech.Models;
+using Plantech.ViewModels;
 
 namespace Plantech.Controllers
 {
-    public class InsumosController : Controller
+    public class InsumosController(IInsumoService insumoRepository, IMapper mapper, IWebHostEnvironment webHostEnvironment) : Controller
     {
-        private readonly PlantechContext _context;
+        private readonly IInsumoService _insumoService = insumoRepository;
+        private readonly IMapper _mapper = mapper;
 
-        public InsumosController(PlantechContext context)
-        {
-            _context = context;
-        }
-
+    private readonly IWebHostEnvironment _webHostEnvironment = webHostEnvironment;
         // GET: Insumos
-        public async Task<IActionResult> Index()
-        {
-            var plantechContext = _context.Insumos.Include(i => i.Fornecedor);
-            return View(await plantechContext.ToListAsync());
+        public async Task<IActionResult> Index(){
+            var insumos = await _insumoService.ListarAsync();  
+            return View(insumos);
         }
 
         // GET: Insumos/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
-            {
+            if (id == null){
                 return NotFound();
             }
 
-            var insumo = await _context.Insumos
-                .Include(i => i.Fornecedor)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var insumo = await _insumoService.ObterPorIdAsync(id);
+                
             if (insumo == null)
             {
                 return NotFound();
@@ -45,94 +40,96 @@ namespace Plantech.Controllers
             return View(insumo);
         }
 
-        // GET: Insumos/Create
-        public IActionResult Create()
-        {
-            ViewData["FornecedorId"] = new SelectList(_context.Fornecedores, "Id", "Id");
-            return View();
-        }
+ public async Task<IActionResult> Create()
+    {
+        var fornecedores = await _insumoService.ListarFornecedoresAsync(); 
+        ViewData["FornecedorId"] = new SelectList(fornecedores, "Id", "Cnpj");
+        return View();
+    }
 
-        // POST: Insumos/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FornecedorId,Nome,Descricao,Observacoes,Categoria,Tipo,CaminhoImagem")] Insumo insumo)
-        {
-            if (ModelState.IsValid)
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create(InsumoViewModel insumoVM)
+    {
+        if (ModelState.IsValid)
             {
-                _context.Add(insumo);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                string uniqueFileName = null;
+                if (insumoVM.ImagemArquivo != null)
+                {
+                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+                    uniqueFileName = Guid.NewGuid().ToString() + "_" + insumoVM.ImagemArquivo.FileName;
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await insumoVM.ImagemArquivo.CopyToAsync(fileStream);
+                    }
+                }
             }
-            ViewData["FornecedorId"] = new SelectList(_context.Fornecedores, "Id", "Id", insumo.FornecedorId);
-            return View(insumo);
+        
+        if (ModelState.IsValid)
+        {
+            var insumoDto = _mapper.Map<InsumoDTO>(insumoVM);
+            await _insumoService.CreateAsync(insumoDto);
+            return RedirectToAction(nameof(Index));
         }
+        return View(insumoVM);
+    }
+
 
         // GET: Insumos/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+         public async Task<IActionResult> Edit(int id)
+    {
+        var insumo = await _insumoService.ObterPorIdAsync(id);
+        if (insumo == null)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            return NotFound();
+        }
+        var fornecedores = await _insumoService.ListarFornecedoresAsync(); 
+        ViewData["FornecedorId"] = new SelectList(fornecedores, "Id", "Cnpj");
+        return View(insumo);
+    }
 
-            var insumo = await _context.Insumos.FindAsync(id);
-            if (insumo == null)
-            {
-                return NotFound();
-            }
-            ViewData["FornecedorId"] = new SelectList(_context.Fornecedores, "Id", "Id", insumo.FornecedorId);
-            return View(insumo);
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(int id, InsumoViewModel insumoVM)
+    {
+        var insumoDto = _mapper.Map<InsumoDTO>(insumoVM);
+        if (id != insumoDto.Id)
+        {
+            return NotFound();
         }
 
-        // POST: Insumos/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FornecedorId,Nome,Descricao,Observacoes,Categoria,Tipo,CaminhoImagem")] Insumo insumo)
+        if (ModelState.IsValid)
+            {
+                string uniqueFileName = null;
+                if (insumoVM.ImagemArquivo != null)
+                {
+                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+                    uniqueFileName = Guid.NewGuid().ToString() + "_" + insumoVM.ImagemArquivo.FileName;
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await insumoVM.ImagemArquivo.CopyToAsync(fileStream);
+                    }
+                }
+            }
+        
+        if (ModelState.IsValid)
         {
-            if (id != insumo.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(insumo);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!InsumoExists(insumo.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["FornecedorId"] = new SelectList(_context.Fornecedores, "Id", "Id", insumo.FornecedorId);
-            return View(insumo);
+            await _insumoService.AtualizarAsync(insumoDto);
+            return RedirectToAction(nameof(Index));
         }
-
+        return View(insumoDto);
+    }
         // GET: Insumos/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var insumo = await _context.Insumos
-                .Include(i => i.Fornecedor)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var insumo = await _insumoService.ObterPorIdAsync(id);
             if (insumo == null)
             {
                 return NotFound();
@@ -146,19 +143,24 @@ namespace Plantech.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var insumo = await _context.Insumos.FindAsync(id);
+            var insumo = await _insumoService.ObterPorIdAsync(id);
             if (insumo != null)
             {
-                _context.Insumos.Remove(insumo);
+                _insumoService.DeletarAsync(id);
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool InsumoExists(int id)
+        private  bool InsumoExists(int id)
         {
-            return _context.Insumos.Any(e => e.Id == id);
+            bool retorno;
+            var insumo =  _insumoService.ObterPorIdAsync(id);
+            if(insumo !=null) 
+            retorno = true; 
+            else{retorno = false;}
+            
+            return retorno;
         }
     }
 }

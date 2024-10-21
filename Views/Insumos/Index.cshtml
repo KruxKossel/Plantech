@@ -1,4 +1,4 @@
-@model IEnumerable<Plantech.Models.Insumo>
+@model IEnumerable<Plantech.DTOs.InsumoDTO>
 
 @{
     ViewData["Title"] = "Index";
@@ -31,7 +31,7 @@
                 @Html.DisplayNameFor(model => model.CaminhoImagem)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Fornecedor)
+                @Html.DisplayNameFor(model => model.FornecedorId)
             </th>
             <th></th>
         </tr>
@@ -58,7 +58,7 @@
                 @Html.DisplayFor(modelItem => item.CaminhoImagem)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Fornecedor.Id)
+                @Html.DisplayFor(modelItem => item.FornecedorId)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

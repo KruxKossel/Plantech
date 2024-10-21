@@ -1,4 +1,4 @@
-@model Plantech.Models.Insumo
+@model Plantech.DTOs.InsumoDTO
 
 @{
     ViewData["Title"] = "Details";
@@ -47,10 +47,10 @@
             @Html.DisplayFor(model => model.CaminhoImagem)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Fornecedor)
+            @Html.DisplayNameFor(model => model.FornecedorId)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Fornecedor.Id)
+            @Html.DisplayFor(model => model.FornecedorId)
         </dd>
     </dl>
 </div>
