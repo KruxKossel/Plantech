@@ -20,7 +20,7 @@
         </div>
     </div>
 </form> *@
-@if (User.IsInRole("Comprador") || User.IsInRole("Administrador"))
+@if (User.IsInRole("Vendedor") || User.IsInRole("Administrador"))
 {
 <div class="card-index">
     <div style="max-height: 350px; overflow-y: auto;">
@@ -88,6 +88,6 @@
 </div>
 <br>
 <div>
-    <a asp-controller="Agricultor" asp-action="Index" class="btn btn-primary">Voltar a Home</a>
+    <a asp-controller="Vendedor" asp-action="Index" class="btn btn-primary">Voltar a Home</a>
 </div>
 }
