@@ -5,13 +5,14 @@ using Plantech.Models;
 
 namespace Plantech.Interfaces
 {
-    public interface IClientesRepository
+    public interface IClienteRepository
     {
         Task Adicionar(Cliente cliente);
         Task AtualizarDadosAsync(Cliente cliente);
-        List<Cliente> Listar();
-        Task AtualizarStatusAsync(int id, StatusPessoa statusPessoa);
-        List<Cliente> BuscarPorRazaoSocial(string razaoSocial);
+        Task <List<Cliente>> Listar();
+        Task AtualizarStatusAsync(int id);
+        Task <List<Cliente>> BuscarPorRazaoSocial(string razaoSocial);
+        Task<Cliente> BuscarPorId(int id);
     }
 }
 

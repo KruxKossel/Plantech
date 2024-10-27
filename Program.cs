@@ -31,6 +31,9 @@ builder.Services.AddScoped<IFuncionarioRepository, FuncionarioRepository>();
 //DI Fornecedores
 builder.Services.AddScoped<IFornecedoresRepository, FornecedoresRepository>();
 builder.Services.AddScoped<IFornecedorService, FornecedoreService>();
+//DI Clientes
+builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
+builder.Services.AddScoped<IClienteService,ClienteService>();
 //DI Insumos
 builder.Services.AddScoped<IInsumoRepository, InsumoRepository>();
 builder.Services.AddScoped<IInsumoService, InsumoService>();

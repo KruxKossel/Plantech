@@ -1,15 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Plantech.Interfaces;
 using Plantech.ViewModels;
 using Plantech.DTOs;
-using System;
-using System.IO;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
-using Plantech.Models;
 
 namespace Plantech.Controllers
 {

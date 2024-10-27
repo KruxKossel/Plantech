@@ -16,6 +16,7 @@ public class MappingProfile: Profile
         CreateMap<InsumoViewModel, InsumoDTO>().ReverseMap();
         //Cliente
         CreateMap<ClienteDTO, Cliente>().ReverseMap();
+        CreateMap<ClienteViewModel, ClienteDTO>().ReverseMap();
         //Fornecedor
         CreateMap<FornecedoreDTO, Fornecedore>().ReverseMap();
         CreateMap<FornecedoreViewModel, FornecedoreDTO>().ReverseMap();
