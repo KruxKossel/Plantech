@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -25,13 +26,14 @@ namespace Plantech.Controllers
             _mapper = mapper;
         }
 
+        [Authorize(Roles = "Administrador, Vendedor")]
         public async Task<IActionResult> Index()
         {
             var clientes = await _clienteService.ListarAsync();
             
             return View(clientes);
         }
-
+        [Authorize(Roles = "Administrador, Vendedor")]
         public async Task<IActionResult> Details(int id)
         {
             if (id == null)
@@ -47,13 +49,13 @@ namespace Plantech.Controllers
 
             return View(cliente);
         }
-
+        [Authorize(Roles = "Administrador, Vendedor")]
         public IActionResult Create()
         {
             return View();
         }
 
-
+        [Authorize(Roles = "Administrador, Vendedor")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Cnpj,RazaoSocial,Endereco,Telefone,Email,Status")] ClienteViewModel clientevm)
@@ -67,7 +69,7 @@ namespace Plantech.Controllers
             return View(clientevm);
         }
 
-
+        [Authorize(Roles = "Administrador, Vendedor")]
         public async Task<IActionResult> Edit(int id)
         {
             if (id == null)
@@ -84,7 +86,7 @@ namespace Plantech.Controllers
             return View(clientevm);
         }
 
-
+        [Authorize(Roles = "Administrador, Vendedor")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Cnpj,RazaoSocial,Endereco,Telefone,Email,Status")] ClienteViewModel clientevm)
@@ -117,7 +119,8 @@ namespace Plantech.Controllers
             var clienteVM = _mapper.Map<ClienteViewModel>(clientedto);
             return View(clienteVM);
         }
-
+        
+        [Authorize(Roles = "Administrador, Vendedor")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
