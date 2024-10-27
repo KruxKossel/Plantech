@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using Plantech.Models;
-namespace Plantech.DTOs;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
-public partial class InsumoDTO
+namespace Plantech.ViewModels;
+
+public partial class InsumoViewModel
 {
     public int Id { get; set; }
 
-    public int? FornecedorId { get; set; }
+    [DisplayName("Fornecedor")]
+    public int?  FornecedorId { get; set; } = null!; 
 
     public string Nome { get; set; } = null!;
 
@@ -20,5 +23,6 @@ public partial class InsumoDTO
     public string Tipo { get; set; } = null!;
 
     public string? CaminhoImagem { get; set; }
-
+    [Display(Name = "Imagem")]
+    public IFormFile? ImagemArquivo { get; set; }
 }

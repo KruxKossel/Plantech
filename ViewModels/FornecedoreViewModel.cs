@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Plantech.DTOs;
+namespace Plantech.ViewModels;
 
-public partial class ClienteDTO
+public partial class FornecedoreViewModel
 {
     public int Id { get; set; }
 
@@ -11,13 +11,12 @@ public partial class ClienteDTO
 
     public string RazaoSocial { get; set; } = null!;
 
-    public string? Endereco { get; set; }
+    public string? Cidade { get; set; }
 
-    public string? Telefone { get; set; }
+    public string? Endereco { get; set; }
 
     public string? Email { get; set; }
 
     public string Status { get; set; } = null!;
 
-    // public virtual ICollection<Venda> Venda { get; set; } = new List<Venda>();
 }

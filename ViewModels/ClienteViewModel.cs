@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Plantech.DTOs;
+namespace Plantech.ViewModels;
 
-public partial class ClienteDTO
+public partial class ClienteViewModel
 {
     public int Id { get; set; }
 
@@ -18,6 +18,4 @@ public partial class ClienteDTO
     public string? Email { get; set; }
 
     public string Status { get; set; } = null!;
-
-    // public virtual ICollection<Venda> Venda { get; set; } = new List<Venda>();
 }
