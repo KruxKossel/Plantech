@@ -1,45 +1,52 @@
 @model Plantech.ViewModels.LoginViewModel
 @{
-    ViewData["Title"] = "Login";
+    Layout = "_Layout";
 }
 
-    <link rel="stylesheet" href="./css/animate.css">
-    <link rel="stylesheet" href="./css/login.css">
-    <link rel="stylesheet" href="./css/responsivel.css">
-    <div class="d-flex justify-content-center align-items-center" style="height: 88h;">
-
-<div class="row">
-    <div class="container">
-        <div class="row">
-            <div class="d-flex justify-content-center align-items-center" style="height: 30vh;">
-                <img src="~/images/logo.png" alt="">
-            </div>
-        </div>
-    </div>
- 
-        <form asp-action="Login" method="post">
-            <div class="form-group">
-                <label asp-for="Username" class="control-label"></label>
-                <input asp-for="Username" class="form-control" />
-                <span asp-validation-for="Username" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" type="password" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary">Login</button>
-            </div>
-        </form>
-
-        <!-- Link para criar uma nova conta -->
-        <div class="form-group">
-            <p>Não tem uma conta? <a asp-controller="Login" asp-action="Create">Crie uma aqui</a>.</p>
-        </div>
-    </div>
-</div>
-</div>
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+@section Styles {
+    <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
 }
+<div class="d-flex justify-content-center align-items-center" style="height: 88h;">
+
+    <div class="row">
+        <div class="container">
+            <div class="row">
+                <div class="d-flex justify-content-center align-items-center">
+                    <img style=" width: 300px; margin-top: 5px;" src="~/images/logo.png" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="d-flex justify-content-center align-items-center">
+                <form asp-action="Login" method="post" class="text-center">
+                    <div class="form-group">
+                        <label asp-for="Username" class="control-label">Usuário</label>
+                        <input asp-for="Username" class="form-control mx-auto" style="width: 500px;" />
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label asp-for="Password" class="control-label">Senha</label>
+                        <input asp-for="Password" class="form-control mx-auto" style="width: 500px;" type="password" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <br>
+                    <div class="form-group text-center">
+                        <!-- Link para criar uma nova conta -->
+                        <div class="form-group">
+                            <p>Não tem uma conta? <a asp-controller="Login" asp-action="Create">Crie uma aqui</a>.</p>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 200px;">Login</button>
+                    </div>
+                </form>
+            </div>
+
+
+
+
+        </div>
+
+    </div>
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }
