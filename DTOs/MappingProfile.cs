@@ -20,5 +20,22 @@ public class MappingProfile: Profile
         //Fornecedor
         CreateMap<FornecedoreDTO, Fornecedore>().ReverseMap();
         CreateMap<FornecedoreViewModel, FornecedoreDTO>().ReverseMap();
+
+        //Funcionario
+        CreateMap<FuncionarioDTO, Funcionario>().ReverseMap();
+
+
+        //Plantio
+        CreateMap<Plantio, PlantioDTO>().ReverseMap();
+        CreateMap<PlantioViewModel, PlantioDTO>().ReverseMap(); 
+    
+        CreateMap<InsumosPlantio, InsumosPlantioDTO>().ReverseMap();
+
+        //Lotes Insumo
+        CreateMap<LotesInsumo, LotesInsumoDTO>().ReverseMap();
+        CreateMap<LotesInsumoDTO, LotesInsumoViewModel>().ReverseMap();       
+
+
+
     }
 }

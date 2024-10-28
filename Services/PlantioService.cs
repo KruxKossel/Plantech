@@ -1,72 +1,62 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 using Plantech.DTOs;
 using Plantech.Interfaces;
 using Plantech.Models;
 
-namespace Plantech.Services
+public class PlantioService(IMapper mapper, IPlantioRepository plantioRepository) : IPlantioService
 {
-    public class PlantioService(IPlantioRepository repository) : IPlantioService
-{
-    private readonly IPlantioRepository _repository = repository;
+    private readonly IMapper _mapper = mapper;
+    private readonly IPlantioRepository _plantioRepository = plantioRepository;
 
-        public async Task<IEnumerable<PlantioDTO>> GetAllAsync()
+    public async Task<IEnumerable<PlantioDTO>> GetAllAsync()
     {
-        var plantios = await _repository.GetAllAsync();
-        return plantios.Select(p => new PlantioDTO
-        {
-            Id = p.Id,
-            DataPlantio = p.DataPlantio,
-            HortalicaId = p.HortalicaId,
-            FuncionarioId = p.FuncionarioId,
-            Quantidade = p.Quantidade
-        });
+        var plantios = await _plantioRepository.GetAllAsync();
+        return _mapper.Map<IEnumerable<PlantioDTO>>(plantios);
     }
 
     public async Task<PlantioDTO> GetByIdAsync(int id)
     {
-        var plantio = await _repository.GetByIdAsync(id);
-        return new PlantioDTO
-        {
-            Id = plantio.Id,
-            DataPlantio = plantio.DataPlantio,
-            HortalicaId = plantio.HortalicaId,
-            FuncionarioId = plantio.FuncionarioId,
-            Quantidade = plantio.Quantidade
-        };
+        var plantio = await _plantioRepository.GetByIdAsync(id);
+        return _mapper.Map<PlantioDTO>(plantio);
     }
 
-    public async Task CreateAsync(PlantioDTO plantioDto)
+    public async Task CreatePlantioWithInsumosAsync(PlantioDTO plantioDto)
     {
-        var plantio = new Plantio
-        {
-            DataPlantio = plantioDto.DataPlantio,
-            HortalicaId = plantioDto.HortalicaId,
-            FuncionarioId = plantioDto.FuncionarioId,
-            Quantidade = plantioDto.Quantidade
-        };
-        await _repository.AddAsync(plantio);
+        var plantio = _mapper.Map<Plantio>(plantioDto);
+        var insumosPlantios = _mapper.Map<List<InsumosPlantio>>(plantioDto.InsumosPlantios);
+        await _plantioRepository.AddPlantioWithInsumosAsync(plantio, insumosPlantios);
     }
 
     public async Task UpdateAsync(PlantioDTO plantioDto)
     {
-        var plantio = new Plantio
-        {
-            Id = plantioDto.Id,
-            DataPlantio = plantioDto.DataPlantio,
-            HortalicaId = plantioDto.HortalicaId,
-            FuncionarioId = plantioDto.FuncionarioId,
-            Quantidade = plantioDto.Quantidade
-        };
-        await _repository.UpdateAsync(plantio);
+        var plantio = _mapper.Map<Plantio>(plantioDto);
+        await _plantioRepository.UpdateAsync(plantio);
     }
 
     public async Task DeleteAsync(int id)
     {
-        await _repository.DeleteAsync(id);
+        await _plantioRepository.DeleteAsync(id);
     }
-}
+
+    // Métodos para obter listas de funcionários e hortaliças
+     public async Task<IEnumerable<FuncionarioDTO>> GetFuncionariosAsync()
+    {
+
+        var funcionario = await _plantioRepository.GetFuncionariosAsync();
+        return _mapper.Map<IEnumerable<FuncionarioDTO>>(funcionario);
+    }
+
+    public async Task<IEnumerable<HortalicaDTO>> GetHortalicasAsync()
+    {
+        var hortalicas = await _plantioRepository.GetHortalicasAsync();
+        return _mapper.Map<IEnumerable<HortalicaDTO>>(hortalicas);
+    }
+
+    public async Task<IEnumerable<LotesInsumoDTO>> GetLotesInsumosAsync(){
+
+         var lotesInsumo = await _plantioRepository.GetLotesInsumosAsync();
+        return _mapper.Map<IEnumerable<LotesInsumoDTO>>(lotesInsumo);
+
+    }
 
 }

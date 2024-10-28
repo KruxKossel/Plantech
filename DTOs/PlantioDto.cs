@@ -12,5 +12,8 @@ namespace Plantech.DTOs
         public int HortalicaId { get; set; }
         public int FuncionarioId { get; set; }
         public int? Quantidade { get; set; }
+
+        public List<InsumosPlantioDTO> InsumosPlantios { get; set; } = new List<InsumosPlantioDTO>();
+
     }
 }

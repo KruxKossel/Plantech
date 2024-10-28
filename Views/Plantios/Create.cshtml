@@ -1,41 +1,53 @@
-@model Plantech.Models.Plantio
+@model Plantech.ViewModels.PlantioViewModel
 
 @{
     ViewData["Title"] = "Create";
 }
+<br><br>
 
-<h1>Create</h1>
-
-<h4>Plantio</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="DataPlantio" class="control-label"></label>
-                <input asp-for="DataPlantio" class="form-control" />
-                <span asp-validation-for="DataPlantio" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="HortalicaId" class="control-label"></label>
-                <select asp-for="HortalicaId" class ="form-control" asp-items="ViewBag.HortalicaId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="FuncionarioId" class="control-label"></label>
-                <select asp-for="FuncionarioId" class ="form-control" asp-items="ViewBag.FuncionarioId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Quantidade" class="control-label"></label>
-                <input asp-for="Quantidade" class="form-control" />
-                <span asp-validation-for="Quantidade" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="FuncionarioNome"></label>
+        <input asp-for="FuncionarioNome" class="form-control" readonly />
     </div>
-</div>
+    <div class="form-group">
+        <label asp-for="HortalicaId"></label>
+        <select asp-for="HortalicaId" class="form-control">
+            <option value="">-- Selecionar --</option>
+            @foreach (var item in (SelectList)ViewBag.HortalicaId)
+            {
+                <option value="@item.Value">@item.Text</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label asp-for="Quantidade"></label>
+        <input asp-for="Quantidade" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Insumos Plantios</label>
+        <div id="insumos-container">
+            @foreach (var item in (SelectList)ViewBag.InsumosPlantios)
+            {
+                <div class="insumo-item">
+                    <label>
+                        <input type="checkbox" name="SelectedInsumos" value="@item.Value" />
+                        @item.Text
+                    </label>
+                    <input type="number" name="InsumosQuantities[@item.Value]" class="form-control" placeholder="Quantidade" />
+                </div>
+            }
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Salvar</button>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger">
+        @Model.ErrorMessage
+    </div>
+}
 
 <div>
     <a asp-action="Index">Back to List</a>
@@ -43,4 +55,23 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        // Validação de quantidade de insumo via JS
+        document.querySelector("form").addEventListener("submit", function (event) {
+            var quantidadeInputs = document.querySelectorAll("[name^='InsumosQuantities']");
+            var totalQuantidade = 0;
+            quantidadeInputs.forEach(function (input) {
+                var quantidade = parseInt(input.value);
+                if (!isNaN(quantidade)) {
+                    totalQuantidade += quantidade;
+                }
+            });
+            // Suponha que 'quantidadeMax' seja a quantidade disponível no lote
+            var quantidadeMax = /* Atribua aqui a quantidade máxima do lote */;
+            if (totalQuantidade > quantidadeMax) {
+                alert("A quantidade total de insumos usada não pode ser maior que a quantidade disponível no lote.");
+                event.preventDefault();
+            }
+        });
+    </script>
 }
