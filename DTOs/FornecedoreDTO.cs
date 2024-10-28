@@ -18,4 +18,7 @@ public partial class FornecedoreDTO
     public string? Email { get; set; }
 
     public string Status { get; set; } = null!;
+    public virtual ICollection<InsumoDTO> Insumos { get; set; } = new List<InsumoDTO>();
+
+    public virtual ICollection<OrdensCompraDTO> OrdensCompras { get; set; } = new List<OrdensCompraDTO>();
 }

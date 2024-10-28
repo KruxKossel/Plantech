@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using Plantech;
 using Plantech.Data;
 using Plantech.Interfaces;
 using Plantech.Repositories;
@@ -43,6 +44,9 @@ builder.Services.AddScoped<IHortalicaRepository, HortalicaRepository>();
 //DI Plantio
 builder.Services.AddScoped<IPlantioRepository, PlantioRepository>();
 builder.Services.AddScoped<IPlantioService, PlantioService>();
+//DI Ordens de Compra
+builder.Services.AddScoped<IOrdensCompraRepository, OrdensCompraRepository>();
+builder.Services.AddScoped<IOrdensCompraService, OrdensCompraService>();
 
 var app = builder.Build();
 

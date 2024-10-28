@@ -5,11 +5,13 @@ namespace Plantech.Models;
 
 public partial class OrdensCompra
 {
+    private const string V = "pendente";
+
     public int Id { get; set; }
 
     public double? Total { get; set; }
 
-    public string Status { get; set; } = null!;
+    public string Status { get; set; } = V;
 
     public int FuncionarioId { get; set; }
 
