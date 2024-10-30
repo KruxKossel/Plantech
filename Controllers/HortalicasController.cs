@@ -23,6 +23,7 @@ namespace Plantech.Controllers
         {
             var hortalicas = await _hortalicaService.ListarHortalicasAsync();
 
+
             if (!string.IsNullOrEmpty(filtro))
             {
                 // Aplica o filtro
@@ -118,20 +119,25 @@ namespace Plantech.Controllers
         [Authorize(Roles = "Agricultor, Administrador")]
         public IActionResult Create()
         {
-            return View();
+            var model = new HortalicaViewModel();
+            return View(model);
         }
 
         // POST: Hortalicas/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Agricultor, Administrador")]
-        public async Task<IActionResult> Create(HortalicaViewModel model)
+        public async Task<IActionResult> Create([Bind("Nome, Descricao, Observacoes, ImagemArquivo")] HortalicaViewModel model)
         {
+            
             if (ModelState.IsValid)
             {
                 string uniqueFileName = null;
                 if (model.ImagemArquivo != null)
                 {
+
+                    Console.WriteLine("\n\n Entrou no if");
+                    
                     string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
                     uniqueFileName = Guid.NewGuid().ToString() + "_" + model.ImagemArquivo.FileName;
                     string filePath = Path.Combine(uploadsFolder, uniqueFileName);
@@ -141,7 +147,13 @@ namespace Plantech.Controllers
                     }
                 }
 
+                Console.WriteLine("\n\n Imagem:", uniqueFileName);
+
+                model.CaminhoImagem = uniqueFileName;
+
                 var hortalica = _mapper.Map<HortalicaDTO>(model);
+
+                
                 await _hortalicaService.CreateHortalicaAsync(hortalica);
                 return RedirectToAction(nameof(Index));
             }

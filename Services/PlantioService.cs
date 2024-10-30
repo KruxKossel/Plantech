@@ -57,12 +57,6 @@ public class PlantioService(IMapper mapper, IPlantioRepository plantioRepository
         return _mapper.Map<IEnumerable<FuncionarioDTO>>(funcionario);
     }
 
-    public async Task<IEnumerable<HortalicaDTO>> GetHortalicasAsync()
-    {
-        var hortalicas = await _plantioRepository.GetHortalicasAsync();
-        return _mapper.Map<IEnumerable<HortalicaDTO>>(hortalicas);
-    }
-
     public async Task<IEnumerable<LotesInsumoDTO>> GetLotesInsumosAsync(){
 
          var lotesInsumo = await _plantioRepository.GetLotesInsumosAsync();

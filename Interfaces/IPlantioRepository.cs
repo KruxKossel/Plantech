@@ -17,8 +17,6 @@ namespace Plantech.Interfaces
         Task<Plantio> GetUltimoPlantioAsync();
 
         Task<IEnumerable<Funcionario>> GetFuncionariosAsync();
-        Task<IEnumerable<Hortalica>> GetHortalicasAsync();
-
         Task<IEnumerable<LotesInsumo>> GetLotesInsumosAsync();
 
     

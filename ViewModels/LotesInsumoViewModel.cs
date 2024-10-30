@@ -37,8 +37,5 @@ namespace Plantech.ViewModels
 
         public InsumoDTO Insumo { get; set; } = null!;
 
-
-        public string ErrorMessage { get; set; }
-
     }
 }

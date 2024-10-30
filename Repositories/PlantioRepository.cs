@@ -69,11 +69,6 @@ public class PlantioRepository(PlantechContext context) : IPlantioRepository
         return await _context.Funcionarios.ToListAsync();
     }
 
-    public async Task<IEnumerable<Hortalica>> GetHortalicasAsync()
-    {
-        return await _context.Hortalicas.ToListAsync();
-    }
-
     // Lotes de insumo
     public async Task<IEnumerable<LotesInsumo>> GetLotesInsumosAsync()
     {

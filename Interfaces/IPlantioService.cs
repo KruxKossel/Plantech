@@ -17,7 +17,6 @@ namespace Plantech.Interfaces
 
 
         Task<IEnumerable<FuncionarioDTO>> GetFuncionariosAsync();
-        Task<IEnumerable<HortalicaDTO>> GetHortalicasAsync();
 
         Task<IEnumerable<LotesInsumoDTO>> GetLotesInsumosAsync();
 

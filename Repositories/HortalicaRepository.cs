@@ -11,6 +11,7 @@ namespace Plantech.Repositories
     {
         private readonly PlantechContext _context = context;
 
+
         public async Task AdicionarAsync(Hortalica hortalica)
         {
             await _context.Hortalicas.AddAsync(hortalica);

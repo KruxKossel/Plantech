@@ -30,9 +30,8 @@ namespace Plantech.ViewModels
         public string FuncionarioNome { get; set; }
 
 
-        // lote insumo
+        // guarda lotes insumo que serão listados
         public List<LotesInsumoDTO> LotesInsumos { get; set; } = new List<LotesInsumoDTO>();
 
-        // public string ErrorMessage { get; set; }
     }
 }
