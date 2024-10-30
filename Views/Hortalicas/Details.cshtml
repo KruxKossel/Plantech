@@ -1,15 +1,17 @@
 @model Plantech.DTOs.HortalicaDTO
-@{
-    ViewData["Title"] = "Detalhes da Hortaliça";
+
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/detalhes.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/edit.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/detalhes.css" asp-append-version="true" />
 }
-<link rel="stylesheet" href="~/css/detalhes.css" asp-append-version="true" />
+
 <h2 class="text-center mb-3 mt-3">@ViewData["Title"]</h2>
 
 <section>
     <div>
-        <dl class="conteudo row">
-            <h2>
-                <dd class="col-sm-11 text-center">@Model.Nome</dd>
             </h2>
             <dd class=" IMG col-sm-10">
                 @if (!string.IsNullOrEmpty(Model.CaminhoImagem))
@@ -25,8 +27,8 @@
 
         </dl>
     </div>
-    <div class="text-end ">
-        <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+    <div class=" ">
+        <a asp-action="Index" class="btn btn-secondary mt-3" style="width: 200px; margin-left: 10px;">Voltar</a>
     </div>
 
 </section>

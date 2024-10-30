@@ -11,21 +11,6 @@ namespace Plantech.Data.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "alertas",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    lote_id = table.Column<int>(type: "INTEGER", nullable: false),
-                    tipo = table.Column<string>(type: "TEXT", nullable: false),
-                    mensagem = table.Column<string>(type: "TEXT", nullable: false),
-                    data_criacao = table.Column<string>(type: "TEXT", nullable: false, defaultValueSql: "date('now')")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_alertas", x => x.id);
-                });
 
             migrationBuilder.CreateTable(
                 name: "cargos",
@@ -449,12 +434,6 @@ namespace Plantech.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_alertas_lote_id_tipo",
-                table: "alertas",
-                columns: new[] { "lote_id", "tipo" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "idx_clientes_cnpj",
                 table: "clientes",
                 column: "cnpj");
@@ -690,8 +669,6 @@ namespace Plantech.Data.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "alertas");
 
             migrationBuilder.DropTable(
                 name: "hortalicas_perdidas");

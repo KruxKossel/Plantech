@@ -1,13 +1,13 @@
 @model IEnumerable<Plantech.DTOs.PlantioDTO>
 
-
-
+@section Styles {
+    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
+}
+<br><br>
 <div class="jumbotron">
     <h1>Bem-vindo Agricultor</h1>
     <br>
-    <p>
-        <a asp-controller="Hortalicas" asp-action="Index" class="btn btn-primary btn-lg">Hortaliças</a>
-    </p>
+
 </div>
 <div>
     <canvas id="graficoPlantios" width="600" height="200"></canvas>
@@ -15,7 +15,7 @@
 </div>
 
 @section Scripts {
-    
+
     <script>
         var ctx = document.getElementById('graficoPlantios').getContext('2d');
         var datas = @Html.Raw(Json.Serialize(Model.Select(p => p.DataPlantio?.ToString("yyyy-MM-dd"))));
@@ -24,27 +24,38 @@
         console.log(datas, quantidades); // Para debugar
 
         var graficoPlantios = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: datas,
-                datasets: [{
-                    label: 'Datas dos Plantios',
-                    data: quantidades,
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    x: {
-                        type: 'category', // Usar categoria já que temos apenas datas
-                    },
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
+        type: 'line',
+        data: {
+        labels: datas,
+        datasets: [{
+        label: 'Datas dos Plantios',
+        data: quantidades,
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1
+        }]
+        },
+        options: {
+        scales: {
+        x: {
+        type: 'category', // Usar categoria já que temos apenas datas
+        },
+        y: {
+        beginAtZero: true
+        }
+        }
+        }
         });
     </script>
 }
+
+<hr>
+<br>
+<div class="jumbotron">
+@if (User.IsInRole("Administrador")) {
+
+    <p>
+        <a asp-controller="Hortalicas" asp-action="Index" class="btn btn-primary btn-lg">Hortaliças</a>
+    </p>
+}
+</div>

@@ -1,71 +1,107 @@
 @model IEnumerable<Plantech.Models.LotesHortalica>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Lotes de Hortaliças";
 }
 
-<h1>Index</h1>
+<br><br>
 
-<div>
-    <a asp-controller="Vendedor" asp-action="Index" class="btn btn-primary">Voltar a Home</a>
-</div>
+@if (User.IsInRole("Vendedor"))
+{
+    <div class="container-fluid fruite">
+        <div class="container">
+            <h1 class="mb-5" style="margin-left: -7px;">Lotes de Hortaliças</h1>
+            <div class="row g-4">
+                <div class="col-lg-12">
+                    <div class="row g-4">
+                        <!-- Sidebar de Categorias e Filtro de Preço -->
+                        <div class="col-lg-3">
+                            <div class="row g-4">
+                                <!-- Categorias -->
+                                <div class="col-lg-12">
+                                    <div class="mb-3">
+                                        <h4>Categories</h4>
+                                        <ul class="list-unstyled fruite-categorie">
+                                            <li>
+                                                <div class="d-flex justify-content-between fruite-name">
+                                                    <a href="#"><i class="fas fa-apple-alt me-2"></i>Apples</a>
+                                                    <span>(5)</span>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="d-flex justify-content-between fruite-name">
+                                                    <a href="#"><i class="fas fa-apple-alt me-2"></i>Apples</a>
+                                                    <span>(3)</span>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="d-flex justify-content-between fruite-name">
+                                                    <a href="#"><i class="fas fa-apple-alt me-2"></i>Apples</a>
+                                                    <span>(2)</span>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Quantidade)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PrecoVenda)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DataEntrada)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DataValidade)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Nome)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Hortalica)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantidade)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PrecoVenda)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataEntrada)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataValidade)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Hortalica.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-secondary">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id " class="btn btn-info">Details</a>
-            </td>
-        </tr>
+                                <!-- Filtro de Preço -->
+                                <div class="col-lg-12">
+                                    <div class="mb-3">
+                                        <h4 class="mb-2">Preço</h4>
+                                        <input type="range" class="form-range w-100" id="rangeInput" name="rangeInput"
+                                            min="0" max="200" value="0" oninput="updateFilter()">
+                                        <output id="amount" name="amount" for="rangeInput">0</output>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Itens de Hortaliças -->
+                        @foreach (var item in Model)
+                        {
+                            
+                            <div class="col-md-4 col-lg-3 mb-4 fruite-item-1" data-price="@item.PrecoVenda" style="height: 375px">
+                                <div class="rounded position-relative  fruite-item ">
+                                    <a asp-action="Details" asp-route-id="@item.Id">
+                                        <div class="fruite-img">
+                                            @if (!string.IsNullOrEmpty(item.Hortalica.CaminhoImagem))
+                                            {
+                                                <img src="@Url.Content("~/images/" + item.Hortalica.CaminhoImagem)"
+                                                    class="img-fluid w-100 rounded-top" style="height: 195px;" />
+                                            }
+                                        </div>
+                                        <div class="p-4 border border-secondary border-top-0 rounded-bottom"
+                                            style="height: 180px;">
+                                            <h4>@Html.DisplayFor(modelItem => item.Nome)</h4>
+                                            <p>@Html.DisplayFor(modelItem => item.Hortalica.Descricao)</p>
+                                            <p class="text-dark fs-5 fw-bold mb-0">R$ @item.PrecoVenda / kg</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <br><br>
+            <a asp-controller="Vendedor" asp-action="Index" class="btn btn-primary mb-4">Voltar a Home</a>
+        </div>
+    </div>
+
+    <!-- JavaScript para Filtro de Preço -->
+    <script>
+        function updateFilter() {
+            const maxPrice = document.getElementById('rangeInput').value;
+            document.getElementById('amount').textContent = maxPrice;
+
+            document.querySelectorAll('.fruite-item-1').forEach(item => {
+                const itemPrice = parseFloat(item.getAttribute('data-price'));
+                if (itemPrice <= maxPrice) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+    </script>
 }
-    </tbody>
-</table>

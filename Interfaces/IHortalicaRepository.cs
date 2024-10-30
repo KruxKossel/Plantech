@@ -11,5 +11,8 @@ namespace Plantech.Interfaces
         Task DeletarAsync(int id);
         Task<Hortalica> ObterPorIdAsync(int id);
         Task<List<Hortalica>> ListarAsync();
+
+
+        
     }
 }

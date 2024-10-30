@@ -1,60 +1,40 @@
-@model Plantech.Models.Insumo
+@model Plantech.DTOs.InsumoDTO
 
 @{
     ViewData["Title"] = "Details";
 }
+@section Styles {
+    <link rel="stylesheet" href="~/css/detalhes.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/edit.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/detalhes.css" asp-append-version="true" />
+}
+<br>
+<section>
+    <div>
+           
+            <dd class=" IMG col-sm-8">
+                @if (!string.IsNullOrEmpty(Model.CaminhoImagem))
+                {
+                    <img src="~/images/@Model.CaminhoImagem" class="img-thumbnail mt-2"
+                        style="object-fit: cover; width: 800px; height: 400px;" />
+                }
+            </dd>
+            <dt class="col-sm-2 ms-3">Nome:</dt>
+            <dd class="col-sm-11 ms-3">@Model.Nome</dd>
+            <dt class="col-sm-2 ms-3">Categoria:</dt>
+            <dd class="col-sm-11 ms-3">@Model.Categoria</dd>
+            <dt class="col-sm-2 ms-3">Descrição:</dt>
+            <dd class="col-sm-11 ms-3">@Model.Descricao</dd>
+            <dt class="col-sm-2 ms-3">Observações:</dt>
+            <dd class="col-sm-11 ms-3">@Model.Observacoes</dd>
+            <dt class="col-sm-2 ms-3">Tipo:</dt>
+            <dd class="col-sm-11 ms-3">@Model.Tipo</dd>
 
-<h1>Details</h1>
+        </dl>
+    </div>
+    <div class=" ">
+        <a asp-action="Index" class="btn btn-secondary mt-3" style="width: 200px; margin-left: 10px;">Voltar</a>
+    </div>
 
-<div>
-    <h4>Insumo</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nome)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nome)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Descricao)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Descricao)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Observacoes)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Observacoes)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Categoria)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Categoria)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Tipo)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Tipo)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CaminhoImagem)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CaminhoImagem)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Fornecedor)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Fornecedor.Id)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+</section>

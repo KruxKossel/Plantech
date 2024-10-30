@@ -1,0 +1,44 @@
+@model Plantech.DTOs.FornecedoreDTO
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/detalhes.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/edit.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
+}
+
+<br>
+<h2 class="text-center"> Detalhes do Fornecedor</h2>
+
+<section>
+    <div class="row " style="justify-content: center;">
+        <div class="card col-6">
+            <div style=" font-size: 25px; padding: 20px;">
+                <div class="row" style="justify-content: center;">
+                    <div class="col-6">
+                        <dt class="">CNPJ:</dt>
+                        <dd class="mb-3">@Model.Cnpj</dd>
+                        <dt class=" ">Nome:</dt>
+                        <dd class="mb-3">@Model.RazaoSocial</dd>
+                        <dt class="">Cidade:</dt>
+                        <dd class="mb-3">@Model.Cidade</dd>
+                    </div>
+                    <div class="col-6">
+                         <dt class="">Endereço:</dt>
+                         <dd class="mb-3">@Model.Endereco</dd>
+                        <dt class="">Email:</dt>
+                        <dd class="mb-3">@Model.Email</dd>
+                        <dt class="">Status:</dt>
+                        <dd class="mb-3">@Model.Status</dd>
+                    </div>
+                </div>
+            </div>
+            <br><br><br>
+            <a asp-action="Index" class="btn btn-secondary mt-3" style="width: 200px; margin-left: 10px;">Voltar</a>
+        </div>
+    </div>
+
+</section>

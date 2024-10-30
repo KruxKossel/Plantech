@@ -1,8 +1,11 @@
 @model Plantech.ViewModels.HortalicaViewModel
-@{
-    ViewData["Title"] = "Editar Hortaliça";
-}
+
+
+@section Styles {
+<link rel="stylesheet" href="~/css/detalhes.css" asp-append-version="true" />
 <link rel="stylesheet" href="~/css/edit.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
+}
 <h2>@ViewData["Title"]</h2>
 <div class="row">
 
@@ -36,6 +39,7 @@
     </div>
 
     <div class="col-6">
+        <br>
         <form asp-action="EditImagem" method="post" enctype="multipart/form-data">
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="Nome" />

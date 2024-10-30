@@ -13,10 +13,8 @@ namespace Plantech.Interfaces
         Task AdicionarAsync(Fornecedore fornecedor);
         Task AtualizarDadosAsync(Fornecedore fornecedore);
         Task<List<Fornecedore>> ListarAsync();
-        Task AtualizarStatusAsync(int id, StatusPessoa statusPessoa);
-
+        Task AtualizarStatusAsync(int id);
         Task<Fornecedore> ObterPorIdAsync(int id);
         Task<List<Fornecedore>> BuscarPorRazaoSocialAsync(string razaoSocial);
     }
-
 }

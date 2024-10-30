@@ -1,46 +1,126 @@
-@model Plantech.Models.Plantio
+@model Plantech.ViewModels.PlantioViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Novo Plantio";
 }
 
-<h1>Create</h1>
+@section Styles {
+    <link rel="stylesheet" href="~/css/detalhes.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/edit.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
+}
+<br><br>
+<h2>@ViewData["Title"]</h2>
+<br>
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="row">
+        <div class="card-plan p-5">
+            @Html.AntiForgeryToken()
+            <div class="col-10 form-group">
+                <label asp-for="FuncionarioNome"></label>
+                <input asp-for="FuncionarioNome" class="form-control" style="margin-bottom: 20px;" readonly />
+            </div>
+            <input type="hidden" asp-for="FuncionarioId" />
+            <input type="hidden" asp-for="DataPlantio" />
+            <div class="d-flex gap-3">
+                <div class="col-8 form-group">
+                    <label asp-for="HortalicaId"></label>
+                    <select asp-for="HortalicaId" class="form-control" style="margin-bottom: 20px;">
+                        <option value="">-- Selecionar --</option>
+                        @foreach (var item in (SelectList)ViewData["HortalicaId"])
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    </select>
+                </div>
+                <div class=" col-6 form-group">
+                    <label asp-for="Quantidade"></label>
+                    <input asp-for="Quantidade" class="form-control" style="width: 150px;" />
+                </div>
 
-<h4>Plantio</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="DataPlantio" class="control-label"></label>
-                <input asp-for="DataPlantio" class="form-control" />
-                <span asp-validation-for="DataPlantio" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="HortalicaId" class="control-label"></label>
-                <select asp-for="HortalicaId" class ="form-control" asp-items="ViewBag.HortalicaId"></select>
+                <label>Lotes de Insumo</label>
+                <div id="insumos-container">
+                    @foreach (var item in (IEnumerable<dynamic>)ViewData["LotesInsumo"])
+                    {
+                        <div class="insumo-item">
+                            <label>
+                                <input type="checkbox" name="SelectedInsumos" value="@item.Id"
+                                    data-quantidade="@item.Quantidade" data-validade="@item.DataValidade">
+                                @item.Nome (Quantidade: @item.Quantidade, Validade: @item.DataValidade)
+                            </label>
+                        </div>
+                    }
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="FuncionarioId" class="control-label"></label>
-                <select asp-for="FuncionarioId" class ="form-control" asp-items="ViewBag.FuncionarioId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Quantidade" class="control-label"></label>
-                <input asp-for="Quantidade" class="form-control" />
-                <span asp-validation-for="Quantidade" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
+
     </div>
-</div>
+    <div class="form-group mt-4 text-end">
+        <button type="submit" class="btn btn-primary" style="width: 150px; margin-right: 60px;">Salvar</button>
+    </div>
+    <div>
+        <a asp-controller="Plantios" asp-action="Index" class="btn btn-secondary"
+            style="width: 150px; margin-top: -15px;">Voltar</a>
+    </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+</form>
+
+@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+{
+    <div class="alert alert-danger">
+        @ViewBag.ErrorMessage
+    </div>
+}
+
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"][name="SelectedInsumos"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function () {
+                    const quantidadeMaxima = parseInt(this.getAttribute('data-quantidade'));
+                    const validade = new Date(this.getAttribute('data-validade'));
+                    const hoje = new Date();
+                    if (this.checked) {
+                        const quantidadeInput = document.createElement('input');
+                        quantidadeInput.type = 'number';
+                        quantidadeInput.name = `InsumosQuantities[${this.value}]`;
+                        quantidadeInput.classList.add('form-control');
+                        quantidadeInput.placeholder = 'Quantidade';
+                        quantidadeInput.setAttribute('max', quantidadeMaxima);
+                        quantidadeInput.setAttribute('min', 0); // Adicionar min para garantir que a quantidade não seja menor que 0
+                        quantidadeInput.required = true;
+                        this.parentElement.appendChild(quantidadeInput);
+                        quantidadeInput.addEventListener('input', function () {
+                            const quantidade = parseInt(this.value);
+                            if (quantidade > quantidadeMaxima) {
+                                alert('Quantidade não pode ser maior que a disponível.');
+                                this.value = quantidadeMaxima;
+                            } else if (quantidade < 0) {
+                                alert('Quantidade não pode ser menor que 0.');
+                                this.value = 0;
+                            }
+                        });
+                        if (validade - hoje <= 7 * 24 * 60 * 60 * 1000) {
+                            this.parentElement.style.backgroundColor = '#ffcccc';
+                            alert('Atenção: Este produto está perto da validade.');
+                        }
+                    } else {
+                        const quantidadeInput = this.parentElement.querySelector(`input[name="InsumosQuantities[${this.value}]"]`);
+                        if (quantidadeInput) {
+                            quantidadeInput.remove();
+                        }
+                        this.parentElement.style.backgroundColor = '';
+                    }
+                });
+            });
+        });
+    </script>
 }

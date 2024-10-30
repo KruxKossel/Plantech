@@ -12,16 +12,12 @@ using Plantech.Models;
 namespace Plantech.Controllers
 {
     [Authorize(Roles = "Agricultor, Administrador, Vendedor")]
-    public class LotesHortalicasController : Controller
+    public class LotesHortalicasController(PlantechContext context) : Controller
     {
-        private readonly PlantechContext _context;
-
-        public LotesHortalicasController(PlantechContext context)
-        {
-            _context = context;
-        }
+        private readonly PlantechContext _context = context;
 
         // GET: LotesHortalicas
+
         public async Task<IActionResult> Index()
         {
             var plantechContext = _context.LotesHortalicas.Include(l => l.Hortalica);

@@ -1,0 +1,84 @@
+@model Plantech.ViewModels.FuncionarioViewModel
+
+@{
+    ViewData["Title"] = "Adicionar Funcionários";
+}
+
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/detalhes.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/edit.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
+}
+
+
+<br>
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="row">
+        <!-- Usuário -->
+        <div class="card col-6 p-4">
+            <h4>Usuário</h4>
+            <div class="form-group">
+                <label asp-for="NomeUsuario" class="control-label"></label>
+                <input asp-for="NomeUsuario" class="form-control" style="margin-bottom: 20px;" />
+                <span asp-validation-for="NomeUsuario" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" style="margin-bottom: 20px;" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Senha" class="control-label"></label>
+                <input asp-for="Senha" class="form-control" style="margin-bottom: 20px;" />
+                <span asp-validation-for="Senha" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <input asp-for="Status" class="form-control" />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="col-6">
+            <!--Funcionário -->
+            <div class="card-func p-4 mb-3">
+                <h4>Funcionário</h4>
+                <div class="form-group">
+                    <label asp-for="Cpf" class="control-label"></label>
+                    <input asp-for="Cpf" class="form-control" style="margin-bottom: 20px;" />
+                    <span asp-validation-for="Cpf" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Nome" class="control-label"></label>
+                    <input asp-for="Nome" class="form-control" />
+                    <span asp-validation-for="Nome" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- Cargo -->
+            <div class="card p-4" style="height: 270px;">
+                <h4>Cargo</h4>
+                <div class="form-group">
+                    <label for="Cargo">Cargo</label>
+                    <input type="text" id="Cargo" name="Cargo" class="form-control" />
+                    <span class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group mt-4 text-end">
+        <button type="submit" class="btn btn-primary" style="width: 150px; margin-right: 60px;">Salvar</button>
+    </div>
+    <div>
+        <a asp-controller="Funcionarios" asp-action="Index" class="btn btn-secondary" style="width: 150px; margin-top: -15px;">Voltar</a>
+    </div>
+
+
+    </div>
+
+
+</form>

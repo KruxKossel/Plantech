@@ -1,18 +1,24 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Plantech.Models;
 
 namespace Plantech.Interfaces
 {
-   public interface IPlantioRepository
+    public interface IPlantioRepository
     {
         Task<IEnumerable<Plantio>> GetAllAsync();
         Task<Plantio> GetByIdAsync(int id);
-        Task AddAsync(Plantio plantio);
         Task UpdateAsync(Plantio plantio);
         Task DeleteAsync(int id);
-    }
+        Task CreatePlantioAsync(Plantio plantio);
 
+        Task CreateInsumosPlantioAsync(InsumosPlantio insumoPlantio);
+
+        Task<Plantio> GetUltimoPlantioAsync();
+
+        Task<IEnumerable<Funcionario>> GetFuncionariosAsync();
+        Task<IEnumerable<LotesInsumo>> GetLotesInsumosAsync();
+
+    
+    }
 }

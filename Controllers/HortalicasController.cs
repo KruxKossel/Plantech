@@ -1,30 +1,99 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Plantech.Interfaces;
 using Plantech.ViewModels;
 using Plantech.DTOs;
-using System;
-using System.IO;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 
 namespace Plantech.Controllers
 {
     [Authorize(Roles = "Agricultor, Administrador, Vendedor")]
-    public class HortalicasController(IHortalicaService hortalicaService, IWebHostEnvironment webHostEnvironment) : Controller
+    public class HortalicasController(IHortalicaService hortalicaService, 
+                                        IWebHostEnvironment webHostEnvironment, IMapper mapper) : Controller
     {
         private readonly IHortalicaService _hortalicaService = hortalicaService;
         private readonly IWebHostEnvironment _webHostEnvironment = webHostEnvironment;
+        private readonly IMapper _mapper = mapper;
 
-        // GET: Hortalicas
+
         [HttpGet]
         [Authorize(Roles = "Agricultor, Administrador, Vendedor")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> RelatorioImpressao(string filtro)
         {
             var hortalicas = await _hortalicaService.ListarHortalicasAsync();
+
+
+            if (!string.IsNullOrEmpty(filtro))
+            {
+                // Aplica o filtro
+                hortalicas = hortalicas.Where(h => h.Nome.Contains(filtro, StringComparison.OrdinalIgnoreCase)
+                                                 || h.Descricao.Contains(filtro, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            return View(hortalicas); // Renderiza a View RelatorioImpressao.cshtml com os dados filtrados
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Agricultor, Administrador, Vendedor")]
+        public async Task<IActionResult> ExportarExcel(string filtro)
+        {
+            var hortalicas = await _hortalicaService.ListarHortalicasAsync();
+
+            if (!string.IsNullOrEmpty(filtro))
+            {
+                // Aplica o filtro
+                hortalicas = hortalicas.Where(h => h.Nome.Contains(filtro, StringComparison.OrdinalIgnoreCase)
+                                                 || h.Descricao.Contains(filtro, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            using (var workbook = new ClosedXML.Excel.XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add("Hortalicas");
+                var currentRow = 1;
+
+                // Cabeçalhos
+                worksheet.Cell(currentRow, 1).Value = "Nome";
+                worksheet.Cell(currentRow, 2).Value = "Descrição";
+                worksheet.Cell(currentRow, 3).Value = "Observações";
+
+                // Dados filtrados ou todos
+                foreach (var hortalica in hortalicas)
+                {
+                    currentRow++;
+                    worksheet.Cell(currentRow, 1).Value = hortalica.Nome;
+                    worksheet.Cell(currentRow, 2).Value = hortalica.Descricao;
+                    worksheet.Cell(currentRow, 3).Value = hortalica.Observacoes;
+                }
+
+                using (var stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    var content = stream.ToArray();
+                    return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Hortalicas.xlsx");
+                }
+            }
+        }
+
+
+        [HttpGet]
+        [Authorize(Roles = "Agricultor, Administrador, Vendedor")]
+        public async Task<IActionResult> Index(string filtro)
+        {
+            ViewData["FiltroAtual"] = filtro;
+
+            var hortalicas = await _hortalicaService.ListarHortalicasAsync();
+
+            if (!string.IsNullOrEmpty(filtro))
+            {
+                // Aplica o filtro
+                hortalicas = hortalicas.Where(h => h.Nome.Contains(filtro, StringComparison.OrdinalIgnoreCase)
+                                                 || h.Descricao.Contains(filtro, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
             return View(hortalicas);
         }
+
 
         // GET: Hortalicas/Details/5
         [HttpGet]
@@ -50,20 +119,25 @@ namespace Plantech.Controllers
         [Authorize(Roles = "Agricultor, Administrador")]
         public IActionResult Create()
         {
-            return View();
+            var model = new HortalicaViewModel();
+            return View(model);
         }
 
         // POST: Hortalicas/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Agricultor, Administrador")]
-        public async Task<IActionResult> Create(HortalicaViewModel model)
+        public async Task<IActionResult> Create([Bind("Nome, Descricao, Observacoes, ImagemArquivo")] HortalicaViewModel model)
         {
+            
             if (ModelState.IsValid)
             {
                 string uniqueFileName = null;
                 if (model.ImagemArquivo != null)
                 {
+
+                    Console.WriteLine("\n\n Entrou no if");
+                    
                     string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
                     uniqueFileName = Guid.NewGuid().ToString() + "_" + model.ImagemArquivo.FileName;
                     string filePath = Path.Combine(uploadsFolder, uniqueFileName);
@@ -73,18 +147,16 @@ namespace Plantech.Controllers
                     }
                 }
 
-                var hortalicaDto = new HortalicaDTO
-                {
-                    Nome = model.Nome,
-                    Descricao = model.Descricao,
-                    Observacoes = model.Observacoes,
-                    CaminhoImagem = uniqueFileName
-                };
+                Console.WriteLine("\n\n Imagem:", uniqueFileName);
 
-                await _hortalicaService.CreateHortalicaAsync(hortalicaDto);
+                model.CaminhoImagem = uniqueFileName;
+
+                var hortalica = _mapper.Map<HortalicaDTO>(model);
+
+                
+                await _hortalicaService.CreateHortalicaAsync(hortalica);
                 return RedirectToAction(nameof(Index));
             }
-
             return View(model);
         }
 
@@ -103,15 +175,7 @@ namespace Plantech.Controllers
             {
                 return NotFound();
             }
-
-            var model = new HortalicaViewModel
-            {
-                Id = hortalica.Id,
-                Nome = hortalica.Nome,
-                Descricao = hortalica.Descricao,
-                Observacoes = hortalica.Observacoes,
-                CaminhoImagem = hortalica.CaminhoImagem // Carregar o caminho da imagem existente
-            };
+            var model = _mapper.Map<HortalicaViewModel>(hortalica);
 
             return View(model);
         }
@@ -231,12 +295,9 @@ namespace Plantech.Controllers
             {
                 Console.WriteLine($"Chave: {state.Key}, Erros: {string.Join(",", state.Value.Errors.Select(e => e.ErrorMessage))}");
             }
-            
+
             return View(model);
         }
-
-
-
 
 
         [HttpGet]
