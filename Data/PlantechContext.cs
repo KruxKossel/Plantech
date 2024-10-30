@@ -17,8 +17,6 @@ public partial class PlantechContext : DbContext
     {
     }
 
-    public virtual DbSet<Alerta> Alertas { get; set; }
-
     public virtual DbSet<Cargo> Cargos { get; set; }
 
     public virtual DbSet<Cliente> Clientes { get; set; }
@@ -60,20 +58,6 @@ public partial class PlantechContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Alerta>(entity =>
-        {
-            entity.ToTable("alertas");
-
-            entity.HasIndex(e => new { e.LoteId, e.Tipo }, "IX_alertas_lote_id_tipo").IsUnique();
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.DataCriacao)
-                .HasDefaultValueSql("date('now')")
-                .HasColumnName("data_criacao");
-            entity.Property(e => e.LoteId).HasColumnName("lote_id");
-            entity.Property(e => e.Mensagem).HasColumnName("mensagem");
-            entity.Property(e => e.Tipo).HasColumnName("tipo");
-        });
 
         modelBuilder.Entity<Cargo>(entity =>
         {

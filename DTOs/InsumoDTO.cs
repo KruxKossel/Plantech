@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Plantech.Models;
+
 namespace Plantech.DTOs;
 
 public partial class InsumoDTO
@@ -20,5 +21,8 @@ public partial class InsumoDTO
     public string Tipo { get; set; } = null!;
 
     public string? CaminhoImagem { get; set; }
+
+    public List<LotesInsumoDTO> LotesInsumos { get; set; } = new List<LotesInsumoDTO>();
+
 
 }

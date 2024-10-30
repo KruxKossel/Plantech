@@ -1,53 +1,63 @@
 @model Plantech.ViewModels.PlantioViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Plantio";
 }
-<br><br>
+
+<h2>@ViewData["Title"]</h2>
 
 <form asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
+    
     <div class="form-group">
         <label asp-for="FuncionarioNome"></label>
         <input asp-for="FuncionarioNome" class="form-control" readonly />
     </div>
+    
+    <input type="hidden" asp-for="FuncionarioId" />
+    <input type="hidden" asp-for="DataPlantio" />
+    
     <div class="form-group">
         <label asp-for="HortalicaId"></label>
         <select asp-for="HortalicaId" class="form-control">
             <option value="">-- Selecionar --</option>
-            @foreach (var item in (SelectList)ViewBag.HortalicaId)
+            @foreach (var item in (SelectList)ViewData["HortalicaId"])
             {
                 <option value="@item.Value">@item.Text</option>
             }
         </select>
     </div>
+    
     <div class="form-group">
         <label asp-for="Quantidade"></label>
         <input asp-for="Quantidade" class="form-control" />
     </div>
+    
     <div class="form-group">
-        <label>Insumos Plantios</label>
+        <label>Lotes de Insumo</label>
         <div id="insumos-container">
-            @foreach (var item in (SelectList)ViewBag.InsumosPlantios)
+            @foreach (var item in (IEnumerable<dynamic>)ViewData["LotesInsumo"])
             {
                 <div class="insumo-item">
                     <label>
-                        <input type="checkbox" name="SelectedInsumos" value="@item.Value" />
-                        @item.Text
+                        <input type="checkbox" name="SelectedInsumos" value="@item.Id" data-quantidade="@item.Quantidade" data-validade="@item.DataValidade">
+                        @item.Nome (Quantidade: @item.Quantidade, Validade: @item.DataValidade)
                     </label>
-                    <input type="number" name="InsumosQuantities[@item.Value]" class="form-control" placeholder="Quantidade" />
                 </div>
             }
         </div>
     </div>
+    
     <button type="submit" class="btn btn-primary">Salvar</button>
 </form>
 
-@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
 {
     <div class="alert alert-danger">
-        @Model.ErrorMessage
+        @ViewBag.ErrorMessage
     </div>
 }
+
 
 <div>
     <a asp-action="Index">Back to List</a>
@@ -56,22 +66,47 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
-        // Validação de quantidade de insumo via JS
-        document.querySelector("form").addEventListener("submit", function (event) {
-            var quantidadeInputs = document.querySelectorAll("[name^='InsumosQuantities']");
-            var totalQuantidade = 0;
-            quantidadeInputs.forEach(function (input) {
-                var quantidade = parseInt(input.value);
-                if (!isNaN(quantidade)) {
-                    totalQuantidade += quantidade;
-                }
+        document.addEventListener('DOMContentLoaded', function () {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"][name="SelectedInsumos"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function () {
+                    const quantidadeMaxima = parseInt(this.getAttribute('data-quantidade'));
+                    const validade = new Date(this.getAttribute('data-validade'));
+                    const hoje = new Date();
+                    if (this.checked) {
+                        const quantidadeInput = document.createElement('input');
+                        quantidadeInput.type = 'number';
+                        quantidadeInput.name = `InsumosQuantities[${this.value}]`;
+                        quantidadeInput.classList.add('form-control');
+                        quantidadeInput.placeholder = 'Quantidade';
+                        quantidadeInput.setAttribute('max', quantidadeMaxima);
+                        quantidadeInput.setAttribute('min', 0); // Adicionar min para garantir que a quantidade não seja menor que 0
+                        quantidadeInput.required = true;
+                        this.parentElement.appendChild(quantidadeInput);
+                        quantidadeInput.addEventListener('input', function () {
+                            const quantidade = parseInt(this.value);
+                            if (quantidade > quantidadeMaxima) {
+                                alert('Quantidade não pode ser maior que a disponível.');
+                                this.value = quantidadeMaxima;
+                            } else if (quantidade < 0) {
+                                alert('Quantidade não pode ser menor que 0.');
+                                this.value = 0;
+                            }
+                        });
+                        if (validade - hoje <= 7 * 24 * 60 * 60 * 1000) {
+                            this.parentElement.style.backgroundColor = '#ffcccc';
+                            alert('Atenção: Este produto está perto da validade.');
+                        }
+                    } else {
+                        const quantidadeInput = this.parentElement.querySelector(`input[name="InsumosQuantities[${this.value}]"]`);
+                        if (quantidadeInput) {
+                            quantidadeInput.remove();
+                        }
+                        this.parentElement.style.backgroundColor = '';
+                    }
+                });
             });
-            // Suponha que 'quantidadeMax' seja a quantidade disponível no lote
-            var quantidadeMax = /* Atribua aqui a quantidade máxima do lote */;
-            if (totalQuantidade > quantidadeMax) {
-                alert("A quantidade total de insumos usada não pode ser maior que a quantidade disponível no lote.");
-                event.preventDefault();
-            }
         });
     </script>
 }
+

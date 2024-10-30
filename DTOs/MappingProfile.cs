@@ -24,6 +24,12 @@ public class MappingProfile: Profile
         //Funcionario
         CreateMap<FuncionarioDTO, Funcionario>().ReverseMap();
 
+        CreateMap<FuncionarioViewModel,FuncionarioDTO>().ReverseMap();
+        CreateMap<FuncionarioViewModel,UsuarioDTO>().ReverseMap();
+
+        CreateMap<UsuarioDTO,Usuario>().ReverseMap();
+
+
 
         //Plantio
         CreateMap<Plantio, PlantioDTO>().ReverseMap();
@@ -33,7 +39,7 @@ public class MappingProfile: Profile
 
         //Lotes Insumo
         CreateMap<LotesInsumo, LotesInsumoDTO>().ReverseMap();
-        CreateMap<LotesInsumoDTO, LotesInsumoViewModel>().ReverseMap();       
+        CreateMap<LotesInsumoDTO, LotesInsumoViewModel>().ReverseMap();        
 
 
 

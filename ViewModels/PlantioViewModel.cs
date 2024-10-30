@@ -6,6 +6,8 @@ namespace Plantech.ViewModels
 {
     public class PlantioViewModel
     {
+
+        // Plantio
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Data do plantio é obrigatória")]
@@ -23,8 +25,14 @@ namespace Plantech.ViewModels
 
         public List<InsumosPlantioDTO> InsumosPlantios { get; set; } = new List<InsumosPlantioDTO>();
 
+
+        // guarda nome do funcionario
         public string FuncionarioNome { get; set; }
 
-        public string ErrorMessage { get; set; }
+
+        // lote insumo
+        public List<LotesInsumoDTO> LotesInsumos { get; set; } = new List<LotesInsumoDTO>();
+
+        // public string ErrorMessage { get; set; }
     }
 }

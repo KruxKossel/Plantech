@@ -10,7 +10,10 @@ namespace Plantech.Interfaces
         Task<PlantioDTO> GetByIdAsync(int id);
         Task UpdateAsync(PlantioDTO plantioDto);
         Task DeleteAsync(int id);
-        Task CreatePlantioWithInsumosAsync(PlantioDTO plantioDto);
+        Task CreatePlantioAsync(PlantioDTO plantioDto);
+        Task CreateInsumosPlantioAsync(InsumosPlantioDTO insumoPlantioDto);
+
+        Task<PlantioDTO> GetUltimoPlantioAsync();
 
 
         Task<IEnumerable<FuncionarioDTO>> GetFuncionariosAsync();

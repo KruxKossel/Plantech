@@ -17,41 +17,6 @@ namespace Plantech.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.10");
 
-            modelBuilder.Entity("Plantech.Models.Alerta", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("id");
-
-                    b.Property<string>("DataCriacao")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT")
-                        .HasColumnName("data_criacao")
-                        .HasDefaultValueSql("date('now')");
-
-                    b.Property<int>("LoteId")
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("lote_id");
-
-                    b.Property<string>("Mensagem")
-                        .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasColumnName("mensagem");
-
-                    b.Property<string>("Tipo")
-                        .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasColumnName("tipo");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex(new[] { "LoteId", "Tipo" }, "IX_alertas_lote_id_tipo")
-                        .IsUnique();
-
-                    b.ToTable("alertas", (string)null);
-                });
 
             modelBuilder.Entity("Plantech.Models.Cargo", b =>
                 {

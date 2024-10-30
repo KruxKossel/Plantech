@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using Plantech.DTOs;
 
 namespace Plantech.ViewModels
 {
@@ -33,5 +34,11 @@ namespace Plantech.ViewModels
         [Display(Name = "Nome")]
         [Required(ErrorMessage = "O campo Nome é obrigatório.")]
         public string Nome { get; set; } = null!;
+
+        public InsumoDTO Insumo { get; set; } = null!;
+
+
+        public string ErrorMessage { get; set; }
+
     }
 }

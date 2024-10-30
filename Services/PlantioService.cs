@@ -8,6 +8,12 @@ public class PlantioService(IMapper mapper, IPlantioRepository plantioRepository
     private readonly IMapper _mapper = mapper;
     private readonly IPlantioRepository _plantioRepository = plantioRepository;
 
+    public async Task<PlantioDTO> GetUltimoPlantioAsync()
+    {
+        var plantioId = await _plantioRepository.GetUltimoPlantioAsync();
+        return _mapper.Map<PlantioDTO>(plantioId);
+    }
+
     public async Task<IEnumerable<PlantioDTO>> GetAllAsync()
     {
         var plantios = await _plantioRepository.GetAllAsync();
@@ -20,11 +26,16 @@ public class PlantioService(IMapper mapper, IPlantioRepository plantioRepository
         return _mapper.Map<PlantioDTO>(plantio);
     }
 
-    public async Task CreatePlantioWithInsumosAsync(PlantioDTO plantioDto)
+    public async Task CreatePlantioAsync(PlantioDTO plantioDto)
     {
         var plantio = _mapper.Map<Plantio>(plantioDto);
-        var insumosPlantios = _mapper.Map<List<InsumosPlantio>>(plantioDto.InsumosPlantios);
-        await _plantioRepository.AddPlantioWithInsumosAsync(plantio, insumosPlantios);
+        await _plantioRepository.CreatePlantioAsync(plantio);
+    }
+
+    public async Task CreateInsumosPlantioAsync(InsumosPlantioDTO insumoPlantioDto)
+    {
+        var insumoPlantio = _mapper.Map<InsumosPlantio>(insumoPlantioDto);
+        await _plantioRepository.CreateInsumosPlantioAsync(insumoPlantio);
     }
 
     public async Task UpdateAsync(PlantioDTO plantioDto)

@@ -22,5 +22,8 @@ namespace Plantech.DTOs
         public string Status { get; set; } = null!;
 
         public string Nome { get; set; } = null!;
+
+        public InsumoDTO Insumo { get; set; } = null!;
+
     }
 }

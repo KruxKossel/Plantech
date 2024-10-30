@@ -7,6 +7,12 @@ public class PlantioRepository(PlantechContext context) : IPlantioRepository
 {
     private readonly PlantechContext _context = context;
     
+    public async Task<Plantio> GetUltimoPlantioAsync()
+    {
+        return await _context.Plantios
+            .OrderByDescending(p => p.Id)
+            .FirstOrDefaultAsync();
+    }
 
     public async Task<IEnumerable<Plantio>> GetAllAsync()
     {
@@ -40,28 +46,16 @@ public class PlantioRepository(PlantechContext context) : IPlantioRepository
         }
     }
 
-    public async Task AddPlantioWithInsumosAsync(Plantio plantio, List<InsumosPlantio> insumosPlantios)
+    public async Task CreatePlantioAsync(Plantio plantio)
     {
         await _context.Plantios.AddAsync(plantio);
-        await _context.SaveChangesAsync(); // Salva e gera o ID do Plantio
+        await _context.SaveChangesAsync(); 
+    }
 
-        foreach (var insumo in insumosPlantios)
-        {
-            var lote = await _context.LotesInsumos.FindAsync(insumo.LoteId);
-
-            if (lote != null && insumo.Quantidade <= lote.Quantidade)
-            {
-                insumo.PlantioId = plantio.Id; // Associa o insumo ao plantio criado
-                lote.Quantidade -= insumo.Quantidade; // Atualiza a quantidade no lote
-                await _context.InsumosPlantios.AddAsync(insumo);
-            }
-            else
-            {
-                throw new Exception("Quantidade de insumo usada é maior que a quantidade disponível no lote.");
-            }
-        }
-
-        await _context.SaveChangesAsync(); // Salva todos os insumos no banco de dados
+    public async Task CreateInsumosPlantioAsync(InsumosPlantio insumoPlantio)
+    {
+        await _context.InsumosPlantios.AddAsync(insumoPlantio);
+        await _context.SaveChangesAsync(); 
     }
 
     private bool PlantioExists(int id)

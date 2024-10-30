@@ -10,14 +10,18 @@ using Plantech.Interfaces;
 using AutoMapper;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Plantech.Models;
 
 namespace Plantech.Controllers
 {
 
     [Authorize(Roles = "Agricultor, Administrador")]
-    public class PlantiosController(IPlantioService plantioService, IMapper mapper, IUsuarioService usuarioService) : Controller
+    public class PlantiosController(IPlantioService plantioService, IMapper mapper, 
+                                    IUsuarioService usuarioService, IHortalicaService  hortalicaService) : Controller
     {
         private readonly IPlantioService _plantioService = plantioService;
+
+        private readonly IHortalicaService _hortalicaService = hortalicaService;
         private readonly IMapper _mapper = mapper;
         private readonly IUsuarioService _usuarioService = usuarioService; // Adicione o serviço de usuário
 
@@ -30,11 +34,17 @@ namespace Plantech.Controllers
                 throw new InvalidOperationException("User is not authenticated.");
             }
 
-            var userId = int.Parse(userIdClaim.Value);
+            // Tente converter o valor para inteiro com validação
+            if (!int.TryParse(userIdClaim.Value, out int userId))
+            {
+                throw new FormatException($"O valor '{userIdClaim.Value}' não é um número válido.");
+            }
+
             var usuario = await _usuarioService.GetByIdAsync(userId);
             var funcionario = usuario.Funcionarios.FirstOrDefault(); // Pega o primeiro funcionário associado ao usuário
             return funcionario != null ? funcionario.Id : 0;
         }
+
 
 
 
@@ -70,51 +80,133 @@ namespace Plantech.Controllers
         public async Task<IActionResult> Create()
         {
             var model = new PlantioViewModel();
+
+            // Obter id e nome do funcionário logado
             var funcionarioId = await GetLoggedFuncionarioId();
             var usuario = await _usuarioService.GetByIdAsync(funcionarioId);
             var funcionarioNome = usuario.Funcionarios.FirstOrDefault()?.Nome;
 
+            // Atribuir valores ao modelo
+            model.FuncionarioId = funcionarioId;
+            model.FuncionarioNome = funcionarioNome;
+            model.DataPlantio = DateOnly.FromDateTime(DateTime.Now);
+
+            // Obter hortaliças e lotes de insumos ativos
+            ViewData["HortalicaId"] = new SelectList(await _hortalicaService.ListarHortalicasAsync(), "Id", "Nome");
+            var lotesInsumos = await _plantioService.GetLotesInsumosAsync();
+            var lotesAtivos = lotesInsumos
+                .Where(l => l.Status == "ativo")
+                .Select(l => new 
+                {
+                    l.Id,
+                    l.Nome,
+                    l.Quantidade,
+                    DataValidade = l.DataValidade.HasValue ? l.DataValidade.Value.ToShortDateString() : "N/A"
+                }).ToList();
+
+            ViewData["LotesInsumo"] = lotesAtivos; // Passar os objetos diretamente
+            return View(model);
+        }
+
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(PlantioViewModel model, int[] SelectedInsumos, Dictionary<int, int> InsumosQuantities)
+        {
+            Console.WriteLine("\n\n Entrou no post");
+
+            if (!ModelState.IsValid)
+            {
+                foreach (var state in ModelState)
+                {
+                    foreach (var error in state.Value.Errors)
+                    {
+                        Console.WriteLine($"Key: {state.Key}, Error: {error.ErrorMessage}");
+                    }
+                }
+            }
+
+            
+            if (ModelState.IsValid)
+            {
+
+                Console.WriteLine("\n\n Entrou no if");
+                var plantioDTO = _mapper.Map<PlantioDTO>(model);
+                try
+                {
+                        Console.WriteLine("\n\n Entrou no Try");
+
+                    await _plantioService.CreatePlantioAsync(plantioDTO);
+
+                    // Obter o último plantio criado
+                    var ultimoPlantio = await _plantioService.GetUltimoPlantioAsync();
+                    int plantioId = ultimoPlantio.Id;
+
+                    foreach (var insumoId in SelectedInsumos)
+                    {
+                        var quantidade = InsumosQuantities.ContainsKey(insumoId) ? InsumosQuantities[insumoId] : 0;
+
+                        // Aqui, você pode criar o DTO de Insumos do plantio e salvá-lo no banco de dados
+                        var insumoPlantioDTO = new InsumosPlantioDTO
+                        {
+                            PlantioId = plantioId,
+                            LoteId = insumoId,
+                            Quantidade = quantidade
+                        };
+                        
+                        Console.WriteLine("\n\n Deu Certo krlh!!");
+                        await _plantioService.CreateInsumosPlantioAsync(insumoPlantioDTO);
+                    }
+                    
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.ErrorMessage = ex.Message;
+                }
+
+            }
+
+            Console.WriteLine("\n\n porra");
+
+            // Se houver erro, recarregar listas de hortaliças e lotes de insumos ativos
+            ViewData["HortalicaId"] = new SelectList(await _hortalicaService.ListarHortalicasAsync(), "Id", "Nome");
+            var lotesInsumos = await _plantioService.GetLotesInsumosAsync();
+            var lotesAtivos = lotesInsumos
+                .Where(l => l.Status == "ativo")
+                .Select(l => new
+                {
+                    l.Id,
+                    l.Nome,
+                    l.Quantidade,
+                    DataValidade = l.DataValidade.HasValue ? l.DataValidade.Value.ToShortDateString() : "N/A"
+                }).ToList();
+            ViewData["LotesInsumo"] = lotesAtivos;
+
+            // Obter id do funcionario
+            var funcionarioId = await GetLoggedFuncionarioId();
+
+            // Obter nome do funcionário
+            var usuario = await _usuarioService.GetByIdAsync(funcionarioId);
+            var funcionarioNome = usuario.Funcionarios.FirstOrDefault()?.Nome;
+
+            // Exibir no terminal retornos
             Console.WriteLine($"FuncionarioId: {funcionarioId}");
             Console.WriteLine($"FuncionarioNome: {funcionarioNome}");
 
+            // Atribuir valores aos model para post
             model.FuncionarioId = funcionarioId;
             model.FuncionarioNome = funcionarioNome;
-
-            ViewData["FuncionarioId"] = funcionarioId;
-            ViewData["HortalicaId"] = new SelectList(await _plantioService.GetHortalicasAsync(), "Id", "Nome");
-            ViewData["InsumosPlantios"] = new SelectList(await _plantioService.GetLotesInsumosAsync(), "Id", "Nome");
+            model.DataPlantio = DateOnly.FromDateTime(DateTime.Now);
 
             return View(model);
         }
 
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DataPlantio,HortalicaId,FuncionarioId,Quantidade")] PlantioViewModel viewModel)
-        {
-            if (ModelState.IsValid)
-            {
-                viewModel.DataPlantio = DateOnly.FromDateTime(DateTime.Now); // Data atual
-                viewModel.FuncionarioId = await GetLoggedFuncionarioId(); // Método para obter o ID do funcionário logado
 
-                var plantioDTO = _mapper.Map<PlantioDTO>(viewModel);
 
-                try
-                {
-                    Console.WriteLine("Sera que foi?");
-                    await _plantioService.CreatePlantioWithInsumosAsync(plantioDTO);
-                    return RedirectToAction(nameof(Index));
-                }
-                catch (Exception ex)
-                {
-                    viewModel.ErrorMessage = ex.Message;
-                }
-            }
+        
 
-            ViewData["HortalicaId"] = new SelectList(await _plantioService.GetHortalicasAsync(), "Id", "Nome");
-            ViewData["InsumosPlantios"] = new SelectList(await _plantioService.GetLotesInsumosAsync(), "Id", "Nome");
-
-            return View(viewModel);
-        }
     }
 }
