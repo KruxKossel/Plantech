@@ -93,7 +93,7 @@
                                             <a href="#" class="dropdown-item">Realizar Venda</a>
                                             <a asp-controller="LotesHortalicas" asp-action="Index" class="dropdown-item">Consultar Lotes de Hortaliças</a>
                                             <a asp-controller="Hortalicas" asp-action="Index" class="dropdown-item">Consultar Hortaliças</a>
-                                            <a href="#" class="dropdown-item">Consultar Clientes</a>
+                                            <a asp-controller="Cliente" asp-action="Index"  class="dropdown-item">Consultar Clientes</a>
                                             
                                         </div>
                                     </div>
@@ -130,10 +130,6 @@
             @RenderBody()
         </main>
     </div>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/Create.js" asp-append-version="true"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
