@@ -13,4 +13,6 @@ public interface IOrdensCompraService
     Task <List<FornecedoreDTO>> ListarFornecedoresAsync();
     Task <FornecedoreDTO> ObterFornecedorPorId(int id);
     Task <FuncionarioDTO> ObterFuncionarioPorId(int id);
+    Task AdicionarInsumo(InsumosCompraDTO insumoCompraDTO);
+
 }

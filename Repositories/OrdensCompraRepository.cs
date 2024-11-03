@@ -105,4 +105,10 @@ public async Task CriarCompra(OrdensCompra ordensCompra)
         }
         return null;
     }
+
+    public async Task AdicionarInsumo(InsumosCompra insumo)
+    {
+         await _context.InsumosCompras.AddAsync(insumo);
+         await _context.SaveChangesAsync();
+    }
 }

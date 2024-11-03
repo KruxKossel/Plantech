@@ -14,4 +14,5 @@ public partial class OrdensCompraDTO
     public DateOnly? DataCompra { get; set; }
     public virtual FornecedoreDTO Fornecedor { get; set; } = null!;
     public virtual FuncionarioDTO Funcionario { get; set; } = null!;
+     public virtual ICollection<InsumosCompra> InsumosCompras { get; set; } = new List<InsumosCompra>();
 }

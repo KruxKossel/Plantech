@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Plantech.ViewModels;
 
@@ -16,9 +17,8 @@ public partial class LotesInsumoViewModel
     public DateOnly? DataEntrada { get; set; }
 
     public DateOnly? DataValidade { get; set; }
-
-    public string Status { get; set; } = null!;
-
+    // [HiddenInput(DisplayValue = false)]
+    public string Status { get; set; }
     public string Nome { get; set; } = null!;
 
 }

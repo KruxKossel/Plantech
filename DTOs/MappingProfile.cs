@@ -37,11 +37,31 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Funcionario, opt => opt.MapFrom(src => src.Funcionario));
 
         CreateMap<OrdensCompraViewModel, OrdensCompraDTO>().ReverseMap();
-
         // LotesInsumos
-        CreateMap<LotesInsumo,LotesInsumoDTO>().ReverseMap();
-        CreateMap<LotesInsumoViewModel, LotesInsumoDTO>().ReverseMap();
-        //
-
+            CreateMap<LotesInsumo, LotesInsumoDTO>();
+            CreateMap<LotesInsumoViewModel, LotesInsumoDTO>();
+            CreateMap<LotesInsumoDTO, LotesInsumoViewModel>();
+            CreateMap<LotesInsumoDTO, LotesInsumo>();
+        //Insumos Compra
+            CreateMap<Insumo, InsumosCompraDTO>()
+            .ForMember(dest => dest.InsumoId, opt => opt.MapFrom(src => src.Id));
+            
+            CreateMap<OrdensCompra, OrdensCompraDTO>()
+                .ForMember(dest => dest.InsumosCompras, opt => opt.MapFrom(src => src.InsumosCompras));
+            
+            CreateMap<InsumosCompra, InsumosCompraDTO>()
+                .ForMember(dest => dest.InsumoId, opt => opt.MapFrom(src => src.InsumoId))
+                .ForMember(dest => dest.Quantidade, opt => opt.MapFrom(src => src.Quantidade));
+            
+            CreateMap<InsumosCompraDTO, InsumosCompra>()
+                .ForMember(dest => dest.InsumoId, opt => opt.MapFrom(src => src.InsumoId))
+                .ForMember(dest => dest.Quantidade, opt => opt.MapFrom(src => src.Quantidade));
+    
+            CreateMap<OrdensCompraViewModel, InsumosCompraDTO>()
+                .ForMember(dest => dest.OrdemCompraId, opt => opt.MapFrom(src => src.Id)) 
+                .ForMember(dest => dest.InsumoId, opt => opt.Ignore())
+                .ForMember(dest => dest.Quantidade, opt => opt.Ignore()) 
+                .ForMember(dest => dest.PrecoUnitario, opt => opt.Ignore());
+    
     }
 }

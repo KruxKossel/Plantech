@@ -60,4 +60,10 @@ public class OrdensCompraService : IOrdensCompraService
         var funcionario = await _ordensCompraRepository.ObterFuncionarioPorId(id);
         return _mapper.Map<FuncionarioDTO>(funcionario);
     }
+
+    public async Task AdicionarInsumo(InsumosCompraDTO insumodto)
+    {
+        var insumo = _mapper.Map<InsumosCompra>(insumodto);
+        await _ordensCompraRepository.AdicionarInsumo(insumo);
+    }
 }

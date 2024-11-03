@@ -47,7 +47,10 @@ builder.Services.AddScoped<IPlantioService, PlantioService>();
 //DI Ordens de Compra
 builder.Services.AddScoped<IOrdensCompraRepository, OrdensCompraRepository>();
 builder.Services.AddScoped<IOrdensCompraService, OrdensCompraService>();
-
+//DI  Insumo da comra
+builder.Services.AddScoped<IInsumoCompraRepository, InsumoCompraRepository>();
+builder.Services.AddScoped<IInsumoCompraService, InsumoCompraService>();
+// Lotes
 builder.Services.AddScoped<ILotesInsumosRepository, LotesInsumosRepository>();
 builder.Services.AddScoped<ILotesInsumosService, LotesInsumosService>();
 
