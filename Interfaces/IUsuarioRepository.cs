@@ -12,5 +12,6 @@ namespace Plantech.Interfaces
         Task AddAsync(Usuario user);
         Task UpdateAsync(Usuario user);
         Task DeleteAsync(int id);
+        Task<Usuario> GetByEmailAsync(string email);
     }
 }

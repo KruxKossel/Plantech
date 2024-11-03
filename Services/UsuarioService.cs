@@ -7,13 +7,15 @@ using Plantech.Models;
 using Plantech.DTOs;
 using System.Text;
 using System.Security.Cryptography;
+using AutoMapper;
 
 namespace Plantech.Services
 {
-    public class UsuarioService(IUsuarioRepository usuarioRepository, IFuncionarioRepository funcionarioRepository) : IUsuarioService
+    public class UsuarioService(IUsuarioRepository usuarioRepository, IFuncionarioRepository funcionarioRepository,IMapper mapper) : IUsuarioService
     {
         private readonly IUsuarioRepository _usuarioRepository = usuarioRepository;
         private readonly IFuncionarioRepository _funcionarioRepository = funcionarioRepository;
+        private readonly IMapper _mapper = mapper;
 
         public async Task<UsuarioDTO> AuthenticateAsync(string username, string password)
         {
@@ -105,5 +107,10 @@ namespace Plantech.Services
             return computedHash == hashedPassword;
         }
 
+        public async Task<UsuarioDTO> GetByEmailAsync(string email)
+        {
+            var usuario = _usuarioRepository.GetByEmailAsync(email);
+            return _mapper.Map<UsuarioDTO>(usuario);
+        }
     }
 }

@@ -1,4 +1,4 @@
-@model Plantech.Models.LotesInsumo
+@model Plantech.ViewModels.LotesInsumoViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -14,19 +14,9 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="PrecoUnitario" class="control-label"></label>
-                <input asp-for="PrecoUnitario" class="form-control" />
-                <span asp-validation-for="PrecoUnitario" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="DataValidade" class="control-label"></label>
                 <input asp-for="DataValidade" class="form-control" />
                 <span asp-validation-for="DataValidade" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <input asp-for="Status" class="form-control" />
-                <span asp-validation-for="Status" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Nome" class="control-label"></label>

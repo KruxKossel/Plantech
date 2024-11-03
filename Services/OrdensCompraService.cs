@@ -54,4 +54,10 @@ public class OrdensCompraService : IOrdensCompraService
         var fornecedore = await _ordensCompraRepository.ObterFornecedorPorId(id);
         return _mapper.Map<FornecedoreDTO>(fornecedore);
     }
+
+    public async Task<FuncionarioDTO> ObterFuncionarioPorId(int id)
+    {
+        var funcionario = await _ordensCompraRepository.ObterFuncionarioPorId(id);
+        return _mapper.Map<FuncionarioDTO>(funcionario);
+    }
 }

@@ -37,5 +37,11 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Funcionario, opt => opt.MapFrom(src => src.Funcionario));
 
         CreateMap<OrdensCompraViewModel, OrdensCompraDTO>().ReverseMap();
+
+        // LotesInsumos
+        CreateMap<LotesInsumo,LotesInsumoDTO>().ReverseMap();
+        CreateMap<LotesInsumoViewModel, LotesInsumoDTO>().ReverseMap();
+        //
+
     }
 }

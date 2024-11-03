@@ -89,4 +89,20 @@ public async Task CriarCompra(OrdensCompra ordensCompra)
         }
         return null;
     }
+
+    public async Task<Funcionario> ObterFuncionarioPorId(int id)
+    {
+                var funcionario =  await _context.Funcionarios
+        .Where(f => f.Id == id)
+        .Select(f => new Funcionario
+        {
+            Id = f.Id,
+        })
+        .FirstOrDefaultAsync();
+
+        if(funcionario  != null){
+            return funcionario;
+        }
+        return null;
+    }
 }

@@ -12,4 +12,5 @@ public interface IOrdensCompraService
     Task AtualizarStatus(int id);
     Task <List<FornecedoreDTO>> ListarFornecedoresAsync();
     Task <FornecedoreDTO> ObterFornecedorPorId(int id);
+    Task <FuncionarioDTO> ObterFuncionarioPorId(int id);
 }

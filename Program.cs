@@ -48,6 +48,9 @@ builder.Services.AddScoped<IPlantioService, PlantioService>();
 builder.Services.AddScoped<IOrdensCompraRepository, OrdensCompraRepository>();
 builder.Services.AddScoped<IOrdensCompraService, OrdensCompraService>();
 
+builder.Services.AddScoped<ILotesInsumosRepository, LotesInsumosRepository>();
+builder.Services.AddScoped<ILotesInsumosService, LotesInsumosService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

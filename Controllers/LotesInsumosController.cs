@@ -1,68 +1,68 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Plantech.Data;
-using Plantech.Models;
+using Plantech.DTOs;
+using Plantech.Interfaces;
+using Plantech.ViewModels;
 
 namespace Plantech.Controllers
 {
     
     public class LotesInsumosController : Controller
     {
-        private readonly PlantechContext _context;
+        private readonly ILotesInsumosService _lotesInsumosService;
+        private readonly IInsumoService _insumoService;
+        private readonly IMapper _mapper;
 
-        public LotesInsumosController(PlantechContext context)
+        public LotesInsumosController(ILotesInsumosService lotesInsumosService,IInsumoService insumoService, IMapper mapper)
         {
-            _context = context;
+            _lotesInsumosService = lotesInsumosService;
+            _insumoService = insumoService;
+            _mapper = mapper;
         }
 
         // GET: LotesHortalicas
         public async Task<IActionResult> Index()
         {
-            var plantechContext = _context.LotesInsumos.Include(l => l.Insumo);
-            return View(await plantechContext.ToListAsync());
+            return View(await _lotesInsumosService.ListarLotes());
         }
 
         // GET: LotesHortalicas/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
-            var lotesInsumo = await _context.LotesInsumos
-                .Include(l => l.Insumo)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            
+            
+            var lotesInsumo = await _lotesInsumosService.GetLotesInsumoId(id);
             if (lotesInsumo == null)
             {
                 return NotFound();
             }
-
             return View(lotesInsumo);
         }
 
 
         // GET: LotesHortalicas/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var lotesInsumo = await _context.LotesInsumos.FindAsync(id);
+            var lotesInsumo = await _lotesInsumosService.GetLotesInsumoId(id);
             if (lotesInsumo  == null)
             {
                 return NotFound();
             }
-            ViewData["HortalicaId"] = new SelectList(_context.Insumos, "Id", "Id", lotesInsumo.InsumoId);
-            return View(lotesInsumo);
+
+            var lotesInsumoVM =  _mapper.Map<LotesInsumoViewModel>(lotesInsumo);
+            return View(lotesInsumoVM);
         }
 
         // POST: LotesHortalicas/Edit/5
@@ -70,40 +70,47 @@ namespace Plantech.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id, PrecoVenda, DataValidade, Status, Nome")] LotesInsumo lotesInsumo)
+   public async Task<IActionResult> Edit(int id, [Bind("Id, DataValidade, Nome")] LotesInsumoViewModel lotesInsumo)
+{
+    if (id != lotesInsumo.Id)
+    {
+        return NotFound();
+    }
+
+    if (ModelState.IsValid)
+    {
+        try
         {
-            if (id != lotesInsumo.Id)
+            var lotesinsumoDTO = _mapper.Map<LotesInsumoDTO>(lotesInsumo);
+            await _lotesInsumosService.EditarLote(lotesinsumoDTO);
+            return RedirectToAction(nameof(Index));
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!LotesHortalicaExists(lotesInsumo.Id))
             {
                 return NotFound();
             }
-
-            if (ModelState.IsValid)
+            else
             {
-                try
-                {
-                    _context.Update(lotesInsumo);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!LotesHortalicaExists(lotesInsumo.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                throw;
             }
-            ViewData["HortalicaId"] = new SelectList(_context.Insumos, "Id", "Id", lotesInsumo.InsumoId);
-            return View(lotesInsumo);
         }
+    }
 
+    return View(lotesInsumo);
+}
         private bool LotesHortalicaExists(int id)
         {
-            return _context.LotesInsumos.Any(e => e.Id == id);
+            bool retorno;
+            var fornecedor = _lotesInsumosService.GetLotesInsumoId(id);
+            if(fornecedor == null){
+                retorno = false;
+            }else{
+                retorno = true;
+            }
+            
+            return retorno;
         }
     }
 }

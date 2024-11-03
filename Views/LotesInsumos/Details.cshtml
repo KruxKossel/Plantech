@@ -1,4 +1,4 @@
-@model Plantech.Models.LotesInsumo
+@model Plantech.DTOs.LotesInsumoDTO
 
 @{
     ViewData["Title"] = "Details";
@@ -50,7 +50,7 @@
             @Html.DisplayNameFor(model => model.InsumoId)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Insumo.Id)
+            @Html.DisplayFor(model => model.InsumoId)
         </dd>
     </dl>
 </div>

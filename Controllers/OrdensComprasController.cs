@@ -6,37 +6,30 @@ using DocumentFormat.OpenXml.InkML;
 using Plantech.ViewModels;
 using AutoMapper;
 using Plantech.DTOs;
-using Microsoft.AspNetCore.Identity;
-using Plantech.Models;
-using Plantech.Extensions;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Plantech.Controllers
 {   [Authorize(Roles = "Comprador, Administrador")]
     public class OrdensComprasController : Controller
     {
+        
+        private readonly IUsuarioService _usuarioService;
         private readonly PlantechContext _context;
         private readonly IOrdensCompraService _ordensCompraService;
         private readonly IMapper _mapper;
 
-        public OrdensComprasController(PlantechContext context, IOrdensCompraService ordensCompraService, IMapper mapper)
+
+        public OrdensComprasController(PlantechContext context, IOrdensCompraService ordensCompraService, IMapper mapper,IUsuarioService usuarioService)
         {
             _ordensCompraService = ordensCompraService;
             _context = context;
             _mapper = mapper;
+            _usuarioService = usuarioService;
         }
 
-        // GET: OrdensCompras
-        
-        // public async Task<IActionResult> Index(OrdensCompra ordensCompra)
-        // {
-        //     _context.OrdensCompras.AddAsync(ordensCompra);
-        //     await _context.SaveChangesAsync();
-        //     var clientes = await _clienteService.ListarAsync();
-        //     return View(clientes);
-        // }
-    [Authorize(Roles = "Comprador, Administrador")] 
+        [Authorize(Roles = "Comprador, Administrador")] 
         public async Task<IActionResult> Index()
         {
             var ordensCompra = await _ordensCompraService.ListarCompras();
@@ -48,25 +41,33 @@ namespace Plantech.Controllers
         public async Task<IActionResult> NovaCompra()
         {
             var fornecedores = await _ordensCompraService.ListarFornecedoresAsync();; 
+            var funcionarioid = User.FindFirst(ClaimTypes.Email)?.Value;
             ViewData["FornecedorId"] = new SelectList(fornecedores, "Id", "Cnpj");
             return View();
         }
         [Authorize(Roles = "Comprador, Administrador")]
-    // Método POST para processar o formulário de nova compra
         [HttpPost]
         public async Task<IActionResult> NovaCompra([Bind("FornecedorId")] OrdensCompraViewModel ordensCompraVM)
         {
             var ordensCompraDTO = _mapper.Map<OrdensCompraDTO>(ordensCompraVM);
+            
+            
+            var useremail = User.FindFirst(ClaimTypes.Email)?.Value;
+
+            var usuarioLogado = _usuarioService.GetByEmailAsync(useremail);
+                // for(int i =0; i<100 ; i++)
+                // Console.WriteLine("vazio"+ usuarioLogado.Id);
 
             var fornecedor = await _ordensCompraService.ObterFornecedorPorId(ordensCompraDTO.FornecedorId);
             if (fornecedor == null)
                 {
+                    
                     ModelState.AddModelError("FornecedorId", $"Fornecedor com ID {ordensCompraDTO.FornecedorId} não encontrado.");
                     return View(ordensCompraVM);
                 }
                     
-                for(int i =0; i<100 ; i++)
-                Debug.WriteLine($"DataCompra: {ordensCompraDTO.DataCompra}, FornecedorId: {ordensCompraDTO.FornecedorId}, FuncionarioId: {ordensCompraDTO.FuncionarioId}, Total: {ordensCompraDTO.Total}");
+                // for(int i =0; i<100 ; i++)
+                // Console.WriteLine($"DataCompra: {ordensCompraDTO.DataCompra}, FornecedorId: {ordensCompraDTO.FornecedorId}, FuncionarioId: {ordensCompraDTO.FuncionarioId}, Total: {ordensCompraDTO.Total}");
             if (fornecedor == null)
             {
                 ModelState.AddModelError("FornecedorId", "Fornecedor não encontrado.");
@@ -75,9 +76,6 @@ namespace Plantech.Controllers
 
             ModelState.Remove("Status"); 
                 ordensCompraDTO.Status = "pendente";
-                ordensCompraDTO.FuncionarioId = User.GetFuncionarioId();
-                for(int i =0; i<100 ; i++)
-                Console.WriteLine(ordensCompraDTO.FuncionarioId);
             {
             Debug.WriteLine(ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
              if (!ModelState.IsValid)
@@ -91,21 +89,17 @@ namespace Plantech.Controllers
             if (ModelState.IsValid)
                  ordensCompraDTO.Total = 0;
                  ordensCompraDTO.DataCompra = DateOnly.FromDateTime(DateTime.Now);
-
+                ordensCompraDTO.FuncionarioId= usuarioLogado.Id;
                 await _ordensCompraService.CriarCompra(ordensCompraDTO);
                 return RedirectToAction(nameof(Index)); 
             }
             return View(ordensCompraVM);
         }
 
-
-        // [HttpPost, ActionName("NovaCompra")]
-        // public async Task<IActionResult> NovaCompra(){
-
+        public async Task<IActionResult> LotesDisponiveis(){
             
-        // }
-        
-        
+            return View();
+        }
         // GET: OrdensCompras/Details/5
         // public async Task<IActionResult> Details(int? id)
         // {
@@ -246,12 +240,5 @@ namespace Plantech.Controllers
         // {
         //     return _context.OrdensCompras.Any(e => e.Id == id);
         // }
-    
-        private int GetLoggedFuncionarioId()
-        {
-            return User.GetFuncionarioId();
-        }
-    
-    
     }
 }

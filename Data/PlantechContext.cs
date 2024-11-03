@@ -379,13 +379,14 @@ public partial class PlantechContext : DbContext
         {
             entity.ToTable("ordens_compras");
 
+            entity.HasKey(o => o.Id);
             entity.HasIndex(e => e.DataCompra, "idx_ordens_compras_data_compra");
 
             entity.HasIndex(e => e.FornecedorId, "idx_ordens_compras_fornecedor_id");
 
             entity.HasIndex(e => e.FuncionarioId, "idx_ordens_compras_funcionario_id");
-
-            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(o => o.Id).ValueGeneratedOnAdd();
+            // entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.DataCompra).HasColumnName("data_compra");
             entity.Property(e => e.FornecedorId).HasColumnName("fornecedor_id");
             entity.Property(e => e.FuncionarioId).HasColumnName("funcionario_id");
@@ -411,7 +412,7 @@ public partial class PlantechContext : DbContext
             entity.HasIndex(e => e.FuncionarioId, "idx_plantios_funcionario_id");
 
             entity.HasIndex(e => e.HortalicaId, "idx_plantios_hortalica_id");
-
+            
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.DataPlantio).HasColumnName("data_plantio");
             entity.Property(e => e.FuncionarioId).HasColumnName("funcionario_id");

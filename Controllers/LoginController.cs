@@ -6,6 +6,7 @@ using Plantech.ViewModels;
 using Plantech.DTOs;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration.UserSecrets;
 
 namespace Plantech.Controllers
 {
@@ -40,6 +41,7 @@ namespace Plantech.Controllers
             // Configuração das claims do usuário autenticado
             var claims = new List<Claim>
             {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.NomeUsuario),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Role, cargo.Funcao), // Adiciona a função do usuário como claim
