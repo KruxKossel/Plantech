@@ -116,6 +116,28 @@
 }
 /*** Topbar End ***/
 
+/*** Scroll***/
+/* Estilo da barra de rolagem para navegadores baseados em WebKit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+    width: 6px; /* Define a largura da barra de rolagem vertical */
+    height: 6px; /* Define a altura da barra de rolagem horizontal */
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Cor do "trilho" da barra de rolagem */
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888; /* Cor do "polegar" da barra de rolagem */
+    border-radius: 10px; /* Torna a barra de rolagem mais arredondada */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Cor do "polegar" ao passar o mouse */
+}
+
+/*** Scroll***/
+
 /*** Navbar Start ***/
 .navbar .navbar-nav .nav-link {
     padding: 10px 15px;

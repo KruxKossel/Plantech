@@ -30,10 +30,39 @@ body {
 }
 
 .card-index {
+  background-color: white !important;
+  z-index: 1;
   padding: 20px;
   width: auto;
-  height: 450px;
+  height: 500px;
   background-color: #ffffff43;
   border-radius: 20px;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.411);
+  overflow: hidden;
 }
+
+
+::-webkit-scrollbar {
+  width: 6px;
+
+  height: 6px;
+
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+
+  border-radius: 10px;
+
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+
+}
+
