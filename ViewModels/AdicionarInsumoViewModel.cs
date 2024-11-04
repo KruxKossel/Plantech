@@ -1,30 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Plantech.ViewModels;
-
-public class AdicionarInsumoViewModel
+namespace Plantech.ViewModels
 {
-    public int OrdemCompraId { get; set; }  // ID da Ordem de Compra
+    public class AdicionarInsumoViewModel
+    {
+        public int OrdemCompraId { get; set; }
+        public List<InsumoViewModel> InsumosDisponiveis { get; set; } = new();
 
-    // Lista dos insumos disponíveis para seleção
-    public IEnumerable<InsumoViewModel> InsumosDisponiveis { get; set; }
+        public List<InsumoDadosViewModel> DadosInsumos { get; set; } = new();
+    }
 
-    // IDs dos insumos selecionados pelo usuário
-    public int[] SelectedInsumos { get; set; }
-
-    // Dados adicionais para cada insumo selecionado (quantidade e preço unitário)
-    public Dictionary<int, InsumoDetalhes> Dados { get; set; }
-
-    // Propriedades do insumo selecionado (para vinculação do formulário)
-    public InsumoViewModel InsumoSelecionado { get; set; }
-}
-
-// Classe auxiliar para organizar os detalhes dos insumos selecionados
-public class InsumoDetalhes
-{
-    public int QtdInsumos { get; set; }
-    public double PrecoUnitario { get; set; }
+    public class InsumoDadosViewModel
+    {
+        public int InsumoId { get; set; }
+        public int QtdInsumos { get; set; }
+        public double PrecoUnitario { get; set; }
+        public bool Selecionado { get; set; }
+    }
 }

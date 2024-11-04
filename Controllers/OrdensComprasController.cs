@@ -16,7 +16,6 @@ namespace Plantech.Controllers
     {
         
         private readonly IUsuarioService _usuarioService;
-        private readonly PlantechContext _context;
         private readonly IOrdensCompraService _ordensCompraService;
         private readonly IMapper _mapper;
         private readonly IInsumoService _insumosService;
@@ -28,20 +27,29 @@ namespace Plantech.Controllers
                                         IInsumoCompraService insumosCompraService)
         {
             _ordensCompraService = ordensCompraService;
-            _context = context;
             _mapper = mapper;
             _usuarioService = usuarioService;
             _insumosService = insumosService;
             _insumosCompraService = insumosCompraService;
         }
 
+        
+        
+        
         [Authorize(Roles = "Comprador, Administrador")] 
         public async Task<IActionResult> Index()
         {
+            await _ordensCompraService.DeletarTuplasZeradas();
             var ordensCompra = await _ordensCompraService.ListarCompras();
             var ordensCompraDTO = _mapper.Map<List<OrdensCompraDTO>>(ordensCompra);
             return View(ordensCompraDTO);
         }
+        
+        
+        
+        
+        
+        
         [Authorize(Roles = "Comprador, Administrador")]
         [HttpGet]
         public async Task<IActionResult> NovaCompra()
@@ -51,6 +59,8 @@ namespace Plantech.Controllers
             ViewData["FornecedorId"] = new SelectList(fornecedores, "Id", "Cnpj");
             return View();
         }
+        
+        
         [Authorize(Roles = "Comprador, Administrador")]
         [HttpPost]
         public async Task<IActionResult> NovaCompra([Bind("FornecedorId")] OrdensCompraViewModel ordensCompraVM)
@@ -108,87 +118,114 @@ namespace Plantech.Controllers
             return View(ordensCompraVM);
         }
 
-        [HttpGet("AdicionarInsumo/{id}")]
-        public async Task<IActionResult> AdicionarInsumo(int id){
-            
-                    //  for(int i = 0 ; i < 100 ; i++)
-                    // Console.WriteLine($"AQUI E O ADC INSUMO");
-                    // Console.WriteLine($"{id}");
-            var insumosDTO = await _insumosService.ListarAsync();
-            var insumosViewModel = _mapper.Map<IEnumerable<InsumoViewModel>>(insumosDTO);
-            ViewBag.OrdemCompraId = id;
-            return View(insumosViewModel);
-        }
-        
-        [HttpPost("AdicionarInsumo/{id}")]
-        public async Task<IActionResult> AdicionarInsumo(int id,OrdensCompraViewModel ordenvm, 
-                                                            int[] SelectedInsumos, Dictionary<int, (int QtdInsumos,double PrecoUnitario)> Dados){
-            
-                for(int i =0; i<15 ; i++){
-                 Console.WriteLine("SelectedInsumos: " + (SelectedInsumos != null ? string.Join(", ", SelectedInsumos) : "null"));
-                    Console.WriteLine("Dados recebidos:");
-                foreach (var item in Dados)
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+        [HttpGet("OrdensCompras/AdicionarInsumo/{id}")]
+        public async Task<IActionResult> AdicionarInsumo(int id)
+        {
+            try
+            {
+
+                var insumosDTO = await _insumosService.ListarAsync();
+                var insumosViewModel = _mapper.Map<List<InsumoViewModel>>(insumosDTO);
+                var model = new AdicionarInsumoViewModel
                 {
-                    Console.WriteLine($"Insumo ID: {item.Key}, QtdInsumos: {item.Value.QtdInsumos}, PrecoUnitario: {item.Value.PrecoUnitario}");
-                }}
-                
-                List<InsumosCompraDTO> listainsumoscompraDTO = new List<InsumosCompraDTO>();
-               
+                    OrdemCompraId = id,
+                    InsumosDisponiveis = insumosViewModel
+                };
 
-                // if (ModelState.IsValid)
-                // {
-                    foreach (var insumoId in SelectedInsumos)
-                    {
-                        
-                        if (Dados.TryGetValue(insumoId, out var InsumosDados))
-                        {
-                            var (quantidade, precoUnitario) = Dados[insumoId];
-
-                            var insumoCompraDTO = _mapper.Map<InsumosCompraDTO>(ordenvm);
-                            insumoCompraDTO.OrdemCompraId = id;
-                            insumoCompraDTO.InsumoId = insumoId;
-                            insumoCompraDTO.Quantidade = quantidade;
-                            for(int i =0; i<15 ; i++){
-                            Console.WriteLine(insumoCompraDTO.InsumoId);
-                            Console.WriteLine(insumoCompraDTO.Quantidade);
-                            Console.WriteLine(insumoCompraDTO.PrecoUnitario = precoUnitario);
-                            }
-                            insumoCompraDTO.PrecoUnitario = precoUnitario;
-                            insumoCompraDTO.DataChegada = DateOnly.FromDateTime(DateTime.Now);
-                            
-                        listainsumoscompraDTO.Add(insumoCompraDTO);
-                        }
-                    // }
-
-                    await _ordensCompraService.AdicionarInsumo(listainsumoscompraDTO);
-                    return RedirectToAction(nameof(Index), new { id });
-                }
-                var insumos = await _insumosService.ListarAsync();
-                ViewBag.OrdemCompraId = id;
-                var insumosVM = _mapper.Map<IEnumerable<InsumoViewModel>>(insumos);
-                return View(insumosVM);
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Ocorreu um erro ao carregar a página. Tente novamente mais tarde.");
+            }
         }
         
         
-        // GET: OrdensCompras/Details/5
-        // public async Task<IActionResult> Details(int? id)
-        // {
-        //     if (id == null)
-        //     {
-        //         return NotFound();
-        //     }
+        
+        [HttpPost("OrdensCompras/AdicionarInsumo/{id}")]
+        public async Task<IActionResult> AdicionarInsumo(AdicionarInsumoViewModel model)
+        {
+            Console.WriteLine($"ID DA ORDEM DA COMPRA: {model.OrdemCompraId}");
+                    if (!ModelState.IsValid)
+                    {
+                        var insumo = await _insumosService.ListarAsync();
+                        model.InsumosDisponiveis = _mapper.Map<List<InsumoViewModel>>(insumo);
+                        return View(model);
+                    }
+            var listainsumoscompraDTO = new List<InsumosCompraDTO>();
 
-        //     var ordensCompra = await _context.OrdensCompras
-        //         .Include(o => o.Fornecedor)
-        //         .Include(o => o.Funcionario)
-        //         .FirstOrDefaultAsync(m => m.Id == id);
-        //     if (ordensCompra == null)
-        //     {
-        //         return NotFound();
-        //     }
+            var insumosSelecionados = model.DadosInsumos.Where(d => d.Selecionado).ToList();
+            if (model.DadosInsumos != null && model.DadosInsumos.Any())
+            {
+                Console.WriteLine("DADOS DOS INSUMOS:");
+                foreach (var insumoDados in model.DadosInsumos)
+                {
+                    var insumoCompraDTO = new InsumosCompraDTO
+                    {
+                        OrdemCompraId = model.OrdemCompraId,
+                        InsumoId = insumoDados.InsumoId,
+                        Quantidade = insumoDados.QtdInsumos,
+                        PrecoUnitario = insumoDados.PrecoUnitario,
+                        DataChegada = DateOnly.FromDateTime(DateTime.Now)
+                    };
 
-        //     return View(ordensCompra);
-        // }
+                    listainsumoscompraDTO.Add(insumoCompraDTO);
+
+                    Console.WriteLine($"- ID: {insumoDados.InsumoId}, Quantidade: {insumoDados.QtdInsumos}, Preço Unitário: {insumoDados.PrecoUnitario}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Nenhum dado de insumo.");
+            }
+
+            await _ordensCompraService.AdicionarInsumo(listainsumoscompraDTO);
+
+            return RedirectToAction(nameof(Index), new { id = model.OrdemCompraId });
+        }
+
+
+        public async Task<IActionResult> Details(int id)
+        {
+            if (id <= 0)
+            {
+                return NotFound();
+            }
+
+            var ordensCompra = await _ordensCompraService.GetOrdensCompraId(id);
+            if (ordensCompra == null)
+            {
+                return NotFound();
+            }
+
+            var insumosCompra = await _ordensCompraService.DetalharCompra(id);
+
+            var viewModel = new CompraDetalhadaViewModel
+            {
+                Id = ordensCompra.Id,
+                Total = ordensCompra.Total,
+                Status = ordensCompra.Status,
+                FuncionarioId = ordensCompra.FuncionarioId,
+                FornecedorId = ordensCompra.FornecedorId,
+                DataCompra = ordensCompra.DataCompra,
+                Fornecedor = ordensCompra.Fornecedor,
+                Funcionario = ordensCompra.Funcionario,
+                insumoscompra = insumosCompra.ToList()
+            };
+
+            return View(viewModel);
+        }
 
         // // GET: OrdensCompras/Create
         // public IActionResult Create()
@@ -291,20 +328,18 @@ namespace Plantech.Controllers
         //     return View(ordensCompra);
         // }
 
-        // // POST: OrdensCompras/Delete/5
-        // [HttpPost, ActionName("Delete")]
-        // [ValidateAntiForgeryToken]
-        // public async Task<IActionResult> DeleteConfirmed(int id)
-        // {
-        //     var ordensCompra = await _context.OrdensCompras.FindAsync(id);
-        //     if (ordensCompra != null)
-        //     {
-        //         _context.OrdensCompras.Remove(ordensCompra);
-        //     }
-
-        //     await _context.SaveChangesAsync();
-        //     return RedirectToAction(nameof(Index));
-        // }
+        // POST: OrdensCompras/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var ordensCompra = await _ordensCompraService.GetOrdensCompraId(id);
+            if (ordensCompra != null)
+            {
+                await _ordensCompraService.DeletarCompra(id);
+            }
+            return RedirectToAction(nameof(Index));
+        }
 
         // private bool OrdensCompraExists(int id)
         // {

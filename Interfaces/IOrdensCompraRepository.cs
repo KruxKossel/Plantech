@@ -13,4 +13,9 @@ public interface IOrdensCompraRepository
     Task <Fornecedore> ObterFornecedorPorId(int id);
     Task <Funcionario> ObterFuncionarioPorId(int id);
     Task AdicionarInsumo(IEnumerable<InsumosCompra> insumos);
+    Task DeletarTuplasZeradas();
+    Task <OrdensCompra> GetOrdensCompraId(int id);
+    Task <IEnumerable<InsumosCompra>> DetalharCompra(int id);
+
+    Task DeletarCompra(int id);
 }

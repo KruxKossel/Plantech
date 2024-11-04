@@ -16,5 +16,6 @@ public partial class InsumosCompraDTO
     public double? PrecoUnitario { get; set; }
 
     public DateOnly? DataChegada { get; set; }
+    public virtual InsumoDTO Insumo { get; set; } = null!;
 
 }

@@ -1,68 +1,51 @@
+@model Plantech.ViewModels.AdicionarInsumoViewModel
 @using System.Globalization
-@model IEnumerable<Plantech.ViewModels.InsumoViewModel>
-
-@{
-    ViewData["Title"] = "Adicionar Insumo";
-}
-
-<br><br>
 
 @if (User.IsInRole("Comprador") || User.IsInRole("Administrador"))
 {
-    <h2>Lista de Insumos</h2>
-    <p>
-        Selecione os insumos que deseja adicionar à ordem de compra.
-    </p>
+    <h2>Adicionar Insumos à Ordem de Compra</h2>
+    <form asp-action="AdicionarInsumo" asp-route-id="@Model.OrdemCompraId" method="post">
+        <input type="hidden" asp-for="OrdemCompraId" />
 
-<form asp-action="AdicionarInsumo" asp-route-id="@ViewBag.OrdemCompraId" method="post">
-    <input type="hidden" name="id" value="@ViewBag.OrdemCompraId" />
-    <div class="card-index">
-        <div style="max-height: 5000px; overflow-y: auto;">
-            <table class="table table-striped table-hover">
-                <thead>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Descrição</th>
+                    <th>Quantidade</th>
+                    <th>Preço Unitário</th>
+                    <th>Selecionar</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int index = 0; index < Model.InsumosDisponiveis.Count; index++)
+                {
+                    var insumo = Model.InsumosDisponiveis[index];
                     <tr>
-                        <th>@Html.DisplayNameFor(model => model.First().Nome)</th>
-                        <th>@Html.DisplayNameFor(model => model.First().Descricao)</th>
-                        <th>@Html.DisplayNameFor(model => model.First().Observacoes)</th>
-                        <th>@Html.DisplayNameFor(model => model.First().Categoria)</th>
-                        <th>@Html.DisplayNameFor(model => model.First().Tipo)</th>
-                        <th>Quantidade</th>
-                        <th>Preço Unitário</th>
-                        <th></th>
+                        <td>@insumo.Nome</td>
+                        <td>@insumo.Descricao</td>
+                        <td>
+                            <input type="number" name="DadosInsumos[@index].QtdInsumos" min="1" value="1" required />
+                        </td>
+                        <td>
+                            <input type="number" step="0.01" name="DadosInsumos[@index].PrecoUnitario" value="@insumo.PrecoUnitario.ToString("F2", CultureInfo.InvariantCulture)" required />
+                        </td>
+                        <td>
+                            <input type="checkbox" name="DadosInsumos[@index].Selecionado" value="true" />
+                            <input type="hidden" name="DadosInsumos[@index].InsumoId" value="@insumo.Id" />
+                            <label>Selecionar</label>
+                        </td>              
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>@Html.DisplayFor(modelItem => item.Nome)</td>
-                            <td>@Html.DisplayFor(modelItem => item.Descricao)</td>
-                            <td>@Html.DisplayFor(modelItem => item.Observacoes)</td>
-                            <td>@Html.DisplayFor(modelItem => item.Categoria)</td>
-                            <td>@Html.DisplayFor(modelItem => item.Tipo)</td>
-                            <td>
-                                <input type="number" name="Dados[@item.Id].QtdInsumos" min="1" value="1" class="form-control" required />
-                            </td>
-                            <td>
-                                <input type="text" name="Dados[@item.Id].PrecoUnitario" class="form-control" value="@item.PrecoUnitario.ToString("N2", CultureInfo.CurrentCulture).Replace('.', ',')" required />
-                            </td>
-                            <td>
-                                <input type="checkbox" name="SelectedInsumos" value="@item.Id" />
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
+                }
+            </tbody>
+        </table>
 
-    <div class="text-end" style="margin-right: 15px;">
-        
-        <br>
         <button type="submit" class="btn btn-success">Adicionar Insumos</button>
-    </div>
-</form>
+        <div>
+            <a asp-action="Index" class="btn btn-danger">Cancelar</a>
+        </div>
 
+    </form>
 }
 else
 {

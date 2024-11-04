@@ -67,4 +67,27 @@ public class OrdensCompraService : IOrdensCompraService
         var insumo = _mapper.Map<IEnumerable<InsumosCompra>>(insumodto);
         await _ordensCompraRepository.AdicionarInsumo(insumo);
     }
+
+    public async Task DeletarTuplasZeradas()
+    {
+        await _ordensCompraRepository.DeletarTuplasZeradas();
+    }
+
+    public async Task<OrdensCompraDTO> GetOrdensCompraId(int id)
+    {
+        var orden = await _ordensCompraRepository.GetOrdensCompraId(id);
+        return _mapper.Map<OrdensCompraDTO>(orden);
+    
+    }
+
+    public async Task<IEnumerable<InsumosCompraDTO>> DetalharCompra(int id)
+    {
+        var insumos = await _ordensCompraRepository.DetalharCompra(id);
+        return _mapper.Map<IEnumerable<InsumosCompraDTO>>(insumos);
+    }
+
+    public async Task DeletarCompra(int id)
+    {
+        await _ordensCompraRepository.DeletarCompra(id);
+    }
 }
