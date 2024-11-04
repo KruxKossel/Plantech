@@ -282,7 +282,7 @@ public partial class PlantechContext : DbContext
 
         modelBuilder.Entity<InsumosCompra>(entity =>
         {
-            entity.HasKey(e => new { e.OrdemCompraId, e.LoteId });
+            entity.HasKey(e => new { e.OrdemCompraId, e.InsumoId });
 
             entity.ToTable("insumos_compras");
 
@@ -303,8 +303,8 @@ public partial class PlantechContext : DbContext
                 .HasForeignKey(d => d.InsumoId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
-            entity.HasOne(d => d.Lote).WithMany(p => p.InsumosCompras)
-                .HasForeignKey(d => d.LoteId)
+            entity.HasOne(d => d.Insumo).WithMany(p => p.InsumosCompras)
+                .HasForeignKey(d => d.InsumoId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
             entity.HasOne(d => d.OrdemCompra).WithMany(p => p.InsumosCompras)

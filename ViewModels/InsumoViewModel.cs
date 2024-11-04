@@ -25,6 +25,8 @@ public partial class InsumoViewModel
     public string? CaminhoImagem { get; set; }
     [Display(Name = "Imagem")]
     public IFormFile? ImagemArquivo { get; set; }
-        [Display(Name = "Preço Unitário")]
+    [Display(Name = "Preço Unitário")]
     public double PrecoUnitario { get; set; } 
+
+    public int QtdInsumos { get; set; } 
 }

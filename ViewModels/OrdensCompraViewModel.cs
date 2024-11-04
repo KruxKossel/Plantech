@@ -19,5 +19,9 @@ public partial class OrdensCompraViewModel
     public DateOnly? DataCompra { get; set; }
     public virtual FornecedoreDTO Fornecedor { get; set; } = null!;
     public virtual FuncionarioDTO Funcionario { get; set; } = null!;
+    // public int? Quantidade { get; set; }
+
+    // public double? PrecoUnitario { get; set; }
+
 
 }

@@ -9,7 +9,7 @@ public partial class InsumosCompra
 
     public int InsumoId { get; set; }
 
-    public int LoteId { get; set; }
+    public int? LoteId { get; set; } 
 
     public int? Quantidade { get; set; }
 

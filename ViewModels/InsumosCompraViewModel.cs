@@ -10,7 +10,7 @@ public partial class InsumosCompraViewModel
 
     public int InsumoId { get; set; }
 
-    public int LoteId { get; set; }
+    public int? LoteId { get; set; }
 
     public int? Quantidade { get; set; }
 

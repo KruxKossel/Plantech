@@ -5,7 +5,7 @@ namespace Plantech.Interfaces;
 
 public interface IOrdensCompraService
 {
-    Task CriarCompra(OrdensCompraDTO ordensCompradto);
+    Task<int> CriarCompra(OrdensCompraDTO ordensCompradto);
     Task AtualizarCompra(OrdensCompraDTO ordensCompradto);
     Task <List<OrdensCompraDTO>> ListarCompras();
     Task <OrdensCompraDTO> BuscarId(int id);
@@ -13,6 +13,6 @@ public interface IOrdensCompraService
     Task <List<FornecedoreDTO>> ListarFornecedoresAsync();
     Task <FornecedoreDTO> ObterFornecedorPorId(int id);
     Task <FuncionarioDTO> ObterFuncionarioPorId(int id);
-    Task AdicionarInsumo(InsumosCompraDTO insumoCompraDTO);
+    Task AdicionarInsumo(IEnumerable<InsumosCompraDTO> insumodto);
 
 }

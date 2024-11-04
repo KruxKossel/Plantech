@@ -30,7 +30,7 @@ public class OrdensCompraRepository : IOrdensCompraRepository
         return await _context.OrdensCompras.FindAsync(id);
     }
 
-public async Task CriarCompra(OrdensCompra ordensCompra)
+public async Task<int> CriarCompra(OrdensCompra ordensCompra)
 {
     // if (ordensCompra.FornecedorId <= 0) 
     // {
@@ -55,6 +55,7 @@ public async Task CriarCompra(OrdensCompra ordensCompra)
         await _context.OrdensCompras.AddAsync(ordensCompra);
         await _context.SaveChangesAsync();
     // }
+    return ordensCompra.Id;
     // catch (DbUpdateException ex)
     // {
     //     throw new Exception("Erro ao salvar a compra. Verifique os dados e tente novamente.", ex);
@@ -106,9 +107,12 @@ public async Task CriarCompra(OrdensCompra ordensCompra)
         return null;
     }
 
-    public async Task AdicionarInsumo(InsumosCompra insumo)
+    public async Task AdicionarInsumo(IEnumerable<InsumosCompra> insumos)
     {
-         await _context.InsumosCompras.AddAsync(insumo);
-         await _context.SaveChangesAsync();
+        foreach (var insumo in insumos)
+        {
+            await _context.InsumosCompras.AddAsync(insumo);
+        }
+        await _context.SaveChangesAsync();
     }
 }

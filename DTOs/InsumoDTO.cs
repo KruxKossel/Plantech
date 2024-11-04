@@ -20,5 +20,8 @@ public partial class InsumoDTO
     public string Tipo { get; set; } = null!;
 
     public string? CaminhoImagem { get; set; }
+    // public double PrecoUnitario { get; set; } 
+
+    // public int Quantidade { get; set; } 
 
 }

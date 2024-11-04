@@ -31,10 +31,11 @@ public class OrdensCompraService : IOrdensCompraService
         throw new NotImplementedException();
     }
 
-    public async Task CriarCompra(OrdensCompraDTO ordensCompradto)
+    public async Task<int> CriarCompra(OrdensCompraDTO ordensCompradto)
     {
        var ordensCompra = _mapper.Map<OrdensCompra>(ordensCompradto);
         await _ordensCompraRepository.CriarCompra(ordensCompra);
+        return ordensCompra.Id;
     }
 
     public async Task<List<OrdensCompraDTO>> ListarCompras()
@@ -61,9 +62,9 @@ public class OrdensCompraService : IOrdensCompraService
         return _mapper.Map<FuncionarioDTO>(funcionario);
     }
 
-    public async Task AdicionarInsumo(InsumosCompraDTO insumodto)
+    public async Task AdicionarInsumo(IEnumerable<InsumosCompraDTO> insumodto)
     {
-        var insumo = _mapper.Map<InsumosCompra>(insumodto);
+        var insumo = _mapper.Map<IEnumerable<InsumosCompra>>(insumodto);
         await _ordensCompraRepository.AdicionarInsumo(insumo);
     }
 }
