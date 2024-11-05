@@ -13,7 +13,12 @@ namespace Plantech.DTOs
         public int FuncionarioId { get; set; }
         public int? Quantidade { get; set; }
 
+        public string Status { get; set; } = null!;
+
         public List<InsumosPlantioDTO> InsumosPlantios { get; set; } = new List<InsumosPlantioDTO>();
+
+        public HortalicaDTO Hortalica { get; set; } = null!;
+
 
     }
 }

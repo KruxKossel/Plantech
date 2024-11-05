@@ -55,6 +55,10 @@ namespace Plantech.Controllers
         {
             var plantios = await _plantioService.GetAllAsync();
             var viewModels = _mapper.Map<IEnumerable<PlantioViewModel>>(plantios);
+
+            
+
+
             return View(viewModels);
         }
 
@@ -84,12 +88,13 @@ namespace Plantech.Controllers
             // Obter id e nome do funcionário logado
             var funcionarioId = await GetLoggedFuncionarioId();
             var usuario = await _usuarioService.GetByIdAsync(funcionarioId);
-            var funcionarioNome = usuario.Funcionarios.FirstOrDefault()?.Nome;
 
             // Atribuir valores ao modelo
             model.FuncionarioId = funcionarioId;
-            model.FuncionarioNome = funcionarioNome;
             model.DataPlantio = DateOnly.FromDateTime(DateTime.Now);
+            model.Status = "não colhida";
+
+            ViewData["FuncionarioNome"] = usuario.Funcionarios.FirstOrDefault()?.Nome;
 
             // Obter hortaliças e lotes de insumos ativos
             ViewData["HortalicaId"] = new SelectList(await _hortalicaService.ListarHortalicasAsync(), "Id", "Nome");
@@ -103,6 +108,7 @@ namespace Plantech.Controllers
                     l.Quantidade,
                     DataValidade = l.DataValidade.HasValue ? l.DataValidade.Value.ToShortDateString() : "N/A"
                 }).ToList();
+                
 
             ViewData["LotesInsumo"] = lotesAtivos; // Passar os objetos diretamente
             return View(model);
@@ -114,6 +120,8 @@ namespace Plantech.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(PlantioViewModel model, int[] SelectedInsumos, Dictionary<int, int> InsumosQuantities)
         {
+
+            
             Console.WriteLine("\n\n Entrou no post");
 
             if (!ModelState.IsValid)
@@ -171,34 +179,31 @@ namespace Plantech.Controllers
             Console.WriteLine("\n\n porra");
 
             // Se houver erro, recarregar listas de hortaliças e lotes de insumos ativos
+            // Obter id e nome do funcionário logado
+            var funcionarioId = await GetLoggedFuncionarioId();
+            var usuario = await _usuarioService.GetByIdAsync(funcionarioId);
+
+            // Atribuir valores ao modelo
+            model.FuncionarioId = funcionarioId;
+            model.DataPlantio = DateOnly.FromDateTime(DateTime.Now);
+            model.Status = "não colhida";
+
+            ViewData["FuncionarioNome"] = usuario.Funcionarios.FirstOrDefault()?.Nome;
+
+            // Obter hortaliças e lotes de insumos ativos
             ViewData["HortalicaId"] = new SelectList(await _hortalicaService.ListarHortalicasAsync(), "Id", "Nome");
             var lotesInsumos = await _plantioService.GetLotesInsumosAsync();
             var lotesAtivos = lotesInsumos
                 .Where(l => l.Status == "ativo")
-                .Select(l => new
+                .Select(l => new 
                 {
                     l.Id,
                     l.Nome,
                     l.Quantidade,
                     DataValidade = l.DataValidade.HasValue ? l.DataValidade.Value.ToShortDateString() : "N/A"
                 }).ToList();
-            ViewData["LotesInsumo"] = lotesAtivos;
 
-            // Obter id do funcionario
-            var funcionarioId = await GetLoggedFuncionarioId();
-
-            // Obter nome do funcionário
-            var usuario = await _usuarioService.GetByIdAsync(funcionarioId);
-            var funcionarioNome = usuario.Funcionarios.FirstOrDefault()?.Nome;
-
-            // Exibir no terminal retornos
-            Console.WriteLine($"FuncionarioId: {funcionarioId}");
-            Console.WriteLine($"FuncionarioNome: {funcionarioNome}");
-
-            // Atribuir valores aos model para post
-            model.FuncionarioId = funcionarioId;
-            model.FuncionarioNome = funcionarioNome;
-            model.DataPlantio = DateOnly.FromDateTime(DateTime.Now);
+            ViewData["LotesInsumo"] = lotesAtivos; // Passar os objetos diretamente
 
             return View(model);
         }

@@ -1,24 +1,58 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Plantech.Data;
+using Plantech.DTOs;
+using Plantech.Interfaces;
 using Plantech.Models;
+using Plantech.ViewModels;
 
 namespace Plantech.Controllers
 {
-    public class ColheitasController(PlantechContext context) : Controller
+
+    [Authorize(Roles = "Agricultor, Administrador")]
+    public class ColheitasController(IColheitaService colheitaService, IMapper mapper, IUsuarioService usuarioService) : Controller
     {
-        private readonly PlantechContext _context = context;
+        private readonly IColheitaService _colheitaService = colheitaService;
+
+        private readonly IMapper _mapper = mapper;
+
+        private readonly IUsuarioService _usuarioService = usuarioService; // Adicione o serviço de usuário
+
+
+        private async Task<int> GetLoggedFuncionarioId()
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+            {
+                Console.WriteLine("pqp");
+                throw new InvalidOperationException("User is not authenticated.");
+            }
+
+            // Tente converter o valor para inteiro com validação
+            if (!int.TryParse(userIdClaim.Value, out int userId))
+            {
+                throw new FormatException($"O valor '{userIdClaim.Value}' não é um número válido.");
+            }
+
+            var usuario = await _usuarioService.GetByIdAsync(userId);
+            var funcionario = usuario.Funcionarios.FirstOrDefault(); // Pega o primeiro funcionário associado ao usuário
+            return funcionario != null ? funcionario.Id : 0;
+        }
 
         // GET: Colheitas
         public async Task<IActionResult> Index()
         {
-            var plantechContext = _context.Colheitas.Include(c => c.Funcionario).Include(c => c.LoteHortalica).Include(c => c.LoteInsumo).Include(c => c.Plantio);
-            return View(await plantechContext.ToListAsync());
+            var colheitas = await _colheitaService.GetAllAsync();
+            var viewModels = _mapper.Map<IEnumerable<ColheitaViewModel>>(colheitas);
+            return View(viewModels);
         }
 
         // GET: Colheitas/Details/5
@@ -29,68 +63,170 @@ namespace Plantech.Controllers
                 return NotFound();
             }
 
-            var colheita = await _context.Colheitas
-                .Include(c => c.Funcionario)
-                .Include(c => c.LoteHortalica)
-                .Include(c => c.LoteInsumo)
-                .Include(c => c.Plantio)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var colheita = await _colheitaService.GetByIdAsync(id.Value);
             if (colheita == null)
             {
                 return NotFound();
             }
 
-            return View(colheita);
+
+            var viewModel = _mapper.Map<ColheitaViewModel>(colheita);
+            return View(viewModel);
         }
 
         // GET: Colheitas/Create
-        public IActionResult Create()
+        [HttpGet]
+        public async Task<IActionResult> Create()
         {
-            ViewData["FuncionarioId"] = new SelectList(_context.Funcionarios, "Id", "Id");
-            ViewData["LoteHortalicaId"] = new SelectList(_context.LotesHortalicas, "Id", "Id");
-            ViewData["LoteInsumoId"] = new SelectList(_context.LotesInsumos, "Id", "Id");
-            ViewData["PlantioId"] = new SelectList(_context.Plantios, "Id", "Id");
-            return View();
+
+            Console.WriteLine("Método GET Create chamado");
+
+
+            var model = new ColheitaViewModel();
+
+            // Obter id e nome do funcionário logado
+            var funcionarioId = await GetLoggedFuncionarioId();
+            var usuario = await _usuarioService.GetByIdAsync(funcionarioId);
+
+            // Atribuir valores ao modelo
+            model.FuncionarioId = funcionarioId;
+            model.DataColheita = DateOnly.FromDateTime(DateTime.Now);
+
+
+            ViewData["FuncionarioNome"] = usuario.Funcionarios.FirstOrDefault()?.Nome;
+
+            // Obter plantios feitos nas duas semanas antes da data de colheita
+            var plantios = await _colheitaService.GetPlantioAsync();
+            var selectListItems = plantios
+                .Where(p => p.Status == "não colhida" && p.Hortalica != null)
+                .Select(p => new SelectListItem
+                {
+                    Value = p.Id.ToString(),
+                    Text = $"{p.Hortalica.Nome} - Plantado em {p.DataPlantio.Value:dd/MM/yyyy} - Quantidade plantada: {p.Quantidade}",
+                    Group = new SelectListGroup { Name = p.Quantidade.ToString() }
+                })
+                .ToList();
+
+            Console.WriteLine($"Total de plantios não colhidos: {selectListItems.Count}");
+
+            ViewData["Plantios"] = selectListItems;
+
+            Console.WriteLine($"\n\nFuncionarioId: {model.FuncionarioId}");
+            Console.WriteLine($"DataColheita: {model.DataColheita}\n\n");
+
+            return View(model);
         }
+
+
+
+
+
 
         // POST: Colheitas/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Quantidade,DataColheita,FuncionarioId,LoteHortalicaId,LoteInsumoId,PlantioId")] Colheita colheita)
+        public async Task<IActionResult> Create([Bind("Quantidade,DataColheita,FuncionarioId,PlantioId")] ColheitaViewModel model)
         {
-            if (ModelState.IsValid)
+            Console.WriteLine($"\n\nFuncionarioId: {model.FuncionarioId}");
+            Console.WriteLine($"DataColheita: {model.DataColheita}\n\n");
+            Console.WriteLine($"Plantio: {model.PlantioId}\n\n");
+
+            Console.WriteLine("Método POST Create chamado");
+
+            
+            
+
+            // Validar o modelo
+            if (!ModelState.IsValid)
             {
-                _context.Add(colheita);
-                await _context.SaveChangesAsync();
+                foreach (var state in ModelState)
+                {
+                    foreach (var error in state.Value.Errors)
+                    {
+                        Console.WriteLine($"Key: {state.Key}, Error: {error.ErrorMessage}");
+                    }
+                }
+
+                // Recarregar os dados necessários se o modelo não for válido
+                await LoadSelectListItemsAsync(model);
+                return View(model);
+            }
+
+            // Mapeamento do modelo para DTO
+            var colheitaDto = _mapper.Map<ColheitaDTO>(model);
+
+            try
+            {
+                // Chamada do serviço para criação da colheita
+                await _colheitaService.CreateColheitaAsync(colheitaDto);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["FuncionarioId"] = new SelectList(_context.Funcionarios, "Id", "Id", colheita.FuncionarioId);
-            ViewData["LoteHortalicaId"] = new SelectList(_context.LotesHortalicas, "Id", "Id", colheita.LoteHortalicaId);
-            ViewData["LoteInsumoId"] = new SelectList(_context.LotesInsumos, "Id", "Id", colheita.LoteInsumoId);
-            ViewData["PlantioId"] = new SelectList(_context.Plantios, "Id", "Id", colheita.PlantioId);
-            return View(colheita);
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = ex.Message;
+                await LoadSelectListItemsAsync(model); // Recarregar os dados em caso de erro
+                return View(model);
+            }
         }
+
+        // Método auxiliar para carregar os itens da lista de seleção
+        private async Task LoadSelectListItemsAsync(ColheitaViewModel  model)
+        {
+
+            // Obter id e nome do funcionário logado
+            var funcionarioId = await GetLoggedFuncionarioId();
+            var usuario = await _usuarioService.GetByIdAsync(funcionarioId);
+
+            // Atribuir valores ao modelo
+            model.FuncionarioId = funcionarioId;
+            
+            model.DataColheita = DateOnly.FromDateTime(DateTime.Now);
+
+            ViewData["FuncionarioNome"] = usuario.Funcionarios.FirstOrDefault()?.Nome;
+
+            // Obter plantios feitos nas duas semanas antes da data de colheita
+            var plantios = await _colheitaService.GetPlantioAsync();
+            var selectListItems = plantios
+                .Where(p => p.Status == "não colhida" && p.Hortalica != null)
+                .Select(p => new SelectListItem
+                {
+                    Value = p.Id.ToString(),
+                    Text = $"{p.Hortalica.Nome} - Plantado em {p.DataPlantio.Value:dd/MM/yyyy} - Quantidade plantada: {p.Quantidade}",
+                    Group = new SelectListGroup { Name = p.Quantidade.ToString() }
+                })
+                .ToList();
+
+            Console.WriteLine($"Total de plantios não colhidos: {selectListItems.Count}");
+
+            ViewData["Plantios"] = selectListItems;
+
+            Console.WriteLine($"\n\nFuncionarioId: {model.FuncionarioId}");
+            Console.WriteLine($"DataColheita: {model.DataColheita}\n\n");
+        }
+
+
 
         // GET: Colheitas/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+
+            
             if (id == null)
             {
                 return NotFound();
             }
 
-            var colheita = await _context.Colheitas.FindAsync(id);
+            var colheita = await _colheitaService.GetByIdAsync(id.Value);
             if (colheita == null)
             {
                 return NotFound();
             }
-            ViewData["FuncionarioId"] = new SelectList(_context.Funcionarios, "Id", "Id", colheita.FuncionarioId);
-            ViewData["LoteHortalicaId"] = new SelectList(_context.LotesHortalicas, "Id", "Id", colheita.LoteHortalicaId);
-            ViewData["LoteInsumoId"] = new SelectList(_context.LotesInsumos, "Id", "Id", colheita.LoteInsumoId);
-            ViewData["PlantioId"] = new SelectList(_context.Plantios, "Id", "Id", colheita.PlantioId);
-            return View(colheita);
+
+            var model = _mapper.Map<ColheitaViewModel>(colheita);
+
+            return View(model);
         }
 
         // POST: Colheitas/Edit/5
@@ -98,9 +234,21 @@ namespace Plantech.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Quantidade,DataColheita,FuncionarioId,LoteHortalicaId,LoteInsumoId,PlantioId")] Colheita colheita)
+        public async Task<IActionResult> Edit(int id, [Bind("Quantidade,DataColheita,FuncionarioId,LoteHortalicaId,LoteInsumoId,PlantioId")] ColheitaViewModel model)
         {
-            if (id != colheita.Id)
+
+            if (!ModelState.IsValid)
+            {
+                foreach (var state in ModelState)
+                {
+                    foreach (var error in state.Value.Errors)
+                    {
+                        Console.WriteLine($"Key: {state.Key}, Error: {error.ErrorMessage}");
+                    }
+                }
+            }
+
+            if (id != model.Id)
             {
                 return NotFound();
             }
@@ -109,12 +257,12 @@ namespace Plantech.Controllers
             {
                 try
                 {
-                    _context.Update(colheita);
-                    await _context.SaveChangesAsync();
+                    var colheita = _mapper.Map<ColheitaDTO>(model);
+                    await _colheitaService.UpdateAsync(colheita);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ColheitaExists(colheita.Id))
+                    if (!ColheitaExists(model.Id))
                     {
                         return NotFound();
                     }
@@ -125,11 +273,8 @@ namespace Plantech.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["FuncionarioId"] = new SelectList(_context.Funcionarios, "Id", "Id", colheita.FuncionarioId);
-            ViewData["LoteHortalicaId"] = new SelectList(_context.LotesHortalicas, "Id", "Id", colheita.LoteHortalicaId);
-            ViewData["LoteInsumoId"] = new SelectList(_context.LotesInsumos, "Id", "Id", colheita.LoteInsumoId);
-            ViewData["PlantioId"] = new SelectList(_context.Plantios, "Id", "Id", colheita.PlantioId);
-            return View(colheita);
+
+            return View(model);
         }
 
         // GET: Colheitas/Delete/5
@@ -140,38 +285,44 @@ namespace Plantech.Controllers
                 return NotFound();
             }
 
-            var colheita = await _context.Colheitas
-                .Include(c => c.Funcionario)
-                .Include(c => c.LoteHortalica)
-                .Include(c => c.LoteInsumo)
-                .Include(c => c.Plantio)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var colheita = await _colheitaService.GetByIdAsync(id.Value);
             if (colheita == null)
             {
                 return NotFound();
             }
 
-            return View(colheita);
+            var colheitaViewModel = _mapper.Map<ColheitaViewModel>(colheita);
+            return View(colheitaViewModel);
         }
+
 
         // POST: Colheitas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var colheita = await _context.Colheitas.FindAsync(id);
-            if (colheita != null)
+            if (!ColheitaExists(id))
             {
-                _context.Colheitas.Remove(colheita);
+                return NotFound();
             }
 
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _colheitaService.DeleteAsync(id);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it as needed
+                throw;
+            }
+
             return RedirectToAction(nameof(Index));
         }
 
         private bool ColheitaExists(int id)
         {
-            return _context.Colheitas.Any(e => e.Id == id);
+            return _colheitaService.GetByIdAsync(id) != null;
         }
+
     }
 }

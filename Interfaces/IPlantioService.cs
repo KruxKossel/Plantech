@@ -8,8 +8,13 @@ namespace Plantech.Interfaces
     {
         Task<IEnumerable<PlantioDTO>> GetAllAsync();
         Task<PlantioDTO> GetByIdAsync(int id);
+
+        
         Task UpdateAsync(PlantioDTO plantioDto);
         Task DeleteAsync(int id);
+
+
+
         Task CreatePlantioAsync(PlantioDTO plantioDto);
         Task CreateInsumosPlantioAsync(InsumosPlantioDTO insumoPlantioDto);
 

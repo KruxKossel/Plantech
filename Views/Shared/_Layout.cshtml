@@ -48,14 +48,14 @@
                                 @if (User.IsInRole("Agricultor"))
                                 {
                                     <a asp-controller="Agricultor" asp-action="Index" class="nav-item nav-link active">Home</a>
-                                    <a href="#" class="nav-item nav-link">Relatórios</a>
+                                    <a asp-controller="Plantios" asp-action="Index" class="nav-item nav-link">Plantios</a>
+                                    <a href="#" class="nav-item nav-link">Colheitas</a>
                                     <a href="#" class="nav-item nav-link">Pendencias</a>
-                                    <a href="#" class="nav-item nav-link">Histórico</a>
                                     <div class="nav-item dropdown">
                                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Ações</a>
                                         <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                                            <a asp-controller="Plantios" asp-action="Index" class="dropdown-item">Realizar Plantio</a>
-                                            <a href="#" class="dropdown-item">Realizar Colheita</a>
+                                            <a asp-controller="Plantios" asp-action="Create" class="dropdown-item">Realizar Plantio</a>
+                                            <a asp-controller="Colheitas" asp-action="Create" class="dropdown-item">Realizar Colheita</a>
                                             <a href="#" class="dropdown-item">Consultar Lotes de Insumos</a>
                                             <a asp-controller="LotesHortalicas" asp-action="Index" class="dropdown-item">Consultar Lotes de Hortaliça</a>
                                             <a asp-controller="Hortalicas" asp-action="Index" class="dropdown-item">Consultar Hortaliças</a>

@@ -8,12 +8,16 @@ namespace Plantech.ViewModels
         public int Id { get; set; }
 
         [Required(ErrorMessage = "O nome é obrigatório.")]
-        public string Nome { get; set; }
+        [Display(Name = "Nome")]
+        public string Nome { get; set; } = null!;
 
+        [Display(Name = "Descrição")]
         public string? Descricao { get; set; }
 
+        [Display(Name = "Observações")]
         public string? Observacoes { get; set; }
 
+        [Display(Name = "Caminho da Imagem")]
         public string? CaminhoImagem { get; set; }
 
         [Display(Name = "Imagem")]

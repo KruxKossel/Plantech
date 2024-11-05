@@ -8,7 +8,7 @@ namespace Plantech.ViewModels
     {
         public int Id { get; set; }
 
-        [Display(Name = "Insumo")]
+        [Display(Name = "ID do Insumo")]
         [Required(ErrorMessage = "O campo Insumo é obrigatório.")]
         public int InsumoId { get; set; }
 
@@ -35,6 +35,7 @@ namespace Plantech.ViewModels
         [Required(ErrorMessage = "O campo Nome é obrigatório.")]
         public string Nome { get; set; } = null!;
 
+        [Display(Name = "Insumo")]
         public InsumoDTO Insumo { get; set; } = null!;
 
     }

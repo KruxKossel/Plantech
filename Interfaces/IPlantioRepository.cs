@@ -15,8 +15,6 @@ namespace Plantech.Interfaces
         Task CreateInsumosPlantioAsync(InsumosPlantio insumoPlantio);
 
         Task<Plantio> GetUltimoPlantioAsync();
-
-        Task<IEnumerable<Funcionario>> GetFuncionariosAsync();
         Task<IEnumerable<LotesInsumo>> GetLotesInsumosAsync();
 
     

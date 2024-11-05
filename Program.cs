@@ -33,7 +33,7 @@ builder.Services.AddScoped<IFornecedoresRepository, FornecedoresRepository>();
 builder.Services.AddScoped<IFornecedorService, FornecedoreService>();
 //DI Clientes
 builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
-builder.Services.AddScoped<IClienteService,ClienteService>();
+builder.Services.AddScoped<IClienteService, ClienteService>();
 //DI Insumos
 builder.Services.AddScoped<IInsumoRepository, InsumoRepository>();
 builder.Services.AddScoped<IInsumoService, InsumoService>();
@@ -43,6 +43,9 @@ builder.Services.AddScoped<IHortalicaRepository, HortalicaRepository>();
 //DI Plantio
 builder.Services.AddScoped<IPlantioRepository, PlantioRepository>();
 builder.Services.AddScoped<IPlantioService, PlantioService>();
+//DI Colheitas
+builder.Services.AddScoped<IColheitaRepository, ColheitaRepository>();
+builder.Services.AddScoped<IColheitaService, ColheitaService>();
 
 var app = builder.Build();
 

@@ -391,9 +391,7 @@ public partial class PlantechContext : DbContext
             entity.ToTable("plantios");
 
             entity.HasIndex(e => e.DataPlantio, "idx_plantios_data");
-
             entity.HasIndex(e => e.FuncionarioId, "idx_plantios_funcionario_id");
-
             entity.HasIndex(e => e.HortalicaId, "idx_plantios_hortalica_id");
 
             entity.Property(e => e.Id).HasColumnName("id");
@@ -401,6 +399,11 @@ public partial class PlantechContext : DbContext
             entity.Property(e => e.FuncionarioId).HasColumnName("funcionario_id");
             entity.Property(e => e.HortalicaId).HasColumnName("hortalica_id");
             entity.Property(e => e.Quantidade).HasColumnName("quantidade");
+
+            // Adicionando a coluna Status
+            entity.Property(e => e.Status)
+                .HasColumnName("status")
+                .HasDefaultValue("não colhida");
 
             entity.HasOne(d => d.Funcionario).WithMany(p => p.Plantios)
                 .HasForeignKey(d => d.FuncionarioId)
@@ -410,6 +413,7 @@ public partial class PlantechContext : DbContext
                 .HasForeignKey(d => d.HortalicaId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
         });
+
 
 
         modelBuilder.Entity<Usuario>(entity =>

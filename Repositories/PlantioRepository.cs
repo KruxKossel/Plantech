@@ -16,8 +16,9 @@ public class PlantioRepository(PlantechContext context) : IPlantioRepository
 
     public async Task<IEnumerable<Plantio>> GetAllAsync()
     {
-        return await _context.Plantios.ToListAsync();
+        return await _context.Plantios.Include(p => p.Hortalica).ToListAsync();
     }
+
 
     public async Task<Plantio> GetByIdAsync(int id)
     {
@@ -61,12 +62,6 @@ public class PlantioRepository(PlantechContext context) : IPlantioRepository
     private bool PlantioExists(int id)
     {
         return _context.Plantios.Any(e => e.Id == id);
-    }
-
-    // Métodos para obter listas de funcionários e hortaliças
-     public async Task<IEnumerable<Funcionario>> GetFuncionariosAsync()
-    {
-        return await _context.Funcionarios.ToListAsync();
     }
 
     // Lotes de insumo

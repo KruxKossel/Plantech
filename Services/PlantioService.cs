@@ -3,10 +3,12 @@ using Plantech.DTOs;
 using Plantech.Interfaces;
 using Plantech.Models;
 
-public class PlantioService(IMapper mapper, IPlantioRepository plantioRepository) : IPlantioService
+public class PlantioService(IMapper mapper, IPlantioRepository plantioRepository, IFuncionarioRepository funcionarioRepository) : IPlantioService
 {
     private readonly IMapper _mapper = mapper;
     private readonly IPlantioRepository _plantioRepository = plantioRepository;
+
+    private readonly IFuncionarioRepository _funcionarioRepository = funcionarioRepository;
 
     public async Task<PlantioDTO> GetUltimoPlantioAsync()
     {
@@ -53,7 +55,7 @@ public class PlantioService(IMapper mapper, IPlantioRepository plantioRepository
      public async Task<IEnumerable<FuncionarioDTO>> GetFuncionariosAsync()
     {
 
-        var funcionario = await _plantioRepository.GetFuncionariosAsync();
+        var funcionario = await _funcionarioRepository.GetFuncionariosAsync();
         return _mapper.Map<IEnumerable<FuncionarioDTO>>(funcionario);
     }
 

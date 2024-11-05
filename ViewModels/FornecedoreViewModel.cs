@@ -1,22 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-namespace Plantech.ViewModels;
-
-public partial class FornecedoreViewModel
+namespace Plantech.ViewModels
 {
-    public int Id { get; set; }
+    public partial class FornecedoreViewModel
+    {
+        public int Id { get; set; }
 
-    public string Cnpj { get; set; } = null!;
+        [Required(ErrorMessage = "CNPJ é obrigatório")]
+        [Display(Name = "CNPJ")]
+        public string Cnpj { get; set; } = null!;
 
-    public string RazaoSocial { get; set; } = null!;
+        [Required(ErrorMessage = "Razão Social é obrigatória")]
+        [Display(Name = "Razão Social")]
+        public string RazaoSocial { get; set; } = null!;
 
-    public string? Cidade { get; set; }
+        [Display(Name = "Cidade")]
+        public string? Cidade { get; set; }
 
-    public string? Endereco { get; set; }
+        [Display(Name = "Endereço")]
+        public string? Endereco { get; set; }
 
-    public string? Email { get; set; }
+        [Display(Name = "Email")]
+        public string? Email { get; set; }
 
-    public string Status { get; set; } = null!;
-
+        [Required(ErrorMessage = "Status é obrigatório")]
+        [Display(Name = "Status")]
+        public string Status { get; set; } = null!;
+    }
 }

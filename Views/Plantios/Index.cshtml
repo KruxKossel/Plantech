@@ -1,69 +1,96 @@
 @model IEnumerable<Plantech.ViewModels.PlantioViewModel>
 
-@section Styles {
-    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
-}
-
 @{
     ViewData["Title"] = "Plantios";
 }
 
-<br><br>
+<br>
 
-
-
-<br><br>
 <div class="jumbotron">
     <h1>@ViewData["Title"]</h1>
-
-    <div class="text-end" style="margin-right: 15px;">
     <br>
-    <a asp-action="Create" class="btn btn-primary sm ">Iniciar Novo Plantio</a>
-    <br>
+    <div class="d-flex gap-2">
+        <div class="mb-3">
+            <label for="startDate" class="form-label">Data Início</label>
+            <input type="date" id="startDate" class="form-control" style="width: 140px;" />
+        </div>
+        <div class="mb-3">
+            <label for="endDate" class="form-label">Data Fim</label>
+            <input type="date" id="endDate" class="form-control" />
+        </div>
+        <button id="filterButton" class="btn btn-primary"
+            style="padding: 0.2rem 0.4rem; height: 37px; margin-top: 33px;">
+            <i class="bi bi-search" style="font-size: 0.8rem;"></i> <!-- Ícone de lupa -->
+        </button>
+        <br><br>
     </div>
 
-</div>
-<div>
-    <canvas id="graficoPlantios" width="600" height="200"></canvas>
+    <div class="text-end" style="margin-right: 15px;">
+        <div class="card-index">
 
+            <div style="max-height: 350px; overflow-y: auto;">
+                <table class="table table-striped table-hover" id="plantioTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Data de Plantio</th>
+                            <th>Hortaliça</th>
+                            <th>Funcionário</th>
+                            <th>Quantidade</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var plantio in Model)
+                        {
+                            <tr>
+                                <td>@plantio.Id</td>
+                                <td>@plantio.DataPlantio</td>
+                                <td>@plantio.HortalicaId</td>
+                                <td>@plantio.FuncionarioId</td>
+                                <td>@plantio.Quantidade</td>
+                                <td>@plantio.Status</td>
+                                <td></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br>
+        <a asp-action="Create" class="btn btn-primary sm">Novo Plantio</a>
+    </div>
 </div>
-
-<hr>
 
 @section Scripts {
-
     <script>
-        var ctx = document.getElementById('graficoPlantios').getContext('2d');
-        var datas = @Html.Raw(Json.Serialize(Model.Select(p => p.DataPlantio?.ToString("yyyy-MM-dd"))));
-        var quantidades = @Html.Raw(Json.Serialize(Model.Select(p => p.Quantidade)));
+        document.getElementById("filterButton").addEventListener("click", function () {
+            // Obtém as datas de início e fim
+            const startDateInput = document.getElementById("startDate").value;
+            const endDateInput = document.getElementById("endDate").value;
+            const table = document.getElementById("plantioTable");
+            const rows = table.getElementsByTagName("tr");
 
-        console.log(datas, quantidades); // Para debugar
+            // Converte as datas para o formato adequado
+            const startDate = startDateInput ? new Date(startDateInput.split("/").reverse().join("-")) : null;
+            const endDate = endDateInput ? new Date(endDateInput.split("/").reverse().join("-")) : null;
 
-        var graficoPlantios = new Chart(ctx, {
-        type: 'line',
-        data: {
-        labels: datas,
-        datasets: [{
-        label: 'Datas dos Plantios',
-        data: quantidades,
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        borderColor: 'rgba(54, 162, 235, 1)',
-        borderWidth: 1
-        }]
-        },
-        options: {
-        scales: {
-        x: {
-        type: 'category', // Usar categoria já que temos apenas datas
-        },
-        y: {
-        beginAtZero: true
-        }
-        }
-        }
+            // Itera sobre as linhas da tabela (começando a partir da segunda linha)
+            for (let i = 1; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName("td");
+
+                // Verifica se há dados suficientes nas células
+                if (cells.length > 1) {
+                    const plantioDate = new Date(cells[1].innerText.split("/").reverse().join("-")); // Coluna da Data de Plantio
+                    
+                    // Verifica se a data de plantio está dentro do intervalo
+                    const isWithinRange = (!startDate || plantioDate >= startDate) && (!endDate || plantioDate <= endDate);
+
+                    // Exibe ou oculta a linha com base no intervalo
+                    rows[i].style.display = isWithinRange ? "" : "none";
+                }
+            }
         });
     </script>
 }
-
-
-
