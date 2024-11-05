@@ -54,6 +54,9 @@ builder.Services.AddScoped<IInsumoCompraService, InsumoCompraService>();
 builder.Services.AddScoped<ILotesInsumosRepository, LotesInsumosRepository>();
 builder.Services.AddScoped<ILotesInsumosService, LotesInsumosService>();
 
+builder.Services.AddScoped<ILotesHortalicasRepository, LotesHortalicasRepository>();
+builder.Services.AddScoped<ILotesHortalicasService, LotesHortalicasService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

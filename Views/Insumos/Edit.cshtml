@@ -1,16 +1,19 @@
 @model Plantech.ViewModels.InsumoViewModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar";
 }
-
-<h1>Edit</h1>
-
-<h4>Insumo</h4>
-<hr />
+@section Styles {
+    <link rel="stylesheet" href="~/css/detalhes.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/edit.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
+}
+<br>
+<h2>Editar Insumos</h2>
 <div class="row">
-    <div class="col-md-6">
-        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+
+    <div class=" card col-6">
+        <form asp-action="Edit" method="post " >
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
 
@@ -50,31 +53,48 @@
                 <span asp-validation-for="Tipo" class="text-danger"></span>
             </div>
 
-            <!-- Upload da imagem -->
-            <div class="form-group">
-                <label asp-for="ImagemArquivo" class="control-label"></label>
-                <input asp-for="ImagemArquivo" class="form-control" type="file" />
-                <span asp-validation-for="ImagemArquivo" class="text-danger"></span>
-
-                @if (!string.IsNullOrEmpty(Model.CaminhoImagem))
-                {
-                    <img src="~/images/@Model.CaminhoImagem" class="img-thumbnail mt-2" 
-                         style="object-fit: cover; width: 800px; height: 480px;" />
-                }
+            <div class="form-group mt-3 text-end">
+                <button type="submit" class="btn btn-primary" style="width: 150px;">Salvar</button>
+            </div>
+            <div>
+                <a asp-action="Index" class="btn btn-secondary" style=" margin-top:-10px; width: 150px;">Voltar</a>
             </div>
 
-            <!-- Botões -->
-            <div class="form-group mt-4">
-                <input type="submit" value="Salvar" class="btn btn-primary" />
-            </div>
+
         </form>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div class="col-6">
+        <br>
+        <form asp-action="EditImagem" method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Nome" />
+            <div class="form-group">
+                <input asp-for="ImagemArquivo" class="form-control" type="file" />
+                <span asp-validation-for="ImagemArquivo" class="text-danger"></span>
+                @if (!string.IsNullOrEmpty(Model.CaminhoImagem))
+                {
+                    <img src="~/images/@Model.CaminhoImagem" class="img-thumbnail mt-2"
+                        style="object-fit: cover; width: 800px; height: 480px;" />
 
+                }
+
+            </div>
+            <div class=" mt-4 text-end form-group">
+                <button type="submit" class="btn btn-primary" style="margin-left: -20px;width: 150px">Salvar</button>
+            </div>
+            
+        </form>
+
+    </div>
+
+</div>
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
+
+
+
+

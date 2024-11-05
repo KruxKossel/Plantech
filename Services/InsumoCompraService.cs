@@ -5,7 +5,7 @@ using Plantech.DTOs;
 using Plantech.Interfaces;
 using Plantech.Models;
 
-namespace Plantech.Repositories;
+namespace Plantech.Services;
 
 public class InsumoCompraService(IInsumoCompraRepository insumoCompraRepository,IMapper mapper): IInsumoCompraService
 {

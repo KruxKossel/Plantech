@@ -165,11 +165,11 @@ namespace Plantech.Controllers
                     }
             var listainsumoscompraDTO = new List<InsumosCompraDTO>();
 
-            var insumosSelecionados = model.DadosInsumos.Where(d => d.Selecionado).ToList();
+            var insumosSelecionados =  model.DadosInsumos.Where(d => d.Selecionado).ToList();
             if (model.DadosInsumos != null && model.DadosInsumos.Any())
             {
                 Console.WriteLine("DADOS DOS INSUMOS:");
-                foreach (var insumoDados in model.DadosInsumos)
+                foreach (var insumoDados in insumosSelecionados)
                 {
                     var insumoCompraDTO = new InsumosCompraDTO
                     {

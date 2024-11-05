@@ -60,8 +60,8 @@
                 @Html.DisplayFor(modelItem => item.FornecedorId)
             </td> *@
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Editar</a> |
-                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Detalhes</a> |
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Editar</a> 
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Detalhes</a> 
                 <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
             </td>
         </tr>
@@ -73,5 +73,5 @@
     </div>
     <div class="text-end" style="margin-right: 15px;">
         <br>
-        <a asp-action="Create" class="btn btn-primary ">Novo Insumo</a>
+        <a asp-action="Create" class="btn btn-primary ">Adicionar Insumo</a>
     </div>

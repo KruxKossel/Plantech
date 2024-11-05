@@ -1,12 +1,13 @@
 @model Plantech.DTOs.InsumoDTO
 
-@{
-    ViewData["Title"] = "Delete";
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/detalhes.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/edit.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
 }
-
-<h1>Delete</h1>
-
-<h3>Você realmente deseja deletar esse Insumo</h3>
+<br>
+<h3>Você realmente deseja deletar esse Insumo ?</h3>
 <div>
     <hr />
     <div class="card p-5" style="width: 1000px; height: 450px;">

@@ -1,5 +1,6 @@
 ﻿namespace Plantech.DTOs;
 using AutoMapper;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using Plantech.Models;
 using Plantech.ViewModels;
 
@@ -68,6 +69,12 @@ public class MappingProfile : Profile
                 .ForMember(dest => dest.InsumoId, opt => opt.Ignore())
                 .ForMember(dest => dest.Quantidade, opt => opt.Ignore()) 
                 .ForMember(dest => dest.PrecoUnitario, opt => opt.Ignore());
+
+
+
+        //Lotes Hortalicas
+        CreateMap<LotesHortalica,LotesHortalicaDTO>().ReverseMap();
+        CreateMap<LotesHortalicaViewModel, LotesHortalicaDTO>().ReverseMap();
     
     }
 }

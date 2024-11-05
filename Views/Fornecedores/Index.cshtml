@@ -14,19 +14,6 @@
 <br>
 <h2>Fornecedores</h2>
 <br>
-@* <form method="get" asp-action="Index">
-        <div class="form-row" style="display: flex;">
-            <div class="col-md-6">
-                <input type="text" name="filtro" class="form-control" placeholder="Filtrar por nome ou descrição"
-                    value="@ViewData["FiltroAtual"]" />
-            </div>
-            <div class="" style="display: flex;margin-bottom: 20px;">
-                <button type="submit" class="btn btn-primary" style="margin-left: 15px;">Filtar</button>
-                <a asp-action="ExportarExcel" asp-route-filtro="@ViewData["FiltroAtual"]" class="btn btn-success" style="margin-left: 15px;">Exportar para Excel</a>
-                <a asp-action="RelatorioImpressao" asp-route-filtro="@ViewData["FiltroAtual"]" target="_blank" class="btn btn-success" style="margin-left: 15px;">Visualizar Relatório</a>
-            </div>
-        </div>
-    </form> *@
 
 <div class="card-index">
         <div style="max-height: 350px; overflow-y: auto;">
@@ -82,8 +69,8 @@
             </td>
             }
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Editar</a> |
-                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Detalhes</a> |
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Editar</a> 
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Detalhes</a> 
                 <form asp-action="Delete" asp-route-id="@item.Id" method="post" style="display:inline;">
                     <button type="submit" class="btn btn-warning">Mudar Status</button>
                 </form>
