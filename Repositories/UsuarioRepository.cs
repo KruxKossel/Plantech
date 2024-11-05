@@ -50,6 +50,6 @@ public class UsuarioRepository(PlantechContext context) : IUsuarioRepository
 
     public async Task<Usuario> GetByEmailAsync(string email)
     {
-        return await _context.Usuarios.Where(f => f.Email.Contains(email)).FirstOrDefaultAsync();
+        return await _context.Usuarios.Where(f => f.Email.Contains(email)).SingleOrDefaultAsync(u => u.Email == email);
     }
 }

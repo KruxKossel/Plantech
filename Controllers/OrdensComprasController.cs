@@ -71,8 +71,8 @@ namespace Plantech.Controllers
             var useremail = User.FindFirst(ClaimTypes.Email)?.Value;
 
             var usuarioLogado =  _usuarioService.GetByEmailAsync(useremail);
-                // for(int i =0; i<100 ; i++)
-                // Console.WriteLine("vazio"+ usuarioLogado.Id);
+                for(int i =0; i<100 ; i++)
+                Console.WriteLine("vazio"+ usuarioLogado.Id);
 
             var fornecedor = await _ordensCompraService.ObterFornecedorPorId(ordensCompraDTO.FornecedorId);
             if (fornecedor == null)

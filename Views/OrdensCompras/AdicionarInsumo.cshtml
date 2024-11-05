@@ -3,47 +3,62 @@
 
 @if (User.IsInRole("Comprador") || User.IsInRole("Administrador"))
 {
+    <br>
+
+    <br>
     <h2>Adicionar Insumos à Ordem de Compra</h2>
+    <br>
     <form asp-action="AdicionarInsumo" asp-route-id="@Model.OrdemCompraId" method="post">
         <input type="hidden" asp-for="OrdemCompraId" />
+        <div class="card-index">
+            <div style="max-height: 350px; overflow-y: auto;">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Descrição</th>
+                            <th>Quantidade</th>
+                            <th>Preço Unitário</th>
+                            <th>Selecionar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int index = 0; index < Model.InsumosDisponiveis.Count; index++)
+                        {
+                            var insumo = Model.InsumosDisponiveis[index];
+                            <tr>
+                                <td>@insumo.Nome</td>
+                                <td>@insumo.Descricao</td>
+                                <td class="text-center">
+                                    <input type="number" name="DadosInsumos[@index].QtdInsumos" min="1" value="1" required
+                                        class="form-control form-control-sm" />
+                                </td>
+                                <td class="text-center">
+                                    <div class="input-group input-group-sm">
+                                        <span class="input-group-text">R$</span>
+                                        <input type="number" step="0.01" name="DadosInsumos[@index].PrecoUnitario"
+                                            value="@insumo.PrecoUnitario.ToString("F2", CultureInfo.CurrentCulture)" required
+                                            class="form-control" />
+                                    </div>
+                                </td>
 
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>Descrição</th>
-                    <th>Quantidade</th>
-                    <th>Preço Unitário</th>
-                    <th>Selecionar</th>
-                </tr>
-            </thead>
-            <tbody>
-                @for (int index = 0; index < Model.InsumosDisponiveis.Count; index++)
-                {
-                    var insumo = Model.InsumosDisponiveis[index];
-                    <tr>
-                        <td>@insumo.Nome</td>
-                        <td>@insumo.Descricao</td>
-                        <td>
-                            <input type="number" name="DadosInsumos[@index].QtdInsumos" min="1" value="1" required />
-                        </td>
-                        <td>
-                            <input type="number" step="0.01" name="DadosInsumos[@index].PrecoUnitario" value="@insumo.PrecoUnitario.ToString("F2", CultureInfo.InvariantCulture)" required />
-                        </td>
-                        <td>
-                            <input type="checkbox" name="DadosInsumos[@index].Selecionado" value="true" />
-                            <input type="hidden" name="DadosInsumos[@index].InsumoId" value="@insumo.Id" />
-                            <label>Selecionar</label>
-                        </td>              
-                    </tr>
-                }
-            </tbody>
-        </table>
-
-        <button type="submit" class="btn btn-success">Adicionar Insumos</button>
-        <div>
-            <a asp-action="Index" class="btn btn-danger">Cancelar</a>
+                                <td>
+                                    <input type="checkbox" name="DadosInsumos[@index].Selecionado" value="true" />
+                                    <input type="hidden" name="DadosInsumos[@index].InsumoId" value="@insumo.Id" />
+                                    <label>Selecionar</label>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
+        <br>
+        <div class="d-flex justify-content-end gap-3">
+            <a asp-action="Index" class="btn btn-danger">Cancelar</a>
+            <button type="submit" class="btn btn-success">Adicionar Insumos</button>
+        </div>
+
 
     </form>
 }
