@@ -49,18 +49,42 @@ namespace Plantech.Controllers
 
 
 
-
         // GET: Plantios
         public async Task<IActionResult> Index()
         {
             var plantios = await _plantioService.GetAllAsync();
             var viewModels = _mapper.Map<IEnumerable<PlantioViewModel>>(plantios);
 
-            
+            // Obter nomes dos funcionários e hortaliças
+            var funcionarios = await _plantioService.GetFuncionariosAsync();
+            var hortalicas = await _hortalicaService.ListarHortalicasAsync();
+
+            // Verificar os dados obtidos (apenas para depuração) 
+            Console.WriteLine("Funcionários:"); 
+            foreach (var f in funcionarios) 
+            { Console.WriteLine($"{f.Id}: {f.Nome}");}
+
+             Console.WriteLine("Plantios:"); 
+            foreach (var f in plantios) 
+            { Console.WriteLine($"{f.Id}: {f.FuncionarioId}");}
 
 
-            return View(viewModels);
+            // Associar os dados de funcionários e hortaliças aos plantios 
+            var viewModelList = viewModels.Select(vm => new PlantioViewModel 
+            { Id = vm.Id, 
+            DataPlantio = vm.DataPlantio, 
+            HortalicaId = vm.HortalicaId, 
+            FuncionarioId = vm.FuncionarioId, 
+            Quantidade = vm.Quantidade, 
+            Status = vm.Status, 
+            HortalicaNome = hortalicas.Where(h => h.Id == vm.HortalicaId).Select(h => h.Nome).FirstOrDefault(), 
+            FuncionarioNome = funcionarios.Where(f => f.Id == vm.FuncionarioId).Select(f => f.Nome).FirstOrDefault() 
+            }).ToList();
+
+
+            return View(viewModelList);
         }
+
 
         // GET: Plantios/Details/5
         public async Task<IActionResult> Details(int? id)
