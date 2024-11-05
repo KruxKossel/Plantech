@@ -66,3 +66,15 @@ body {
 
 }
 
+.imagemHotalicaEdit{
+  aspect-ratio: 1.45/1;
+  object-fit: cover;
+}
+
+@media (min-width: 800px){
+  .imagemHotalicaEdit{
+    aspect-ratio: 1.2/1;
+    object-fit: cover;
+    max-width: 380px;
+  }
+}

@@ -10,28 +10,24 @@
 
 <h2 class="text-center mb-3 mt-3">@ViewData["Title"]</h2>
 
-<section>
-    <div>
-        <dl class="conteudo row">
-            <h2>
-                <dd class="col-sm-11 text-center">@Model.Nome</dd>
-            </h2>
-            <dd class=" IMG col-sm-10">
-                @if (!string.IsNullOrEmpty(Model.CaminhoImagem))
-                {
-                    <img src="~/images/@Model.CaminhoImagem" class="img-thumbnail mt-2"
-                        style="object-fit: cover; width: 800px; height: 400px;" />
-                }
-            </dd>
-            <dt class="col-sm-2 ms-3">Descrição:</dt>
-            <dd class="col-sm-11 ms-3">@Model.Descricao</dd>
-            <dt class="col-sm-2 ms-3">Observações:</dt>
-            <dd class="col-sm-11 ms-3">@Model.Observacoes</dd>
-
-        </dl>
+<h2>
+    <dd class="col-sm-11 text-center">@Model.Nome</dd>
+</h2>
+<dl class="conteudo row bg-white">
+    <div class="col-12 col-md-6">
+        <dt>Descrição:</dt>
+        <dd>@Model.Descricao</dd>
+        <dt>Observações:</dt>
+        <dd>@Model.Observacoes</dd>
     </div>
-    <div class="text-end ">
-        <a asp-action="Index" class="btn btn-secondary">Voltar</a>
-    </div>
-
-</section>
+    <dd class=" col-12 col-md-6">
+        @if (!string.IsNullOrEmpty(Model.CaminhoImagem))
+        {
+            <img src="~/images/@Model.CaminhoImagem" class="img-thumbnail mt-2"
+                style="object-fit: cover; width: 800px; height: 400px;" />
+        }
+    </dd>
+</dl>
+<div class="text-end ">
+    <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+</div>

@@ -41,15 +41,15 @@
 
 
         <!-- Navbar start -->
-        <div class="container-fluid fixed-top">
-            <div class="container topbar bg-primary d-none d-lg-block">
+        <div class="container-fluid fixed-top navbarStart">
+            <div class="container-fluid topbar bg-primary d-none d-lg-block">
             <div class="d-flex justify-content-between">
                 <div class="top-info ps-2">
-                <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">123 Av. Rural, São Paulo</a></small>
-                <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">Plantech@FazendaUrbana.com</a></small>
+                <small class="me-1"><i class="fas fa-map-marker-alt me-1 text-secondary"></i> <a href="#" class="text-white text-ellipsis">123 Av. Rural, São Paulo</a></small>
+                <small class="me-1"><i class="fas fa-envelope me-1 text-secondary"></i><a href="#" class="text-white text-ellipsis">Plantech@FazendaUrbana.com</a></small>
                 </div>
                 <div class="top-link pe-2">
-                <a href="#" class="text-white"><small class="text-white mx-2">Politicas de Privacidade</small>/</a>
+                <a href="" class="text-white"><small class="text-white mx-2">Politicas de Privacidade</small>/</a>
                 <a href="#" class="text-white"><small class="text-white mx-2">Termos de uso</small>/</a>
                 <a href="#" class="text-white"><small class="text-white ms-2">Vendas e Rembolsos</small></a>
                 </div>
@@ -63,9 +63,9 @@
                 </button>
                 <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                 <div class="navbar-nav mx-auto">
-                    <a asp-controller="Home" asp-action="Index" class="nav-item nav-link active">Home</a>
-                    <a href="#" class="nav-item nav-link">Catálogo</a>
-                    <a href="#" class="nav-item nav-link">Hortaliças Detalhes</a>
+                    <a asp-controller="Home" asp-action="Index" class="nav-item nav-link active">vendedor</a>
+                    <a href="#catalogo" class="nav-item nav-link">Catálogo</a>
+                    <a href="#hotalicasDetalhes" class="nav-item nav-link">Hortaliças Detalhes</a>
                     @* <div class="nav-item dropdown">
                                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                                         <div class="dropdown-menu m-0 bg-secondary rounded-0">
@@ -75,7 +75,7 @@
                                             <a href="#" class="dropdown-item">404 Page</a>
                                         </div>
                                     </div> *@
-                    <a href="#" class="nav-item nav-link">Contatos</a>
+                    <a href="#contatos" class="nav-item nav-link">Contatos</a>
                 </div>
                 <div class="d-flex m-3 me-0">
                     <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
@@ -124,7 +124,7 @@
               @RenderBody()
 
                 <!-- Footer Start -->
-        <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5">
+        <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5" id="contatos">
             <div class="container py-5">
                 <div class="pb-4 mb-4" style="border-bottom: 1px solid rgba(226, 175, 24, 0.5) ;">
                     <div class="row g-4">
@@ -153,7 +153,7 @@
                 <div class="row g-5">
                     <div class="col-lg-3 col-md-6">
                         <div class="footer-item">
-                            <h4 class="text-light mb-3">O que nós temos a oferecer?</h4>
+                            <h4 class="text-light mb-3" style="text-align: justify; ">O que nós temos a oferecer?</h4>
                             <p class="mb-4">typesetting, remaining essentially unchanged. It was 
                                 popularised in the 1960s with the like Aldus PageMaker including of Lorem Ipsum.</p>
                             <a href="" class="btn border-secondary py-2 px-4 rounded-pill text-primary">Continue Lendo!</a>

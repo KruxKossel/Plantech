@@ -2,61 +2,59 @@
 
 
 @section Styles {
-<link rel="stylesheet" href="~/css/detalhes.css" asp-append-version="true" />
-<link rel="stylesheet" href="~/css/edit.css" asp-append-version="true" />
-<link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/detalhes.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/edit.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
 }
 <h2>@ViewData["Title"]</h2>
 <div class="row">
 
-    <div class=" card col-6">
+    <div class=" col-12 col-md-7 rounded-2">
         <form asp-action="Edit" method="post">
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="Nome" class="control-label"></label>
+                <label asp-for="Nome" class="control-label">Nome:</label>
                 <input asp-for="Nome" class="form-control" style="margin-bottom: 10px;" />
                 <span asp-validation-for="Nome" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Descricao" class="control-label"></label>
+                <label asp-for="Descricao" class="control-label">Descrição:</label>
                 <textarea asp-for="Descricao" class="form-control"
                     style="height: 80px; vertical-align: top; margin-bottom: 10px;"></textarea>
                 <span asp-validation-for="Descricao" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Observacoes" class="control-label"></label>
+                <label asp-for="Observacoes" class="control-label">Observações</label>
                 <textarea asp-for="Observacoes" class="form-control"
                     style="height: 150px; vertical-align: top;margin-bottom: 10px;"></textarea>
                 <span asp-validation-for="Observacoes" class="text-danger"></span>
             </div>
             <div class="form-group mt-3 text-end">
-                <button type="submit" class="btn btn-primary" style="width: 150px;">Salvar</button>
-            </div>
-            <div>
-                <a asp-action="Index" class="btn btn-secondary" style=" margin-top:20px; width: 150px;">Voltar</a>
+            <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+            <button type="submit" class="btn btn-primary">Salvar</button>
             </div>
         </form>
     </div>
 
-    <div class="col-6">
+    <div class="col-12 col-md-5">
         <form asp-action="EditImagem" method="post" enctype="multipart/form-data">
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="Nome" />
-            <div class="form-group">
+            <div class="form-group d-grid justify-content-center align-items-center">
                 <input asp-for="ImagemArquivo" class="form-control" type="file" />
                 <span asp-validation-for="ImagemArquivo" class="text-danger"></span>
                 @if (!string.IsNullOrEmpty(Model.CaminhoImagem))
                 {
-                    <img src="~/images/@Model.CaminhoImagem" class="img-thumbnail mt-2"
-                        style="object-fit: cover; width: 800px; height: 480px;" />
+                    <img src="~/images/@Model.CaminhoImagem" class="img-thumbnail mt-2 imagemHotalicaEdit" />
 
                 }
 
             </div>
             <div class=" mt-4 text-end form-group">
-                <button type="submit" class="btn btn-primary" style="margin-left: -20px;width: 150px">Salvar</button>
+                @* <a asp-action="Index" class="btn btn-secondary">Voltar</a> *@
+                <button type="submit" class="btn btn-primary">Salvar Foto</button>
             </div>
-            
+
         </form>
 
     </div>
