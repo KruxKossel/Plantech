@@ -7,9 +7,8 @@
 <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
 }
 <h2>@ViewData["Title"]</h2>
-<div class="row">
-
-    <div class=" card col-6">
+<div class="row mt-4">
+    <div class="border rounded-2 p-2 shadow  col-12 col-md-7">
         <form asp-action="Edit" method="post">
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
@@ -30,16 +29,13 @@
                 <span asp-validation-for="Observacoes" class="text-danger"></span>
             </div>
             <div class="form-group mt-3 text-end">
-                <button type="submit" class="btn btn-primary" style="width: 150px;">Salvar</button>
-            </div>
-            <div>
-                <a asp-action="Index" class="btn btn-secondary" style=" margin-top:20px; width: 150px;">Voltar</a>
+                <a asp-action="Index" class="btn btn-secondary mx-2" >Voltar</a>
+                <button type="submit" class="btn btn-primary" >Salvar</button>
             </div>
         </form>
     </div>
 
-    <div class="col-6">
-        <br>
+    <div class="col-12 col-md-5 d-grid justify-content-center">
         <form asp-action="EditImagem" method="post" enctype="multipart/form-data">
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="Nome" />
@@ -49,13 +45,13 @@
                 @if (!string.IsNullOrEmpty(Model.CaminhoImagem))
                 {
                     <img src="~/images/@Model.CaminhoImagem" class="img-thumbnail mt-2"
-                        style="object-fit: cover; width: 800px; height: 480px;" />
+                        style="aspect-ratio: 1/1; object-fit: cover; max-width: 355px;" />
 
                 }
 
             </div>
             <div class=" mt-4 text-end form-group">
-                <button type="submit" class="btn btn-primary" style="margin-left: -20px;width: 150px">Salvar</button>
+                <button type="submit" class="btn btn-primary" style="margin-left: -20px;width: 150px">Salvar Foto</button>
             </div>
             
         </form>
