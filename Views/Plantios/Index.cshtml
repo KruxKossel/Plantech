@@ -8,18 +8,11 @@
     ViewData["Title"] = "Plantios";
 }
 
-<br><br>
-
-
-
-<br><br>
-<div class="jumbotron">
+<div class="jumbotron mt-4">
     <h1>@ViewData["Title"]</h1>
 
-    <div class="text-end" style="margin-right: 15px;">
-    <br>
-    <a asp-action="Create" class="btn btn-primary sm ">Iniciar Novo Plantio</a>
-    <br>
+    <div class="text-end me-4" >
+        <a asp-action="Create" class="btn btn-primary sm ">Iniciar Novo Plantio</a>
     </div>
 
 </div>
@@ -40,30 +33,27 @@
         console.log(datas, quantidades); // Para debugar
 
         var graficoPlantios = new Chart(ctx, {
-        type: 'line',
-        data: {
-        labels: datas,
-        datasets: [{
-        label: 'Datas dos Plantios',
-        data: quantidades,
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        borderColor: 'rgba(54, 162, 235, 1)',
-        borderWidth: 1
-        }]
-        },
-        options: {
-        scales: {
-        x: {
-        type: 'category', // Usar categoria já que temos apenas datas
-        },
-        y: {
-        beginAtZero: true
-        }
-        }
-        }
+            type: 'line',
+            data: {
+                labels: datas,
+                datasets: [{
+                    label: 'Datas dos Plantios',
+                    data: quantidades,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        type: 'category', // Usar categoria já que temos apenas datas
+                    },
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
         });
     </script>
 }
-
-
-

@@ -9,12 +9,10 @@
     <link rel="stylesheet" href="~/css/edit.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
 }
-<br><br>
-<h2>@ViewData["Title"]</h2>
-<br>
+<h2 class="mt-4">@ViewData["Title"]</h2>
 <form asp-action="Create" method="post" enctype="multipart/form-data">
     <div class="row">
-        <div class="card-plan p-5">
+        <div class="card-plan p-2">
             @Html.AntiForgeryToken()
             <div class="col-10 form-group">
                 <label asp-for="FuncionarioNome"></label>
@@ -58,12 +56,10 @@
         </div>
 
     </div>
-    <div class="form-group mt-4 text-end">
-        <button type="submit" class="btn btn-primary" style="width: 150px; margin-right: 60px;">Salvar</button>
-    </div>
-    <div>
-        <a asp-controller="Plantios" asp-action="Index" class="btn btn-secondary"
-            style="width: 150px; margin-top: -15px;">Voltar</a>
+
+    <div class="modal-footer">
+        <a asp-controller="Plantios" asp-action="Index" class="btn btn-secondary mx-2">Voltar</a>
+        <button type="submit" class="btn btn-primary">Salvar</button>
     </div>
 
 </form>

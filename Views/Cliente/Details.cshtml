@@ -10,29 +10,29 @@
 <h2 class="text-center"> Detalhes do Cliente</h2>
 
 <section>
-    <div class="row " style="justify-content: center;">
-        <div class="card col-6">
-            <div style=" font-size: 25px; padding: 20px;">
-                <div class="row" style="justify-content: center;">
-                    <div class="col-6">
-                        <dt class="">CNPJ:</dt>
-                        <dd class="mb-3">@Model.Cnpj</dd>
-                        <dt class=" ">Nome:</dt>
-                        <dd class="mb-3">@Model.RazaoSocial</dd>
-                        <dt class="">Endereço:</dt>
-                        <dd class="mb-3">@Model.Endereco</dd>
-                    </div>
-                    <div class="col-6">
-                        <dt class="">Telefone:</dt>
-                        <dd class="mb-3">@Model.Telefone</dd>
-                        <dt class="">Email:</dt>
-                        <dd class="mb-3">@Model.Email</dd>
-                        <dt class="">Status:</dt>
-                        <dd class="mb-3">@Model.Status</dd>
-                    </div>
+    <div class="border rounded-2 shadow p-2 mx-5">
+        <div style=" font-size: 25px; padding: 20px;">
+            <div class="row" style="justify-content: center;">
+                <div class="col-12 col-md-6">
+                    <dt class="">CNPJ:</dt>
+                    <dd class="mb-3">@Model.Cnpj</dd>
+                    <dt class=" ">Nome:</dt>
+                    <dd class="mb-3">@Model.RazaoSocial</dd>
+                    <dt class="">Endereço:</dt>
+                    <dd class="mb-3">@Model.Endereco</dd>
+                </div>
+                <div class="col-12 col-md-6">
+                    <dt class="">Telefone:</dt>
+                    <dd class="mb-3">@Model.Telefone</dd>
+                    <dt class="">Email:</dt>
+                    <dd class="mb-3">@Model.Email</dd>
+                    <dt class="">Status:</dt>
+                    <dd class="mb-3">@Model.Status</dd>
                 </div>
             </div>
-            <br><br><br><br>
+        </div>
+
+        <div class="text-end">
             <a asp-action="Index" class="btn btn-secondary mt-3" style="width: 200px; margin-left: 10px;">Voltar</a>
         </div>
     </div>
