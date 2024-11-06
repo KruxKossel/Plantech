@@ -13,11 +13,16 @@ namespace Plantech.Repositories
     {
         private readonly PlantechContext _context = context;
 
-        public async Task<Funcionario> GetByUserIdAsync(int userId)
+        public async Task<Funcionarios> GetByUserIdAsync(int userId)
         {
             return await _context.Funcionarios
                 .Include(f => f.Cargo)
                 .SingleOrDefaultAsync(f => f.UsuarioId == userId);
+        }
+
+         public async Task<IEnumerable<Funcionarios>> GetFuncionariosAsync()
+        {
+            return await _context.Funcionarios.ToListAsync();
         }
 
     }

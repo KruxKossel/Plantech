@@ -1,29 +1,62 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Plantech.Data;
+using Plantech.ViewModels;
+using Plantech.DTOs;
+using Plantech.Interfaces;
+using AutoMapper;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Plantech.Models;
 
 namespace Plantech.Controllers
 {
-    public class PlantiosController : Controller
-    {
-        private readonly PlantechContext _context;
 
-        public PlantiosController(PlantechContext context)
+    [Authorize(Roles = "Agricultor, Administrador")]
+    public class PlantiosController(IPlantioService plantioService, IMapper mapper, 
+                                    IUsuarioService usuarioService, IHortalicaService  hortalicaService) : Controller
+    {
+        private readonly IPlantioService _plantioService = plantioService;
+
+        private readonly IHortalicaService _hortalicaService = hortalicaService;
+        private readonly IMapper _mapper = mapper;
+        private readonly IUsuarioService _usuarioService = usuarioService; // Adicione o serviço de usuário
+
+        private async Task<int> GetLoggedFuncionarioId()
         {
-            _context = context;
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+            {
+                Console.WriteLine("pqp");
+                throw new InvalidOperationException("User is not authenticated.");
+            }
+
+            // Tente converter o valor para inteiro com validação
+            if (!int.TryParse(userIdClaim.Value, out int userId))
+            {
+                throw new FormatException($"O valor '{userIdClaim.Value}' não é um número válido.");
+            }
+
+            var usuario = await _usuarioService.GetByIdAsync(userId);
+            var funcionario = usuario.Funcionarios.FirstOrDefault(); // Pega o primeiro funcionário associado ao usuário
+            return funcionario != null ? funcionario.Id : 0;
         }
+
+
+
+
+
 
         // GET: Plantios
         public async Task<IActionResult> Index()
         {
-            var plantechContext = _context.Plantios.Include(p => p.Funcionario).Include(p => p.Hortalica);
-            return View(await plantechContext.ToListAsync());
+            var plantios = await _plantioService.GetAllAsync();
+            var viewModels = _mapper.Map<IEnumerable<PlantioViewModel>>(plantios);
+
+            
+
+
+            return View(viewModels);
         }
 
         // GET: Plantios/Details/5
@@ -34,137 +67,148 @@ namespace Plantech.Controllers
                 return NotFound();
             }
 
-            var plantio = await _context.Plantios
-                .Include(p => p.Funcionario)
-                .Include(p => p.Hortalica)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var plantio = await _plantioService.GetByIdAsync(id.Value);
             if (plantio == null)
             {
                 return NotFound();
             }
 
-            return View(plantio);
+            var viewModel = _mapper.Map<PlantioViewModel>(plantio);
+            return View(viewModel);
         }
 
-        // GET: Plantios/Create
-        public IActionResult Create()
+        [HttpGet]
+        public async Task<IActionResult> Create()
         {
-            ViewData["FuncionarioId"] = new SelectList(_context.Funcionarios, "Id", "Id");
-            ViewData["HortalicaId"] = new SelectList(_context.Hortalicas, "Id", "Id");
-            return View();
+            var model = new PlantioViewModel();
+
+            // Obter id e nome do funcionário logado
+            var funcionarioId = await GetLoggedFuncionarioId();
+            var usuario = await _usuarioService.GetByIdAsync(funcionarioId);
+
+            // Atribuir valores ao modelo
+            model.FuncionarioId = funcionarioId;
+            model.DataPlantio = DateOnly.FromDateTime(DateTime.Now);
+            model.Status = "não colhida";
+
+            ViewData["FuncionarioNome"] = usuario.Funcionarios.FirstOrDefault()?.Nome;
+
+            // Obter hortaliças e lotes de insumos ativos
+            ViewData["HortalicaId"] = new SelectList(await _hortalicaService.ListarHortalicasAsync(), "Id", "Nome");
+            var lotesInsumos = await _plantioService.GetLotesInsumosAsync();
+            var lotesAtivos = lotesInsumos
+                .Where(l => l.Status == "ativo")
+                .Select(l => new 
+                {
+                    l.Id,
+                    l.Nome,
+                    l.Quantidade,
+                    DataValidade = l.DataValidade.HasValue ? l.DataValidade.Value.ToShortDateString() : "N/A"
+                }).ToList();
+                
+
+            ViewData["LotesInsumo"] = lotesAtivos; // Passar os objetos diretamente
+            return View(model);
         }
 
-        // POST: Plantios/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,DataPlantio,HortalicaId,FuncionarioId,Quantidade")] Plantio plantio)
+        public async Task<IActionResult> Create(PlantioViewModel model, int[] SelectedInsumos, Dictionary<int, int> InsumosQuantities)
         {
+
+            
+            Console.WriteLine("\n\n Entrou no post");
+
+            if (!ModelState.IsValid)
+            {
+                foreach (var state in ModelState)
+                {
+                    foreach (var error in state.Value.Errors)
+                    {
+                        Console.WriteLine($"Key: {state.Key}, Error: {error.ErrorMessage}");
+                    }
+                }
+            }
+
+            
             if (ModelState.IsValid)
             {
-                _context.Add(plantio);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["FuncionarioId"] = new SelectList(_context.Funcionarios, "Id", "Id", plantio.FuncionarioId);
-            ViewData["HortalicaId"] = new SelectList(_context.Hortalicas, "Id", "Id", plantio.HortalicaId);
-            return View(plantio);
-        }
 
-        // GET: Plantios/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var plantio = await _context.Plantios.FindAsync(id);
-            if (plantio == null)
-            {
-                return NotFound();
-            }
-            ViewData["FuncionarioId"] = new SelectList(_context.Funcionarios, "Id", "Id", plantio.FuncionarioId);
-            ViewData["HortalicaId"] = new SelectList(_context.Hortalicas, "Id", "Id", plantio.HortalicaId);
-            return View(plantio);
-        }
-
-        // POST: Plantios/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,DataPlantio,HortalicaId,FuncionarioId,Quantidade")] Plantio plantio)
-        {
-            if (id != plantio.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
+                Console.WriteLine("\n\n Entrou no if");
+                var plantioDTO = _mapper.Map<PlantioDTO>(model);
                 try
                 {
-                    _context.Update(plantio);
-                    await _context.SaveChangesAsync();
+                        Console.WriteLine("\n\n Entrou no Try");
+
+                    await _plantioService.CreatePlantioAsync(plantioDTO);
+
+                    // Obter o último plantio criado
+                    var ultimoPlantio = await _plantioService.GetUltimoPlantioAsync();
+                    int plantioId = ultimoPlantio.Id;
+
+                    foreach (var insumoId in SelectedInsumos)
+                    {
+                        var quantidade = InsumosQuantities.ContainsKey(insumoId) ? InsumosQuantities[insumoId] : 0;
+
+                        // Aqui, você pode criar o DTO de Insumos do plantio e salvá-lo no banco de dados
+                        var insumoPlantioDTO = new InsumosPlantioDTO
+                        {
+                            PlantioId = plantioId,
+                            LoteId = insumoId,
+                            Quantidade = quantidade
+                        };
+                        
+                        Console.WriteLine("\n\n Deu Certo krlh!!");
+                        await _plantioService.CreateInsumosPlantioAsync(insumoPlantioDTO);
+                    }
+                    
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (Exception ex)
                 {
-                    if (!PlantioExists(plantio.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    ViewBag.ErrorMessage = ex.Message;
                 }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["FuncionarioId"] = new SelectList(_context.Funcionarios, "Id", "Id", plantio.FuncionarioId);
-            ViewData["HortalicaId"] = new SelectList(_context.Hortalicas, "Id", "Id", plantio.HortalicaId);
-            return View(plantio);
-        }
 
-        // GET: Plantios/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
             }
 
-            var plantio = await _context.Plantios
-                .Include(p => p.Funcionario)
-                .Include(p => p.Hortalica)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (plantio == null)
-            {
-                return NotFound();
-            }
+            Console.WriteLine("\n\n porra");
 
-            return View(plantio);
+            // Se houver erro, recarregar listas de hortaliças e lotes de insumos ativos
+            // Obter id e nome do funcionário logado
+            var funcionarioId = await GetLoggedFuncionarioId();
+            var usuario = await _usuarioService.GetByIdAsync(funcionarioId);
+
+            // Atribuir valores ao modelo
+            model.FuncionarioId = funcionarioId;
+            model.DataPlantio = DateOnly.FromDateTime(DateTime.Now);
+            model.Status = "não colhida";
+
+            ViewData["FuncionarioNome"] = usuario.Funcionarios.FirstOrDefault()?.Nome;
+
+            // Obter hortaliças e lotes de insumos ativos
+            ViewData["HortalicaId"] = new SelectList(await _hortalicaService.ListarHortalicasAsync(), "Id", "Nome");
+            var lotesInsumos = await _plantioService.GetLotesInsumosAsync();
+            var lotesAtivos = lotesInsumos
+                .Where(l => l.Status == "ativo")
+                .Select(l => new 
+                {
+                    l.Id,
+                    l.Nome,
+                    l.Quantidade,
+                    DataValidade = l.DataValidade.HasValue ? l.DataValidade.Value.ToShortDateString() : "N/A"
+                }).ToList();
+
+            ViewData["LotesInsumo"] = lotesAtivos; // Passar os objetos diretamente
+
+            return View(model);
         }
 
-        // POST: Plantios/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var plantio = await _context.Plantios.FindAsync(id);
-            if (plantio != null)
-            {
-                _context.Plantios.Remove(plantio);
-            }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
-        private bool PlantioExists(int id)
-        {
-            return _context.Plantios.Any(e => e.Id == id);
-        }
+
+        
+
     }
 }

@@ -1,15 +1,17 @@
-@model IEnumerable<Plantech.Models.Insumo>
+@model IEnumerable<Plantech.DTOs.InsumoDTO>
 
 @{
     ViewData["Title"] = "Index";
 }
-
-<h1>Index</h1>
-
+<br><br>
+@if (User.IsInRole("Comprador") || User.IsInRole("Administrador"))
+{
+<h2>Lista de Insumos</h2>
 <p>
-    <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<div class="card-index">
+        <div style="max-height: 5000px; overflow-y: auto;">
+            <table class="table table-striped table-hover">
     <thead>
         <tr>
             <th>
@@ -27,16 +29,16 @@
             <th>
                 @Html.DisplayNameFor(model => model.Tipo)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CaminhoImagem)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Fornecedor)
-            </th>
+            @* <th>
+                @Html.DisplayNameFor(model => model.FornecedorId)
+            </th> *@
             <th></th>
         </tr>
     </thead>
     <tbody>
+        
+        </div>
+        </div>
 @foreach (var item in Model) {
         <tr>
             <td>
@@ -54,18 +56,22 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Tipo)
             </td>
+            @* <td>
+                @Html.DisplayFor(modelItem => item.FornecedorId)
+            </td> *@
             <td>
-                @Html.DisplayFor(modelItem => item.CaminhoImagem)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fornecedor.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Editar</a> 
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Detalhes</a> 
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
             </td>
         </tr>
 }
+}
     </tbody>
 </table>
+    </div>
+    </div>
+    <div class="text-end" style="margin-right: 15px;">
+        <br>
+        <a asp-action="Create" class="btn btn-primary ">Adicionar Insumo</a>
+    </div>

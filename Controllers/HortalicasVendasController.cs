@@ -59,7 +59,7 @@ namespace Plantech.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("VendaId,LoteId,Quantidade,PrecoUnitario")] HortalicasVenda hortalicasVenda)
+        public async Task<IActionResult> Create([Bind("VendaId,LoteId,Quantidade,PrecoUnitario")] HortalicasVendas hortalicasVenda)
         {
             if (ModelState.IsValid)
             {
@@ -95,7 +95,7 @@ namespace Plantech.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("VendaId,LoteId,Quantidade,PrecoUnitario")] HortalicasVenda hortalicasVenda)
+        public async Task<IActionResult> Edit(int id, [Bind("VendaId,LoteId,Quantidade,PrecoUnitario")] HortalicasVendas hortalicasVenda)
         {
             if (id != hortalicasVenda.VendaId)
             {

@@ -18,5 +18,7 @@ namespace Plantech.DTOs
         public string Salt { get; set; } = null!;
 
         public string Status { get; set; } = null!;
+        public List<FuncionarioDTO> Funcionarios { get; internal set; }
+
     }
 }

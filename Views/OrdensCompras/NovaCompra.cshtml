@@ -1,0 +1,111 @@
+@model Plantech.ViewModels.OrdensCompraViewModel
+
+@{
+    ViewData["Title"] = "NovaCompra";
+}
+
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/detalhes.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/edit.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
+}
+
+<br><br>
+<h1>Nova Ordem de Compra</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="NovaCompra">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @* <div class="form-group">
+            <label asp-for="FuncionarioId" class="control-label" ></label>
+            <select asp-for="FuncionarioId" class ="form-control" asp-items="ViewBag.FuncionarioId" ></select>
+            </div>
+            *@
+            <div class="form-group">
+                <h2><label asp-for="Fornecedor" class="control-label"></label></h2>
+                <input type="text" id="cnpj" class="form-control" placeholder="Selecione um CNPJ"
+                    onkeyup="filtrarFornecedor()" />
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-6 form-group">
+                    <select id="fornecedorSelect" asp-for="FornecedorId" class="form-control"
+                        asp-items="ViewBag.FornecedorId">
+                        <option value="" disabled selected>Selecione o CNPJ</option> <!-- Opção padrão -->
+                    </select>
+                </div>
+                <div class="col-6 form-group d-flex align-items-end" style="margin-left: -20px;">
+                    <input type="submit" value="Nova Ordem" class="btn btn-primary" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<br>
+<div>
+    <a asp-action="Index" class="btn btn-danger">Cancelar</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Aplica a máscara para o CNPJ
+            $('#cnpj').mask('00.000.000/0000-00');
+        });
+
+        function filtrarFornecedor() {
+            var input = document.getElementById("cnpj");
+            var filter = input.value.toLowerCase();
+            var select = document.getElementById("fornecedorSelect");
+            var options = select.options;
+
+            for (var i = 0; i < options.length; i++) {
+                var option = options[i];
+                if (filter === "") {
+                    // Se não houver filtro, mostra todas as opções
+                    option.style.display = ""; // Exibir a opção
+                } else if (option.text.toLowerCase().includes(filter)) {
+                    // Se o texto da opção incluir o filtro, mostra a opção
+                    option.style.display = ""; // Exibir a opção
+                } else {
+                    // Caso contrário, oculta a opção
+                    option.style.display = "none"; // Ocultar a opção
+                }
+            }
+
+            // Se o campo estiver vazio, volta para a opção padrão
+            if (filter === "") {
+                select.value = ""; // Limpa a seleção
+                select.options[0].selected = true; // Seleciona a opção padrão
+            } else {
+                // Tenta selecionar a opção que corresponde ao que foi digitado
+                for (var i = 0; i < options.length; i++) {
+                    var option = options[i];
+                    if (option.text.toLowerCase().includes(filter)) {
+                        select.value = option.value; // Seleciona a opção correspondente
+                        break; // Sai do loop após encontrar a correspondência
+                    }
+                }
+            }
+        }
+
+        function atualizarCNPJ() {
+            var select = document.getElementById("fornecedorSelect");
+            var selectedOption = select.options[select.selectedIndex];
+            var input = document.getElementById("cnpj");
+
+            // Atualiza o campo de input com o valor da opção selecionada
+            if (selectedOption.value) {
+                input.value = selectedOption.text; // Define o valor do CNPJ como o texto da opção selecionada
+            }
+        }
+    </script>
+}

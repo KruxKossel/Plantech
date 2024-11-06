@@ -7,25 +7,20 @@ using Plantech.Models;
 
 namespace Plantech.Repositories
 {
-    public class HortalicaRepository : IHortalicaRepository
+    public class HortalicaRepository(PlantechContext context) : IHortalicaRepository
     {
-        private readonly PlantechContext _context;
+        private readonly PlantechContext _context = context;
 
-        public HortalicaRepository(PlantechContext context)
-        {
-            _context = context;
-        }
-
-        public async Task AdicionarAsync(Hortalica hortalica)
+        public async Task AdicionarAsync(Hortalicas hortalica)
         {
             await _context.Hortalicas.AddAsync(hortalica);
             await _context.SaveChangesAsync();
         }
 
-        public async Task AtualizarAsync(Hortalica hortalica)
+        public async Task AtualizarAsync(Hortalicas hortalica)
         {
             // Desanexar quaisquer entidades rastreadas com o mesmo ID
-            var local = _context.Set<Hortalica>()
+            var local = _context.Set<Hortalicas>()
                         .Local
                         .FirstOrDefault(entry => entry.Id.Equals(hortalica.Id));
             
@@ -49,12 +44,12 @@ namespace Plantech.Repositories
             }
         }
 
-        public async Task<Hortalica> ObterPorIdAsync(int id)
+        public async Task<Hortalicas> ObterPorIdAsync(int id)
         {
             return await _context.Hortalicas.FindAsync(id);
         }
 
-        public async Task<List<Hortalica>> ListarAsync()
+        public async Task<List<Hortalicas>> ListarAsync()
         {
             return await _context.Hortalicas.ToListAsync();
         }

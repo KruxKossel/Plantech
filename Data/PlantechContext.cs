@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Plantech.Models;
 
-
 namespace Plantech.Data;
 
 public partial class PlantechContext : DbContext
@@ -17,65 +16,48 @@ public partial class PlantechContext : DbContext
     {
     }
 
-    public virtual DbSet<Alerta> Alertas { get; set; }
+    public virtual DbSet<Cargos> Cargos { get; set; }
 
-    public virtual DbSet<Cargo> Cargos { get; set; }
+    public virtual DbSet<Clientes> Clientes { get; set; }
 
-    public virtual DbSet<Cliente> Clientes { get; set; }
+    public virtual DbSet<Colheitas> Colheitas { get; set; }
 
-    public virtual DbSet<Colheita> Colheitas { get; set; }
+    public virtual DbSet<CulturasPerdidas> CulturasPerdidas { get; set; }
 
-    public virtual DbSet<CulturasPerdida> CulturasPerdidas { get; set; }
+    public virtual DbSet<Fornecedores> Fornecedores { get; set; }
 
-    public virtual DbSet<Fornecedore> Fornecedores { get; set; }
+    public virtual DbSet<Funcionarios> Funcionarios { get; set; }
 
-    public virtual DbSet<Funcionario> Funcionarios { get; set; }
+    public virtual DbSet<Hortalicas> Hortalicas { get; set; }
 
-    public virtual DbSet<Hortalica> Hortalicas { get; set; }
+    public virtual DbSet<HortalicasPerdidas> HortalicasPerdidas { get; set; }
 
-    public virtual DbSet<HortalicasPerdida> HortalicasPerdidas { get; set; }
+    public virtual DbSet<HortalicasVendas> HortalicasVendas { get; set; }
 
-    public virtual DbSet<HortalicasVenda> HortalicasVendas { get; set; }
+    public virtual DbSet<Insumos> Insumos { get; set; }
 
-    public virtual DbSet<Insumo> Insumos { get; set; }
+    public virtual DbSet<InsumosCompras> InsumosCompras { get; set; }
 
-    public virtual DbSet<InsumosCompra> InsumosCompras { get; set; }
+    public virtual DbSet<InsumosPlantios> InsumosPlantios { get; set; }
 
-    public virtual DbSet<InsumosPlantio> InsumosPlantios { get; set; }
+    public virtual DbSet<LotesHortalicas> LotesHortalicas { get; set; }
 
-    public virtual DbSet<LotesHortalica> LotesHortalicas { get; set; }
+    public virtual DbSet<LotesInsumos> LotesInsumos { get; set; }
 
-    public virtual DbSet<LotesInsumo> LotesInsumos { get; set; }
+    public virtual DbSet<OrdensCompras> OrdensCompras { get; set; }
 
-    public virtual DbSet<OrdensCompra> OrdensCompras { get; set; }
+    public virtual DbSet<Plantios> Plantios { get; set; }
 
-    public virtual DbSet<Plantio> Plantios { get; set; }
+    public virtual DbSet<Usuarios> Usuarios { get; set; }
 
-    public virtual DbSet<Usuario> Usuarios { get; set; }
-
-    public virtual DbSet<Venda> Vendas { get; set; }
+    public virtual DbSet<Vendas> Vendas { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlite("Name=DefaultConnection");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Alerta>(entity =>
-        {
-            entity.ToTable("alertas");
-
-            entity.HasIndex(e => new { e.LoteId, e.Tipo }, "IX_alertas_lote_id_tipo").IsUnique();
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.DataCriacao)
-                .HasDefaultValueSql("date('now')")
-                .HasColumnName("data_criacao");
-            entity.Property(e => e.LoteId).HasColumnName("lote_id");
-            entity.Property(e => e.Mensagem).HasColumnName("mensagem");
-            entity.Property(e => e.Tipo).HasColumnName("tipo");
-        });
-
-        modelBuilder.Entity<Cargo>(entity =>
+        modelBuilder.Entity<Cargos>(entity =>
         {
             entity.ToTable("cargos");
 
@@ -84,7 +66,7 @@ public partial class PlantechContext : DbContext
             entity.Property(e => e.Funcao).HasColumnName("funcao");
         });
 
-        modelBuilder.Entity<Cliente>(entity =>
+        modelBuilder.Entity<Clientes>(entity =>
         {
             entity.ToTable("clientes");
 
@@ -103,9 +85,11 @@ public partial class PlantechContext : DbContext
             entity.Property(e => e.Telefone).HasColumnName("telefone");
         });
 
-        modelBuilder.Entity<Colheita>(entity =>
+        modelBuilder.Entity<Colheitas>(entity =>
         {
             entity.ToTable("colheitas");
+
+            entity.HasIndex(e => e.PlantioId, "IX_colheitas_plantio_id").IsUnique();
 
             entity.HasIndex(e => e.FuncionarioId, "idx_colheitas_funcionario_id");
 
@@ -123,20 +107,20 @@ public partial class PlantechContext : DbContext
             entity.Property(e => e.PlantioId).HasColumnName("plantio_id");
             entity.Property(e => e.Quantidade).HasColumnName("quantidade");
 
-            entity.HasOne(d => d.Funcionario).WithMany(p => p.Colheita)
+            entity.HasOne(d => d.Funcionario).WithMany(p => p.Colheitas)
                 .HasForeignKey(d => d.FuncionarioId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
-            entity.HasOne(d => d.LoteHortalica).WithMany(p => p.Colheita).HasForeignKey(d => d.LoteHortalicaId);
+            entity.HasOne(d => d.LoteHortalica).WithMany(p => p.Colheitas).HasForeignKey(d => d.LoteHortalicaId);
 
-            entity.HasOne(d => d.LoteInsumo).WithMany(p => p.Colheita).HasForeignKey(d => d.LoteInsumoId);
+            entity.HasOne(d => d.LoteInsumo).WithMany(p => p.Colheitas).HasForeignKey(d => d.LoteInsumoId);
 
-            entity.HasOne(d => d.Plantio).WithMany(p => p.Colheita)
-                .HasForeignKey(d => d.PlantioId)
+            entity.HasOne(d => d.Plantio).WithOne(p => p.Colheitas)
+                .HasForeignKey<Colheitas>(d => d.PlantioId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
-        modelBuilder.Entity<CulturasPerdida>(entity =>
+        modelBuilder.Entity<CulturasPerdidas>(entity =>
         {
             entity.ToTable("culturas_perdidas");
 
@@ -144,12 +128,12 @@ public partial class PlantechContext : DbContext
             entity.Property(e => e.ColheitaId).HasColumnName("colheita_id");
             entity.Property(e => e.Nome).HasColumnName("nome");
 
-            entity.HasOne(d => d.Colheita).WithMany(p => p.CulturasPerdida)
+            entity.HasOne(d => d.Colheita).WithMany(p => p.CulturasPerdidas)
                 .HasForeignKey(d => d.ColheitaId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
-        modelBuilder.Entity<Fornecedore>(entity =>
+        modelBuilder.Entity<Fornecedores>(entity =>
         {
             entity.ToTable("fornecedores");
 
@@ -170,7 +154,7 @@ public partial class PlantechContext : DbContext
             entity.Property(e => e.Status).HasColumnName("status");
         });
 
-        modelBuilder.Entity<Funcionario>(entity =>
+        modelBuilder.Entity<Funcionarios>(entity =>
         {
             entity.ToTable("funcionarios");
 
@@ -198,7 +182,7 @@ public partial class PlantechContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
-        modelBuilder.Entity<Hortalica>(entity =>
+        modelBuilder.Entity<Hortalicas>(entity =>
         {
             entity.ToTable("hortalicas");
 
@@ -211,9 +195,12 @@ public partial class PlantechContext : DbContext
             entity.Property(e => e.Descricao).HasColumnName("descricao");
             entity.Property(e => e.Nome).HasColumnName("nome");
             entity.Property(e => e.Observacoes).HasColumnName("observacoes");
+            entity.Property(e => e.Status)
+                .HasDefaultValue("ativo")
+                .HasColumnName("status");
         });
 
-        modelBuilder.Entity<HortalicasPerdida>(entity =>
+        modelBuilder.Entity<HortalicasPerdidas>(entity =>
         {
             entity.HasKey(e => new { e.CulturaPerdidaId, e.HortalicaId });
 
@@ -227,16 +214,16 @@ public partial class PlantechContext : DbContext
             entity.Property(e => e.HortalicaId).HasColumnName("hortalica_id");
             entity.Property(e => e.Quantidade).HasColumnName("quantidade");
 
-            entity.HasOne(d => d.CulturaPerdida).WithMany(p => p.HortalicasPerdida)
+            entity.HasOne(d => d.CulturaPerdida).WithMany(p => p.HortalicasPerdidas)
                 .HasForeignKey(d => d.CulturaPerdidaId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
-            entity.HasOne(d => d.Hortalica).WithMany(p => p.HortalicasPerdida)
+            entity.HasOne(d => d.Hortalica).WithMany(p => p.HortalicasPerdidas)
                 .HasForeignKey(d => d.HortalicaId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
-        modelBuilder.Entity<HortalicasVenda>(entity =>
+        modelBuilder.Entity<HortalicasVendas>(entity =>
         {
             entity.HasKey(e => new { e.VendaId, e.LoteId });
 
@@ -251,16 +238,16 @@ public partial class PlantechContext : DbContext
             entity.Property(e => e.PrecoUnitario).HasColumnName("preco_unitario");
             entity.Property(e => e.Quantidade).HasColumnName("quantidade");
 
-            entity.HasOne(d => d.Lote).WithMany(p => p.HortalicasVenda)
+            entity.HasOne(d => d.Lote).WithMany(p => p.HortalicasVendas)
                 .HasForeignKey(d => d.LoteId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
-            entity.HasOne(d => d.Venda).WithMany(p => p.HortalicasVenda)
+            entity.HasOne(d => d.Venda).WithMany(p => p.HortalicasVendas)
                 .HasForeignKey(d => d.VendaId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
-        modelBuilder.Entity<Insumo>(entity =>
+        modelBuilder.Entity<Insumos>(entity =>
         {
             entity.ToTable("insumos");
 
@@ -275,14 +262,17 @@ public partial class PlantechContext : DbContext
             entity.Property(e => e.FornecedorId).HasColumnName("fornecedor_id");
             entity.Property(e => e.Nome).HasColumnName("nome");
             entity.Property(e => e.Observacoes).HasColumnName("observacoes");
+            entity.Property(e => e.Status)
+                .HasDefaultValue("ativo")
+                .HasColumnName("status");
             entity.Property(e => e.Tipo).HasColumnName("tipo");
 
             entity.HasOne(d => d.Fornecedor).WithMany(p => p.Insumos).HasForeignKey(d => d.FornecedorId);
         });
 
-        modelBuilder.Entity<InsumosCompra>(entity =>
+        modelBuilder.Entity<InsumosCompras>(entity =>
         {
-            entity.HasKey(e => new { e.OrdemCompraId, e.LoteId });
+            entity.HasKey(e => new { e.OrdemCompraId, e.InsumoId });
 
             entity.ToTable("insumos_compras");
 
@@ -293,9 +283,13 @@ public partial class PlantechContext : DbContext
             entity.HasIndex(e => e.OrdemCompraId, "idx_insumos_compras_ordem_compra_id");
 
             entity.Property(e => e.OrdemCompraId).HasColumnName("ordem_compra_id");
-            entity.Property(e => e.LoteId).HasColumnName("lote_id");
-            entity.Property(e => e.DataChegada).HasColumnName("data_chegada");
             entity.Property(e => e.InsumoId).HasColumnName("insumo_id");
+            entity.Property(e => e.DataChegada).HasColumnName("data_chegada");
+            entity.Property(e => e.LoteId).HasColumnName("lote_id");
+            entity.Property(e => e.Ponteiro)
+                .HasDefaultValueSql("'1'")
+                .HasColumnType("INTENGER")
+                .HasColumnName("ponteiro");
             entity.Property(e => e.PrecoUnitario).HasColumnName("preco_unitario");
             entity.Property(e => e.Quantidade).HasColumnName("quantidade");
 
@@ -303,16 +297,14 @@ public partial class PlantechContext : DbContext
                 .HasForeignKey(d => d.InsumoId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
-            entity.HasOne(d => d.Lote).WithMany(p => p.InsumosCompras)
-                .HasForeignKey(d => d.LoteId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+            entity.HasOne(d => d.Lote).WithMany(p => p.InsumosCompras).HasForeignKey(d => d.LoteId);
 
             entity.HasOne(d => d.OrdemCompra).WithMany(p => p.InsumosCompras)
                 .HasForeignKey(d => d.OrdemCompraId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
-        modelBuilder.Entity<InsumosPlantio>(entity =>
+        modelBuilder.Entity<InsumosPlantios>(entity =>
         {
             entity.HasKey(e => new { e.PlantioId, e.LoteId });
 
@@ -335,7 +327,7 @@ public partial class PlantechContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
-        modelBuilder.Entity<LotesHortalica>(entity =>
+        modelBuilder.Entity<LotesHortalicas>(entity =>
         {
             entity.ToTable("lotes_hortalicas");
 
@@ -348,14 +340,16 @@ public partial class PlantechContext : DbContext
             entity.Property(e => e.Nome).HasColumnName("nome");
             entity.Property(e => e.PrecoVenda).HasColumnName("preco_venda");
             entity.Property(e => e.Quantidade).HasColumnName("quantidade");
-            entity.Property(e => e.Status).HasColumnName("status");
+            entity.Property(e => e.Status)
+                .HasDefaultValue("ativo")
+                .HasColumnName("status");
 
             entity.HasOne(d => d.Hortalica).WithMany(p => p.LotesHortalicas)
                 .HasForeignKey(d => d.HortalicaId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
-        modelBuilder.Entity<LotesInsumo>(entity =>
+        modelBuilder.Entity<LotesInsumos>(entity =>
         {
             entity.ToTable("lotes_insumos");
 
@@ -368,14 +362,16 @@ public partial class PlantechContext : DbContext
             entity.Property(e => e.Nome).HasColumnName("nome");
             entity.Property(e => e.PrecoUnitario).HasColumnName("preco_unitario");
             entity.Property(e => e.Quantidade).HasColumnName("quantidade");
-            entity.Property(e => e.Status).HasColumnName("status");
+            entity.Property(e => e.Status)
+                .HasDefaultValue("ativo")
+                .HasColumnName("status");
 
             entity.HasOne(d => d.Insumo).WithMany(p => p.LotesInsumos)
                 .HasForeignKey(d => d.InsumoId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
-        modelBuilder.Entity<OrdensCompra>(entity =>
+        modelBuilder.Entity<OrdensCompras>(entity =>
         {
             entity.ToTable("ordens_compras");
 
@@ -389,7 +385,9 @@ public partial class PlantechContext : DbContext
             entity.Property(e => e.DataCompra).HasColumnName("data_compra");
             entity.Property(e => e.FornecedorId).HasColumnName("fornecedor_id");
             entity.Property(e => e.FuncionarioId).HasColumnName("funcionario_id");
-            entity.Property(e => e.Status).HasColumnName("status");
+            entity.Property(e => e.Status)
+                .HasDefaultValue("pendente")
+                .HasColumnName("status");
             entity.Property(e => e.Total).HasColumnName("total");
 
             entity.HasOne(d => d.Fornecedor).WithMany(p => p.OrdensCompras)
@@ -401,8 +399,7 @@ public partial class PlantechContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
-
-        modelBuilder.Entity<Plantio>(entity =>
+        modelBuilder.Entity<Plantios>(entity =>
         {
             entity.ToTable("plantios");
 
@@ -417,6 +414,9 @@ public partial class PlantechContext : DbContext
             entity.Property(e => e.FuncionarioId).HasColumnName("funcionario_id");
             entity.Property(e => e.HortalicaId).HasColumnName("hortalica_id");
             entity.Property(e => e.Quantidade).HasColumnName("quantidade");
+            entity.Property(e => e.Status)
+                .HasDefaultValue("não colhida")
+                .HasColumnName("status");
 
             entity.HasOne(d => d.Funcionario).WithMany(p => p.Plantios)
                 .HasForeignKey(d => d.FuncionarioId)
@@ -427,8 +427,7 @@ public partial class PlantechContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
-
-        modelBuilder.Entity<Usuario>(entity =>
+        modelBuilder.Entity<Usuarios>(entity =>
         {
             entity.ToTable("usuarios");
 
@@ -448,7 +447,7 @@ public partial class PlantechContext : DbContext
             entity.Property(e => e.Status).HasColumnName("status");
         });
 
-        modelBuilder.Entity<Venda>(entity =>
+        modelBuilder.Entity<Vendas>(entity =>
         {
             entity.ToTable("vendas");
 
@@ -462,15 +461,17 @@ public partial class PlantechContext : DbContext
             entity.Property(e => e.ClienteId).HasColumnName("cliente_id");
             entity.Property(e => e.Data).HasColumnName("data");
             entity.Property(e => e.FuncionarioId).HasColumnName("funcionario_id");
-            entity.Property(e => e.Pagamento).HasColumnName("pagamento");
             entity.Property(e => e.QuantidadeProdutos).HasColumnName("quantidade_produtos");
+            entity.Property(e => e.Status)
+                .HasDefaultValue("pago")
+                .HasColumnName("status");
             entity.Property(e => e.TotalVendas).HasColumnName("total_vendas");
 
-            entity.HasOne(d => d.Cliente).WithMany(p => p.Venda)
+            entity.HasOne(d => d.Cliente).WithMany(p => p.Vendas)
                 .HasForeignKey(d => d.ClienteId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
-            entity.HasOne(d => d.Funcionario).WithMany(p => p.Venda)
+            entity.HasOne(d => d.Funcionario).WithMany(p => p.Vendas)
                 .HasForeignKey(d => d.FuncionarioId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
         });

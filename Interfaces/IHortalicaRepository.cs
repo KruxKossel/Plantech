@@ -6,10 +6,10 @@ namespace Plantech.Interfaces
 {
     public interface IHortalicaRepository
     {
-        Task AdicionarAsync(Hortalica hortalica);
-        Task AtualizarAsync(Hortalica hortalica);
+        Task AdicionarAsync(Hortalicas hortalica);
+        Task AtualizarAsync(Hortalicas hortalica);
         Task DeletarAsync(int id);
-        Task<Hortalica> ObterPorIdAsync(int id);
-        Task<List<Hortalica>> ListarAsync();
+        Task<Hortalicas> ObterPorIdAsync(int id);
+        Task<List<Hortalicas>> ListarAsync();
     }
 }

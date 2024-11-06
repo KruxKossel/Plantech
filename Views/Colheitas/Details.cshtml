@@ -1,4 +1,4 @@
-@model Plantech.Models.Colheita
+@* @model Plantech.ViewModels.ColheitaViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -6,49 +6,4 @@
 
 <h1>Details</h1>
 
-<div>
-    <h4>Colheita</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Quantidade)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Quantidade)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DataColheita)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DataColheita)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Funcionario)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Funcionario.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LoteHortalica)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LoteHortalica.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LoteInsumo)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LoteInsumo.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Plantio)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Plantio.Id)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+*@

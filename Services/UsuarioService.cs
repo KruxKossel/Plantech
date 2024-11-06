@@ -7,13 +7,16 @@ using Plantech.Models;
 using Plantech.DTOs;
 using System.Text;
 using System.Security.Cryptography;
+using AutoMapper;
 
 namespace Plantech.Services
 {
-    public class UsuarioService(IUsuarioRepository usuarioRepository, IFuncionarioRepository funcionarioRepository) : IUsuarioService
+    public class UsuarioService(IUsuarioRepository usuarioRepository, IFuncionarioRepository funcionarioRepository, IMapper mapper) : IUsuarioService
     {
         private readonly IUsuarioRepository _usuarioRepository = usuarioRepository;
         private readonly IFuncionarioRepository _funcionarioRepository = funcionarioRepository;
+
+        private readonly IMapper _mapper = mapper;
 
         public async Task<UsuarioDTO> AuthenticateAsync(string username, string password)
         {
@@ -26,8 +29,15 @@ namespace Plantech.Services
 
         public async Task<UsuarioDTO> GetByIdAsync(int id)
         {
-            var user = await _usuarioRepository.GetByIdAsync(id);
-            return new UsuarioDTO { Id = user.Id, NomeUsuario = user.NomeUsuario, Email = user.Email, Status = user.Status };
+            var user = await _usuarioRepository.GetByIdAsync(id); // Certifique-se de que está incluindo 'Funcionarios'
+            return new UsuarioDTO
+            {
+                Id = user.Id,
+                NomeUsuario = user.NomeUsuario,
+                Email = user.Email,
+                Status = user.Status,
+                Funcionarios = _mapper.Map<List<FuncionarioDTO>>(user.Funcionarios)
+            };
         }
 
         public async Task<IEnumerable<UsuarioDTO>> GetAllAsync()
@@ -38,7 +48,7 @@ namespace Plantech.Services
 
         public async Task CreateAsync(UsuarioDTO userDto)
         {
-            var user = new Usuario
+            var user = new Usuarios
             {
                 NomeUsuario = userDto.NomeUsuario,
                 Email = userDto.Email,
@@ -65,32 +75,57 @@ namespace Plantech.Services
             await _usuarioRepository.DeleteAsync(id);
         }
 
-        public async Task<Cargo> GetCargoByUserIdAsync(int userId)
+        public async Task<Cargos> GetCargoByUserIdAsync(int userId)
         {
             var funcionario = await _funcionarioRepository.GetByUserIdAsync(userId);
             return funcionario?.Cargo;
         }
 
+        public async Task<FuncionarioDTO> GetFuncionarioByUserIdAsync(int userId){
+
+            var funcionario = await _funcionarioRepository.GetByUserIdAsync(userId);
+            return _mapper.Map<FuncionarioDTO>(funcionario.Id);
+
+        }
+
         private static string HashPassword(string password, out string salt)
         {
-            using (var rng = new RNGCryptoServiceProvider())
-            {
-                var saltBytes = new byte[16];
-                rng.GetBytes(saltBytes);
-                salt = Convert.ToBase64String(saltBytes);
-            }
+            // Gerando salt com RandomNumberGenerator
+            var saltBytes = new byte[16];
+            RandomNumberGenerator.Fill(saltBytes);
+            salt = Convert.ToBase64String(saltBytes);
 
+            // Concatenando senha e salt
             var saltedPassword = password + salt;
             var hashBytes = SHA256.HashData(Encoding.UTF8.GetBytes(saltedPassword));
+
+            // Retornando o hash da senha
             return Convert.ToBase64String(hashBytes);
         }
 
+
+        // Método para verificar se a senha fornecida corresponde ao hash armazenado
         private static bool VerifyPasswordHash(string password, string hashedPassword, string salt)
         {
+            // Concatenando a senha fornecida com o sal armazenado
             var saltedPassword = password + salt;
+
+            // Gerando o hash da senha concatenada com o sal usando SHA256
             var hashBytes = SHA256.HashData(Encoding.UTF8.GetBytes(saltedPassword));
+
+            // Convertendo o hash gerado para uma string Base64
             var computedHash = Convert.ToBase64String(hashBytes);
+
+            // Comparando o hash gerado com o hash armazenado
+            // Retorna verdadeiro se forem iguais, falso caso contrário
+            
             return computedHash == hashedPassword;
         }
+        public async Task<UsuarioDTO> GetByEmailAsync(string email)
+        {
+            var usuario = _usuarioRepository.GetByEmailAsync(email);
+            return _mapper.Map<UsuarioDTO>(usuario);
+        }
+
     }
 }

@@ -10,13 +10,11 @@ namespace Plantech.Interfaces
 {
     public interface IFornecedoresRepository
     {
-        Task AdicionarAsync(Fornecedore fornecedor);
-        Task AtualizarDadosAsync(Fornecedore fornecedore);
-        Task<List<Fornecedore>> ListarAsync();
-        Task AtualizarStatusAsync(int id, StatusPessoa statusPessoa);
-
-        Task<Fornecedore> ObterPorIdAsync(int id);
-        Task<List<Fornecedore>> BuscarPorRazaoSocialAsync(string razaoSocial);
+        Task AdicionarAsync(Fornecedores fornecedor);
+        Task AtualizarDadosAsync(Fornecedores fornecedore);
+        Task<List<Fornecedores>> ListarAsync();
+        Task AtualizarStatusAsync(int id);
+        Task<Fornecedores> ObterPorIdAsync(int id);
+        Task<List<Fornecedores>> BuscarPorRazaoSocialAsync(string razaoSocial);
     }
-
 }

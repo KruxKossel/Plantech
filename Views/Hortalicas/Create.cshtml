@@ -1,35 +1,57 @@
 @model Plantech.ViewModels.HortalicaViewModel
 @{
-    ViewData["Title"] = "Adicionar Hortaliça";
+    ViewData["Title"] = "Adicionar Hortaliças";
 }
 
+<br>
 <h2>@ViewData["Title"]</h2>
+<div class="">
+    <form asp-action="Create" method="post" enctype="multipart/form-data">
+        <div class="row">
+            <div class="card col-6 p-4">
+                <div class="form-group">
+                    <label asp-for="Nome" class="control-label"></label>
+                    <input asp-for="Nome" class="form-control" />
+                    <span asp-validation-for="Nome" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Descricao" class="control-label"></label>
+                    <textarea asp-for="Descricao" class="form-control"
+                        style="height: 150px; vertical-align: top;margin-bottom: 10px;"></textarea>
+                    <span asp-validation-for="Descricao" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Observacoes" class="control-label"></label>
+                    <textarea asp-for="Observacoes" class="form-control"
+                        style="height: 150px; vertical-align: top;margin-bottom: 10px;"></textarea>
+                    <span asp-va lidation-for="Observacoes" class="text-danger"></span>
 
-<form asp-action="Create" method="post" enctype="multipart/form-data">
-    <div class="form-group">
-        <label asp-for="Nome" class="control-label"></label>
-        <input asp-for="Nome" class="form-control" />
-        <span asp-validation-for="Nome" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Descricao" class="control-label"></label>
-        <input asp-for="Descricao" class="form-control" />
-        <span asp-validation-for="Descricao" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Observacoes" class="control-label"></label>
-        <input asp-for="Observacoes" class="form-control" />
-        <span asp-validation-for="Observacoes" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="ImagemArquivo" class="control-label"></label>
-        <input asp-for="ImagemArquivo" class="form-control" type="file" />
-        <span asp-validation-for="ImagemArquivo" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary">Adicionar</button>
-    </div>
-</form>
+                </div>
+                <div>
+                    <a asp-action="Index" class="btn btn-secondary" style=" margin-top:10px; width: 150px;">Voltar</a>
+                </div>
+            </div>
+
+            <div class="col-6">
+                <div class="form-group">
+                    <label asp-for="ImagemArquivo" class="control-label"></label>
+                    <input asp-for="ImagemArquivo" class="form-control" type="file" id="imageUpload"
+                        onchange="previewImage(event)" />
+                    <span asp-validation-for="ImagemArquivo" class="text-danger"></span>
+                </div>
+
+                <img id="imagePreview" src="" alt="Imagem selecionada"
+                    style="display:none; width: 640px; height: 440px; border: 2px solid #ccc; margin-top: 10px;" />
+
+                <div class="form-group text-end mt-3">
+                    <button type="submit" class="btn btn-primary">Adicionar</button>
+                </div>
+
+            </div>
+
+    </form>
+</div>
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

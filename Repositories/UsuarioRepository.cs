@@ -10,29 +10,31 @@ public class UsuarioRepository(PlantechContext context) : IUsuarioRepository
 {
     private readonly PlantechContext _context = context;
 
-    public async Task<Usuario> GetByIdAsync(int id)
+    public async Task<Usuarios> GetByIdAsync(int id)
     {
-        return await _context.Usuarios.FindAsync(id);
+        return await _context.Usuarios
+            .Include(u => u.Funcionarios)
+            .FirstOrDefaultAsync(u => u.Id == id);
     }
 
-    public async Task<Usuario> GetByUsernameAsync(string username)
+    public async Task<Usuarios> GetByUsernameAsync(string username)
     {
         return await _context.Usuarios
             .SingleOrDefaultAsync(u => u.NomeUsuario == username);
     }
 
-    public async Task<IEnumerable<Usuario>> GetAllAsync()
+    public async Task<IEnumerable<Usuarios>> GetAllAsync()
     {
         return await _context.Usuarios.ToListAsync();
     }
 
-    public async Task AddAsync(Usuario user)
+    public async Task AddAsync(Usuarios user)
     {
         _context.Usuarios.Add(user);
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(Usuario user)
+    public async Task UpdateAsync(Usuarios user)
     {
         _context.Usuarios.Update(user);
         await _context.SaveChangesAsync();
@@ -46,5 +48,10 @@ public class UsuarioRepository(PlantechContext context) : IUsuarioRepository
             _context.Usuarios.Remove(user);
             await _context.SaveChangesAsync();
         }
+    }
+    
+    public async Task<Usuarios> GetByEmailAsync(string email)
+    {
+        return await _context.Usuarios.Where(f => f.Email.Contains(email)).SingleOrDefaultAsync(u => u.Email == email);
     }
 }

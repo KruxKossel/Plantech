@@ -18,5 +18,15 @@ namespace Plantech.DTOs
         public int CargoId { get; set; }
 
         public string Status { get; set; } = null!;
+
+    // public virtual ICollection<Colheitas> Colheitas { get; set; } = new List<Colheitas>();
+
+    public virtual ICollection<OrdensCompraDTO> OrdensCompras { get; set; } = new List<OrdensCompraDTO>();
+
+    // public virtual ICollection<Plantios> Plantios { get; set; } = new List<Plantios>();
+
+    // public virtual Usuarios Usuario { get; set; } = null!;
+
+    // public virtual ICollection<Vendas> Venda { get; set; } = new List<Vendas>();
     }
 }

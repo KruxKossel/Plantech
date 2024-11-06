@@ -6,11 +6,12 @@ namespace Plantech.Interfaces
 {
     public interface IUsuarioRepository
     {
-        Task<Usuario> GetByIdAsync(int id);
-        Task<Usuario> GetByUsernameAsync(string username);
-        Task<IEnumerable<Usuario>> GetAllAsync();
-        Task AddAsync(Usuario user);
-        Task UpdateAsync(Usuario user);
+        Task<Usuarios> GetByIdAsync(int id);
+        Task<Usuarios> GetByUsernameAsync(string username);
+        Task<IEnumerable<Usuarios>> GetAllAsync();
+        Task AddAsync(Usuarios user);
+        Task UpdateAsync(Usuarios user);
         Task DeleteAsync(int id);
+        Task<Usuarios> GetByEmailAsync(string email);
     }
 }
