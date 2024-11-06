@@ -11,10 +11,11 @@ using AutoMapper;
 
 namespace Plantech.Services
 {
-    public class UsuarioService(IUsuarioRepository usuarioRepository, IFuncionarioRepository funcionarioRepository,IMapper mapper) : IUsuarioService
+    public class UsuarioService(IUsuarioRepository usuarioRepository, IFuncionarioRepository funcionarioRepository, IMapper mapper) : IUsuarioService
     {
         private readonly IUsuarioRepository _usuarioRepository = usuarioRepository;
         private readonly IFuncionarioRepository _funcionarioRepository = funcionarioRepository;
+
         private readonly IMapper _mapper = mapper;
 
         public async Task<UsuarioDTO> AuthenticateAsync(string username, string password)
@@ -28,8 +29,15 @@ namespace Plantech.Services
 
         public async Task<UsuarioDTO> GetByIdAsync(int id)
         {
-            var user = await _usuarioRepository.GetByIdAsync(id);
-            return new UsuarioDTO { Id = user.Id, NomeUsuario = user.NomeUsuario, Email = user.Email, Status = user.Status };
+            var user = await _usuarioRepository.GetByIdAsync(id); // Certifique-se de que está incluindo 'Funcionarios'
+            return new UsuarioDTO
+            {
+                Id = user.Id,
+                NomeUsuario = user.NomeUsuario,
+                Email = user.Email,
+                Status = user.Status,
+                Funcionarios = _mapper.Map<List<FuncionarioDTO>>(user.Funcionarios)
+            };
         }
 
         public async Task<IEnumerable<UsuarioDTO>> GetAllAsync()
@@ -73,6 +81,13 @@ namespace Plantech.Services
             return funcionario?.Cargo;
         }
 
+        public async Task<FuncionarioDTO> GetFuncionarioByUserIdAsync(int userId){
+
+            var funcionario = await _funcionarioRepository.GetByUserIdAsync(userId);
+            return _mapper.Map<FuncionarioDTO>(funcionario.Id);
+
+        }
+
         private static string HashPassword(string password, out string salt)
         {
             // Gerando salt com RandomNumberGenerator
@@ -106,11 +121,11 @@ namespace Plantech.Services
             
             return computedHash == hashedPassword;
         }
-
         public async Task<UsuarioDTO> GetByEmailAsync(string email)
         {
             var usuario = _usuarioRepository.GetByEmailAsync(email);
             return _mapper.Map<UsuarioDTO>(usuario);
         }
+
     }
 }

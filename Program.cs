@@ -50,12 +50,20 @@ builder.Services.AddScoped<IOrdensCompraService, OrdensCompraService>();
 //DI  Insumo da comra
 builder.Services.AddScoped<IInsumoCompraRepository, InsumoCompraRepository>();
 builder.Services.AddScoped<IInsumoCompraService, InsumoCompraService>();
-// Lotes
+//DI Lotes Insumo
 builder.Services.AddScoped<ILotesInsumosRepository, LotesInsumosRepository>();
 builder.Services.AddScoped<ILotesInsumosService, LotesInsumosService>();
-
+//DI Lotes Hortalicas
 builder.Services.AddScoped<ILotesHortalicasRepository, LotesHortalicasRepository>();
 builder.Services.AddScoped<ILotesHortalicasService, LotesHortalicasService>();
+
+//DI Plantio
+builder.Services.AddScoped<IPlantioRepository, PlantioRepository>();
+builder.Services.AddScoped<IPlantioService, PlantioService>();
+//DI Colheitas
+builder.Services.AddScoped<IColheitaRepository, ColheitaRepository>();
+builder.Services.AddScoped<IColheitaService, ColheitaService>();
+
 
 var app = builder.Build();
 

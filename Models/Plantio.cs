@@ -15,6 +15,8 @@ public partial class Plantio
 
     public int? Quantidade { get; set; }
 
+    public string Status { get; set; } = null!;
+
     public virtual ICollection<Colheita> Colheita { get; set; } = new List<Colheita>();
 
     public virtual Funcionario Funcionario { get; set; } = null!;

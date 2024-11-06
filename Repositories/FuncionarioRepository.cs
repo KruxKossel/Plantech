@@ -20,5 +20,10 @@ namespace Plantech.Repositories
                 .SingleOrDefaultAsync(f => f.UsuarioId == userId);
         }
 
+         public async Task<IEnumerable<Funcionario>> GetFuncionariosAsync()
+        {
+            return await _context.Funcionarios.ToListAsync();
+        }
+
     }
 }

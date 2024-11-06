@@ -1,54 +1,92 @@
-@model Plantech.Models.Colheita
-
-@{
-    ViewData["Title"] = "Create";
+@model Plantech.ViewModels.ColheitaViewModel
+@section Styles {
+    <link rel="stylesheet" href="~/css/edit.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
 }
-
-<h1>Create</h1>
-
-<h4>Colheita</h4>
+@{
+    ViewData["Title"] = "Realizar Colheita";
+}
+<br>
+<h1>Realizar Colheita</h1>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class=" card-plan p-4" style="height: 450px;">
+        <form asp-action="Create" method="post" id="colheitaForm">
             <div class="form-group">
-                <label asp-for="Quantidade" class="control-label"></label>
-                <input asp-for="Quantidade" class="form-control" />
-                <span asp-validation-for="Quantidade" class="text-danger"></span>
+                <label>Nome do Funcionário</label>
+                <input class="form-control" value="@ViewData["FuncionarioNome"]" readonly style="margin-bottom: 20px;"/>
             </div>
-            <div class="form-group">
-                <label asp-for="DataColheita" class="control-label"></label>
-                <input asp-for="DataColheita" class="form-control" />
-                <span asp-validation-for="DataColheita" class="text-danger"></span>
+            <div class="d-flex gap-3">
+                <div class="col-8 form-group">
+                    <label asp-for="PlantioId" class="control-label">Plantios não colhidos</label>
+                    <select asp-for="PlantioId" class="form-control">
+                        <option value="">Selecione um plantio</option>
+                        @if (ViewData["Plantios"] != null)
+                        {
+                            @foreach (var item in ViewData["Plantios"] as List<SelectListItem>)
+                            {
+                                <option value="@item.Value" data-quantidade="@item.Group?.Name">@item.Text</option>
+                            }
+                        }
+                        else
+                        {
+                            <option value="">Nenhum plantio disponível para colheita.</option>
+                        }
+                    </select>
+                    <span asp-validation-for="PlantioId" class="text-danger"></span>
+                </div>
+                <div class="col-2 form-group">
+                    <label asp-for="Quantidade" class="control-label"></label>
+                    <input asp-for="Quantidade" class="form-control" style="width: 40%;" min="1"/>
+                    <span asp-validation-for="Quantidade" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="FuncionarioId" class="control-label"></label>
-                <select asp-for="FuncionarioId" class ="form-control" asp-items="ViewBag.FuncionarioId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="LoteHortalicaId" class="control-label"></label>
-                <select asp-for="LoteHortalicaId" class ="form-control" asp-items="ViewBag.LoteHortalicaId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="LoteInsumoId" class="control-label"></label>
-                <select asp-for="LoteInsumoId" class ="form-control" asp-items="ViewBag.LoteInsumoId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="PlantioId" class="control-label"></label>
-                <select asp-for="PlantioId" class ="form-control" asp-items="ViewBag.PlantioId"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
+
+            <input type="hidden" asp-for="DataColheita" />
+            <input type="hidden" asp-for="FuncionarioId" />
         </form>
+
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="form-group text-end " style="margin-right: 60px;">
+    <br>
+    <a asp-action="Index" class="btn btn-secondary" style="width: 150px;">Voltar</a>
+    <input type="submit" value="Realizar Colheita" class="btn btn-primary" />
+
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        document.querySelector('form').addEventListener('submit', function (event) {
+            var selectElement = document.querySelector('select[name="PlantioId"]');
+            var selectedOption = selectElement.options[selectElement.selectedIndex];
+            var quantidadePlantada = parseInt(selectedOption.getAttribute('data-quantidade'));
+            var quantidadeColhida = parseInt(document.querySelector('input[name="Quantidade"]').value);
+
+            console.log('Quantidade Plantada:', quantidadePlantada);
+            console.log('Quantidade Colhida:', quantidadeColhida);
+
+            if (isNaN(quantidadeColhida) || isNaN(quantidadePlantada)) {
+                event.preventDefault();
+                alert('Por favor, insira um valor válido.');
+                return;
+            }
+
+            if (quantidadeColhida > quantidadePlantada) {
+                event.preventDefault();
+                alert('A quantidade colhida não pode exceder a quantidade plantada.');
+                return;
+            }
+
+            if (quantidadeColhida < 0) {
+                event.preventDefault();
+                alert('A quantidade colhida não pode ser menor que zero.');
+                return;
+            }
+        });
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

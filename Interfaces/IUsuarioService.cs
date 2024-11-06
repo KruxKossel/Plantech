@@ -15,5 +15,6 @@ namespace Plantech.Interfaces
         Task DeleteAsync(int id);
         Task<Cargo> GetCargoByUserIdAsync(int userId);
         Task<UsuarioDTO> GetByEmailAsync(string email);
+        Task<FuncionarioDTO> GetFuncionarioByUserIdAsync(int userId);
     }
 }

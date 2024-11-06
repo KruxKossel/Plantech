@@ -26,12 +26,12 @@ public class MappingProfile : Profile
 
         // Funcionario
         CreateMap<Funcionario, FuncionarioDTO>()
-            .ForMember(dest => dest.OrdensCompras, opt => opt.MapFrom(src => src.OrdensCompras)); // Verifique se OrdensCompras existe em FuncionarioDTO
+            .ForMember(dest => dest.OrdensCompras, opt => opt.MapFrom(src => src.OrdensCompras)); 
         
         // Ordens Compra
         CreateMap<OrdensCompra, OrdensCompraDTO>()
-            .ForMember(dest => dest.Fornecedor, opt => opt.MapFrom(src => src.Fornecedor)) // Mapeia o fornecedor
-            .ForMember(dest => dest.Funcionario, opt => opt.MapFrom(src => src.Funcionario)); // Mapeia o funcionário
+            .ForMember(dest => dest.Fornecedor, opt => opt.MapFrom(src => src.Fornecedor)) 
+            .ForMember(dest => dest.Funcionario, opt => opt.MapFrom(src => src.Funcionario)); 
 
         CreateMap<OrdensCompraDTO, OrdensCompra>()
             .ForMember(dest => dest.Fornecedor, opt => opt.MapFrom(src => src.Fornecedor))
@@ -39,16 +39,15 @@ public class MappingProfile : Profile
 
         CreateMap<OrdensCompraViewModel, OrdensCompraDTO>().ReverseMap();
         // LotesInsumos
-            CreateMap<LotesInsumo, LotesInsumoDTO>();
-            CreateMap<LotesInsumoViewModel, LotesInsumoDTO>();
-            CreateMap<LotesInsumoDTO, LotesInsumoViewModel>();
-            CreateMap<LotesInsumoDTO, LotesInsumo>();
+        CreateMap<LotesInsumo, LotesInsumoDTO>().ReverseMap();
+        CreateMap<LotesInsumoDTO, LotesInsumoViewModel>().ReverseMap();
+
         //Insumos Compra
              CreateMap<InsumoDTO, InsumosCompraDTO>()
             .ForMember(dest => dest.InsumoId, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.Quantidade, opt => opt.Ignore()); 
 
-   
+
         CreateMap<InsumosCompraDTO, InsumoDTO>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.InsumoId))
             .ForMember(dest => dest.Nome, opt => opt.Ignore()); 
@@ -75,6 +74,23 @@ public class MappingProfile : Profile
         //Lotes Hortalicas
         CreateMap<LotesHortalica,LotesHortalicaDTO>().ReverseMap();
         CreateMap<LotesHortalicaViewModel, LotesHortalicaDTO>().ReverseMap();
+
+        //Colheita
+               CreateMap<Colheita, ColheitaDTO>()
+            .ForMember(dest => dest.LoteHortalica, opt => opt.MapFrom(src => src.LoteHortalica))
+            .ForMember(dest => dest.LoteInsumo, opt => opt.MapFrom(src => src.LoteInsumo))
+            .ForMember(dest => dest.Funcionario, opt => opt.MapFrom(src => src.Funcionario))
+            .ForMember(dest => dest.Plantio, opt => opt.MapFrom(src => src.Plantio))
+            .ReverseMap();
+        CreateMap<ColheitaDTO, ColheitaViewModel>().ReverseMap();
+
+        //Plantio
+        CreateMap<Plantio, PlantioDTO>().ReverseMap();
+        CreateMap<PlantioViewModel, PlantioDTO>().ReverseMap(); 
+        CreateMap<Plantio, PlantioDTO>()
+            .ForMember(dest => dest.Hortalica, opt => opt.MapFrom(src => src.Hortalica))
+            .ReverseMap();
+        CreateMap<InsumosPlantio, InsumosPlantioDTO>().ReverseMap();
     
     }
 }

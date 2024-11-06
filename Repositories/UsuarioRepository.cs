@@ -12,7 +12,9 @@ public class UsuarioRepository(PlantechContext context) : IUsuarioRepository
 
     public async Task<Usuario> GetByIdAsync(int id)
     {
-        return await _context.Usuarios.FindAsync(id);
+        return await _context.Usuarios
+            .Include(u => u.Funcionarios)
+            .FirstOrDefaultAsync(u => u.Id == id);
     }
 
     public async Task<Usuario> GetByUsernameAsync(string username)
@@ -47,7 +49,7 @@ public class UsuarioRepository(PlantechContext context) : IUsuarioRepository
             await _context.SaveChangesAsync();
         }
     }
-
+    
     public async Task<Usuario> GetByEmailAsync(string email)
     {
         return await _context.Usuarios.Where(f => f.Email.Contains(email)).SingleOrDefaultAsync(u => u.Email == email);

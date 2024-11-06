@@ -9,5 +9,7 @@ namespace Plantech.Interfaces
     public interface IFuncionarioRepository
     {
         Task<Funcionario> GetByUserIdAsync(int userId);
+
+        Task<IEnumerable<Funcionario>> GetFuncionariosAsync();
     }
 }

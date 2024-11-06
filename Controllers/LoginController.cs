@@ -6,7 +6,6 @@ using Plantech.ViewModels;
 using Plantech.DTOs;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration.UserSecrets;
 
 namespace Plantech.Controllers
 {
