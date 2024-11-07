@@ -16,6 +16,8 @@ namespace Plantech.ViewModels
 
         public string? CaminhoImagem { get; set; }
 
+        public string Status { get; set; } = "ativo";
+
         [Display(Name = "Imagem")]
         public IFormFile? ImagemArquivo { get; set; }
     }

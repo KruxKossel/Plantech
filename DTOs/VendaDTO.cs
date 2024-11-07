@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Plantech.Models;
+namespace Plantech.DTOs;
 
-public partial class Vendas
+public partial class VendaDTO
 {
     public int Id { get; set; }
 
@@ -19,9 +19,9 @@ public partial class Vendas
 
     public int FuncionarioId { get; set; }
 
-    public virtual Clientes Cliente { get; set; } = null!;
+    public virtual ClienteDTO Cliente { get; set; } = null!;
 
-    public virtual Funcionarios Funcionario { get; set; } = null!;
+    public virtual FuncionarioDTO Funcionario { get; set; } = null!;
 
-    public virtual ICollection<HortalicasVendas> HortalicasVendas { get; set; } = new List<HortalicasVendas>();
+    // public virtual ICollection<HortalicasVendas> HortalicasVendas { get; set; } = new List<HortalicasVendas>();
 }

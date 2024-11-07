@@ -78,30 +78,49 @@ namespace Plantech.Controllers
             }
         // GET: Insumos/Edit/5
          [Authorize(Roles = "Administrador, Comprador")]
+         [HttpGet]
          public async Task<IActionResult> Edit(int id)
-    {
-        var insumo = await _insumoService.ObterPorIdAsync(id);
-        if (insumo == null)
         {
-            return NotFound();
+            var insumo = await _insumoService.ObterPorIdAsync(id);
+            if (insumo == null)
+            {
+                return NotFound();
+            }
+            var fornecedores = await _insumoService.ListarFornecedoresAsync(); 
+            ViewData["FornecedorId"] = new SelectList(fornecedores, "Id", "Cnpj");
+            var insumoVM = _mapper.Map<InsumoViewModel>(insumo);
+            Console.WriteLine("\n\n\n Entrou no Get \n\n\n");
+            return View(insumoVM);
+
         }
-        var fornecedores = await _insumoService.ListarFornecedoresAsync(); 
-        ViewData["FornecedorId"] = new SelectList(fornecedores, "Id", "Cnpj");
-        var insumoVM = _mapper.Map<InsumoViewModel>(insumo);
-        return View(insumoVM);
-    }
         [Authorize(Roles = "Administrador, Comprador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, InsumoViewModel insumoVM)
         {
+            Console.WriteLine("\n\n\n Entrou no Post \n\n\n");
+            
             if (id != insumoVM.Id)
             {
                 return NotFound();
             }
+            Console.WriteLine("\n\n\n Nao tme not Found \n\n\n");
 
+
+            if (!ModelState.IsValid)
+            {
+                Console.WriteLine("\n\n\n ModelState Errors: \n\n\n");
+                foreach (var modelState in ModelState.Values)
+                {
+                    foreach (var error in modelState.Errors)
+                    {
+                        Console.WriteLine(error.ErrorMessage);
+                    }
+                }
+            }
             if (ModelState.IsValid)
             {
+                Console.WriteLine("\n\n\n Entrou no ModelState \n\n\n");
                 string uniqueFileName = insumoVM.CaminhoImagem;
                 if (insumoVM.ImagemArquivo != null)
                 {
@@ -118,6 +137,7 @@ namespace Plantech.Controllers
                 await _insumoService.AtualizarAsync(insumoDto);
                 return RedirectToAction(nameof(Index));
             }
+            Console.WriteLine("\n\n\n Num deu Certo \n\n\n");
             var fornecedores = await _insumoService.ListarFornecedoresAsync();
             ViewData["FornecedorId"] = new SelectList(fornecedores, "Id", "Cnpj", insumoVM.FornecedorId);
             return View(insumoVM);

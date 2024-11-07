@@ -15,7 +15,7 @@ public partial class OrdensCompras
 
     public int FornecedorId { get; set; }
 
-    public string? DataCompra { get; set; }
+    public DateOnly? DataCompra { get; set; }
 
     public virtual Fornecedores Fornecedor { get; set; } = null!;
 

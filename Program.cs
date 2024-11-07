@@ -56,14 +56,15 @@ builder.Services.AddScoped<ILotesInsumosService, LotesInsumosService>();
 //DI Lotes Hortalicas
 builder.Services.AddScoped<ILotesHortalicasRepository, LotesHortalicasRepository>();
 builder.Services.AddScoped<ILotesHortalicasService, LotesHortalicasService>();
-
 //DI Plantio
 builder.Services.AddScoped<IPlantioRepository, PlantioRepository>();
 builder.Services.AddScoped<IPlantioService, PlantioService>();
 //DI Colheitas
 builder.Services.AddScoped<IColheitaRepository, ColheitaRepository>();
 builder.Services.AddScoped<IColheitaService, ColheitaService>();
-
+//DI Vendas
+builder.Services.AddScoped<IVendasRepository, VendasRepository>();
+builder.Services.AddScoped<IVendasService, VendasService>();
 
 var app = builder.Build();
 
