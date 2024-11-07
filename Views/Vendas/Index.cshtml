@@ -1,4 +1,4 @@
-@* @model IEnumerable<Plantech.Models.Venda>
+@model IEnumerable<Plantech.ViewModels.VendaViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -18,17 +18,17 @@
             <th>
                 @Html.DisplayNameFor(model => model.TotalVendas)
             </th>
-            <th>
+            @* <th>
                 @Html.DisplayNameFor(model => model.QuantidadeProdutos)
+            </th> *@
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Pagamento)
+                @Html.DisplayNameFor(model => model.Cliente.Cnpj)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Cliente)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Funcionario)
+                @Html.DisplayNameFor(model => model.Funcionario.Nome)
             </th>
             <th></th>
         </tr>
@@ -42,17 +42,17 @@
             <td>
                 @Html.DisplayFor(modelItem => item.TotalVendas)
             </td>
-            <td>
+            @* <td>
                 @Html.DisplayFor(modelItem => item.QuantidadeProdutos)
+            </td> *@
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Pagamento)
+                @Html.DisplayFor(modelItem => item.Cliente.Cnpj)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Cliente.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Funcionario.Id)
+                @Html.DisplayFor(modelItem => item.Funcionario.Nome)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
@@ -62,4 +62,4 @@
         </tr>
 }
     </tbody>
-</table> *@
+</table>

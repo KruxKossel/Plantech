@@ -15,7 +15,7 @@ public partial class InsumosCompras
 
     public double? PrecoUnitario { get; set; }
 
-    public string? DataChegada { get; set; }
+    public DateOnly? DataChegada { get; set; }
 
     public int? Ponteiro { get; set; }
 

@@ -21,6 +21,8 @@ public partial class InsumoViewModel
     public string? Categoria { get; set; }
 
     public string Tipo { get; set; } = null!;
+    
+    public string Status { get; set; } = "ativo";
 
     public string? CaminhoImagem { get; set; }
     [Display(Name = "Imagem")]

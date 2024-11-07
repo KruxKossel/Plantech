@@ -1,0 +1,45 @@
+@model Plantech.ViewModels.VendaViewModel
+
+@{
+    ViewData["Title"] = "NovaVenda";
+}
+
+<h1>Create</h1>
+
+<h4>Venda</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="NovaVenda">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <input asp-for="Data" type="hidden" />
+            </div>
+            <div class="form-group">
+                <input asp-for="Status" type="hidden" />
+            </div>
+            <div class="form-group">
+                <select id="fornecedorSelect" asp-for="ClienteId" class="form-control"
+                    asp-items="ViewBag.ClienteId">
+                    <option value="" disabled selected>Selecione o CNPJ</option> <!-- Opção padrão -->
+                </select>
+            </div>
+            <div class="form-group">
+                <input asp-for="FuncionarioId" type="hidden" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

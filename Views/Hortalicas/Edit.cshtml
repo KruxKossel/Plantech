@@ -29,6 +29,11 @@
                     style="height: 150px; vertical-align: top;margin-bottom: 10px;"></textarea>
                 <span asp-validation-for="Observacoes" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                    <label asp-for="Status" class="control-label"></label>
+                    <input asp-for="Status" class="form-control" readonly style="margin-bottom: 60px;" />
+                    <span asp-validation-for="Status" class="text-danger" ></span>
+                </div>
             <div class="form-group mt-3 text-end">
                 <button type="submit" class="btn btn-primary" style="width: 150px;">Salvar</button>
             </div>
