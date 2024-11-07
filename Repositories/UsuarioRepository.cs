@@ -54,4 +54,12 @@ public class UsuarioRepository(PlantechContext context) : IUsuarioRepository
     {
         return await _context.Usuarios.Where(f => f.Email.Contains(email)).SingleOrDefaultAsync(u => u.Email == email);
     }
+
+
+    public async Task<Usuarios> GetUltimoUsuarioAsync()
+    {
+        return await _context.Usuarios
+            .OrderByDescending(p => p.Id)
+            .FirstOrDefaultAsync();
+    }
 }

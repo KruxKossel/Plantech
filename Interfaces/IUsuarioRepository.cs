@@ -13,5 +13,7 @@ namespace Plantech.Interfaces
         Task UpdateAsync(Usuarios user);
         Task DeleteAsync(int id);
         Task<Usuarios> GetByEmailAsync(string email);
+
+        Task<Usuarios> GetUltimoUsuarioAsync();
     }
 }

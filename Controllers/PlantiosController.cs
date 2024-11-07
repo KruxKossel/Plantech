@@ -142,7 +142,7 @@ namespace Plantech.Controllers
                 {
                         Console.WriteLine("\n\n Entrou no Try");
 
-                    await _plantioService.CreatePlantioAsync(plantioDTO);
+                        await _plantioService.CreatePlantioAsync(plantioDTO);
 
                     // Obter o último plantio criado
                     var ultimoPlantio = await _plantioService.GetUltimoPlantioAsync();
