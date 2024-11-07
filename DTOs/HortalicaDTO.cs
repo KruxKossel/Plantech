@@ -13,6 +13,8 @@ public partial class HortalicaDTO
     public string? Descricao { get; set; }
 
     public string? Observacoes { get; set; }
+    
+    public string Status { get; set; } = "ativo";
 
     public string? CaminhoImagem { get; set; }
 }

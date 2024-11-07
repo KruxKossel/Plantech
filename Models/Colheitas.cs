@@ -9,7 +9,7 @@ public partial class Colheitas
 
     public int? Quantidade { get; set; }
 
-    public string? DataColheita { get; set; }
+    public DateOnly? DataColheita { get; set; }
 
     public int FuncionarioId { get; set; }
 

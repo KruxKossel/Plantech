@@ -1,0 +1,77 @@
+@model IEnumerable<Plantech.DTOs.InsumoDTO>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<br><br>
+@if (User.IsInRole("Comprador") || User.IsInRole("Administrador"))
+{
+<h2>Lista de Insumos</h2>
+<p>
+</p>
+<div class="card-index">
+        <div style="max-height: 5000px; overflow-y: auto;">
+            <table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descricao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Observacoes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Categoria)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tipo)
+            </th>
+            @* <th>
+                @Html.DisplayNameFor(model => model.FornecedorId)
+            </th> *@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        
+        </div>
+        </div>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descricao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Observacoes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Categoria)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tipo)
+            </td>
+            @* <td>
+                @Html.DisplayFor(modelItem => item.FornecedorId)
+            </td> *@
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Editar</a> |
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Detalhes</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+}
+}
+    </tbody>
+</table>
+    </div>
+    </div>
+    <div class="text-end" style="margin-right: 15px;">
+        <br>
+        <a asp-action="Create" class="btn btn-primary ">Novo Insumo</a>
+    </div>

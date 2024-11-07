@@ -7,7 +7,7 @@ public partial class Plantios
 {
     public int Id { get; set; }
 
-    public string? DataPlantio { get; set; }
+    public DateOnly? DataPlantio { get; set; }
 
     public int HortalicaId { get; set; }
 
