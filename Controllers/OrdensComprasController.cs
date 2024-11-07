@@ -20,6 +20,25 @@ namespace Plantech.Controllers
         private readonly IMapper _mapper;
         private readonly IInsumoService _insumosService;
         private readonly IInsumoCompraService _insumosCompraService;
+        private async Task<int> GetLoggedFuncionarioId()
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+            {
+                Console.WriteLine("pqp");
+                throw new InvalidOperationException("User is not authenticated.");
+            }
+
+            if (!int.TryParse(userIdClaim.Value, out int userId))
+            {
+                throw new FormatException($"O valor '{userIdClaim.Value}' não é um número válido.");
+            }
+
+            var usuario = await _usuarioService.GetByIdAsync(userId);
+            var funcionario = usuario.Funcionarios.FirstOrDefault();
+            return funcionario != null ? funcionario.Id : 0;
+        }
+
 
 
         public OrdensComprasController(PlantechContext context, IOrdensCompraService ordensCompraService, 
@@ -67,12 +86,10 @@ namespace Plantech.Controllers
         {
             var ordensCompraDTO = _mapper.Map<OrdensCompraDTO>(ordensCompraVM);
             
-            
-            var useremail = User.FindFirst(ClaimTypes.Email)?.Value;
 
-            var usuarioLogado =  _usuarioService.GetByEmailAsync(useremail);
+            var usuarioLogadoID =  await GetLoggedFuncionarioId();
                 for(int i =0; i<100 ; i++)
-                Console.WriteLine("vazio"+ usuarioLogado.Id);
+                Console.WriteLine(DateOnly.FromDateTime(DateTime.Now));
 
             var fornecedor = await _ordensCompraService.ObterFornecedorPorId(ordensCompraDTO.FornecedorId);
             if (fornecedor == null)
@@ -104,8 +121,9 @@ namespace Plantech.Controllers
             }
             if (ModelState.IsValid)
                  ordensCompraDTO.Total = 0;
+                 
                  ordensCompraDTO.DataCompra = DateOnly.FromDateTime(DateTime.Now);
-                ordensCompraDTO.FuncionarioId= usuarioLogado.Id;
+                ordensCompraDTO.FuncionarioId= usuarioLogadoID;
                 var novaCompra = await _ordensCompraService.CriarCompra(ordensCompraDTO);
                 // var novaCompra = ordensCompraDTO;
                     // for(int i = 0 ; i < 100 ; i++)

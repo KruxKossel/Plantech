@@ -13,9 +13,9 @@ public partial class LotesInsumos
 
     public double? PrecoUnitario { get; set; }
 
-    public string? DataEntrada { get; set; }
+    public DateOnly? DataEntrada { get; set; }
 
-    public string? DataValidade { get; set; }
+    public DateOnly? DataValidade { get; set; }
 
     public string Status { get; set; } = null!;
 

@@ -128,6 +128,38 @@ namespace Plantech.MappingProfiles
                 .ReverseMap();
 
             CreateMap<InsumosPlantios, InsumosPlantioDTO>().ReverseMap();
+
+
+             //Vendas
+        CreateMap<Vendas, VendaDTO>()
+            .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src.Data)) 
+            .ForMember(dest => dest.TotalVendas, opt => opt.MapFrom(src => src.TotalVendas)) 
+            .ForMember(dest => dest.QuantidadeProdutos, opt => opt.MapFrom(src => src.QuantidadeProdutos)) 
+            .ForMember(dest => dest.ClienteId, opt => opt.MapFrom(src => src.ClienteId))
+            .ForMember(dest => dest.FuncionarioId, opt => opt.MapFrom(src => src.FuncionarioId));
+
+        CreateMap<VendaDTO, Vendas>()
+            .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src.Data)) 
+            .ForMember(dest => dest.TotalVendas, opt => opt.MapFrom(src => src.TotalVendas))
+            .ForMember(dest => dest.QuantidadeProdutos, opt => opt.MapFrom(src => src.QuantidadeProdutos))
+            .ForMember(dest => dest.ClienteId, opt => opt.MapFrom(src => src.ClienteId))
+            .ForMember(dest => dest.FuncionarioId, opt => opt.MapFrom(src => src.FuncionarioId));
+
+         CreateMap<VendaDTO, VendaViewModel>()
+            .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src.Data))
+            .ForMember(dest => dest.TotalVendas, opt => opt.MapFrom(src => src.TotalVendas))
+            .ForMember(dest => dest.QuantidadeProdutos, opt => opt.MapFrom(src => src.QuantidadeProdutos))
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
+            .ForMember(dest => dest.ClienteId, opt => opt.MapFrom(src => src.ClienteId));
+
+
+        CreateMap<VendaViewModel, VendaDTO>()
+            .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src.Data))
+            .ForMember(dest => dest.TotalVendas, opt => opt.MapFrom(src => src.TotalVendas))
+            .ForMember(dest => dest.QuantidadeProdutos, opt => opt.MapFrom(src => src.QuantidadeProdutos))
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
+            .ForMember(dest => dest.ClienteId, opt => opt.MapFrom(src => src.ClienteId));
+
         }
     }
 }

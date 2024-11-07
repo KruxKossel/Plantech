@@ -21,7 +21,7 @@ public partial class Insumos
 
     public string? CaminhoImagem { get; set; }
 
-    public string Status { get; set; } = null!;
+    public string Status { get; set; } = "ativo";
 
     public virtual Fornecedores? Fornecedor { get; set; }
 

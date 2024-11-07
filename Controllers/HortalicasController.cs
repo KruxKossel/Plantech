@@ -132,6 +132,8 @@ namespace Plantech.Controllers
                 string uniqueFileName = null;
                 if (model.ImagemArquivo != null)
                 {
+                    
+                    Console.WriteLine("\n\n\nóia a Imagem\n\n\n");
                     string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
                     uniqueFileName = Guid.NewGuid().ToString() + "_" + model.ImagemArquivo.FileName;
                     string filePath = Path.Combine(uploadsFolder, uniqueFileName);
@@ -142,6 +144,7 @@ namespace Plantech.Controllers
                 }
 
                 var hortalica = _mapper.Map<HortalicaDTO>(model);
+                hortalica.CaminhoImagem = uniqueFileName; 
                 await _hortalicaService.CreateHortalicaAsync(hortalica);
                 return RedirectToAction(nameof(Index));
             }

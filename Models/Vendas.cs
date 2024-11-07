@@ -7,7 +7,7 @@ public partial class Vendas
 {
     public int Id { get; set; }
 
-    public string? Data { get; set; }
+    public DateOnly? Data { get; set; }
 
     public double? TotalVendas { get; set; }
 
