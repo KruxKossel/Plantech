@@ -12,5 +12,9 @@ namespace Plantech.DTOs
         public string Funcao { get; set; } = null!;
 
         public string? Descricao { get; set; }
+
+        public virtual ICollection<FuncionarioDTO> Funcionarios { get; set; } = new List<FuncionarioDTO>();
+
+        
     }
 }

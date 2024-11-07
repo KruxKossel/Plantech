@@ -35,7 +35,7 @@
                                     <a asp-controller="Administrador" asp-action="Index" class="nav-item nav-link active">Home</a>
                                     <a href="#" class="nav-item nav-link">Relatórios</a>
                                     <a href="#" class="nav-item nav-link">Pendencias</a>
-                                    <a href="#" class="nav-item nav-link">Histórico</a>
+                                    <a asp-controller="Funcionarios" asp-action="Index" class="nav-item nav-link">Funcionarios</a>
                                     <div class="nav-item dropdown">
                                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Ações</a>
                                         <div class="dropdown-menu m-0 bg-secondary rounded-0">
@@ -49,16 +49,16 @@
                                 {
                                     <a asp-controller="Agricultor" asp-action="Index" class="nav-item nav-link active">Home</a>
                                     <a asp-controller="Plantios" asp-action="Index" class="nav-item nav-link">Plantios</a>
-                                    <a href="#" class="nav-item nav-link">Colheitas</a>
-                                    <a href="#" class="nav-item nav-link">Pendencias</a>
+                                    <a asp-controller="Colheitas" asp-action="Index" class="nav-item nav-link">Colheitas</a>
+                                    <a asp-controller="Hortalicas" asp-action="Index" class="nav-item nav-link">Hortaliças</a>
                                     <div class="nav-item dropdown">
                                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Ações</a>
                                         <div class="dropdown-menu m-0 bg-secondary rounded-0">
                                             <a asp-controller="Plantios" asp-action="Create" class="dropdown-item">Realizar Plantio</a>
                                             <a asp-controller="Colheitas" asp-action="Create" class="dropdown-item">Realizar Colheita</a>
-                                            <a href="#" class="dropdown-item">Consultar Lotes de Insumos</a>
+                                            <a asp-controller="LotesInsumos" asp-action="Index" class="dropdown-item">Consultar Lotes de Insumos</a>
                                             <a asp-controller="LotesHortalicas" asp-action="Index" class="dropdown-item">Consultar Lotes de Hortaliça</a>
-                                            <a asp-controller="Hortalicas" asp-action="Index" class="dropdown-item">Consultar Hortaliças</a>
+                                            <a asp-controller="Hortalicas" asp-action="Create" class="dropdown-item">Cadastrar Hortaliças</a>
                                         </div>
                                     </div>
 
@@ -67,16 +67,16 @@
                                 @if (User.IsInRole("Comprador"))
                                 {
                                     <a asp-controller="Comprador" asp-action="Index" class="nav-item nav-link active">Home</a>
-                                   <a href="#" class="nav-item nav-link">Relatórios</a>
-                                    <a href="#" class="nav-item nav-link">Pendencias</a>
-                                    <a href="#" class="nav-item nav-link">Histórico</a>
+                                    <a asp-controller="OrdensCompras" asp-action="Index" class="nav-item nav-link">Compras</a>
+                                    <a asp-controller="Insumos" asp-action="Index" class="nav-item nav-link">Insumos</a>
+                                    <a asp-controller="Fornecedores" asp-action="Index" class="nav-item nav-link">Fornecedores</a>
                                     <div class="nav-item dropdown">
                                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Ações</a>
                                         <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                                            <a asp-controller="OrdensCompras" asp-action="Index" class="dropdown-item">Realizar Compra</a>
-                                            <a href="#" class="dropdown-item">Consultar Lotes de Insumos</a>
-                                            <a asp-controller="Insumos" asp-action="Index" class="dropdown-item">Consultar Insumos</a>
-                                            <a asp-controller="Fornecedores" asp-action="Index" class="dropdown-item">Consultar Fornecedores</a>
+                                            <a asp-controller="OrdensCompras" asp-action="NovaCompra" class="dropdown-item">Realizar Compra</a>
+                                            <a asp-controller="LotesInsumos" asp-action="Index" class="dropdown-item">Consultar Lotes de Insumos</a>
+                                            <a asp-controller="Insumos" asp-action="Create" class="dropdown-item">Cadastrar Insumos</a>
+                                            <a asp-controller="Fornecedores" asp-action="Create" class="dropdown-item">Cadastrar Fornecedores</a>
                                         </div>
                                     </div>
 
@@ -84,16 +84,16 @@
                                 @if (User.IsInRole("Vendedor"))
                                 {
                                     <a asp-controller="Vendedor" asp-action="Index" class="nav-item nav-link active">Home</a>
-                                    <a href="#" class="nav-item nav-link">Relatórios</a>
-                                    <a href="#" class="nav-item nav-link">Pendencias</a>
-                                    <a href="#" class="nav-item nav-link">Histórico</a> 
+                                    <a href="#" class="nav-item nav-link">Vendas</a>
+                                    <a asp-controller="Clientes" asp-action="Index" class="nav-item nav-link">Clientes</a>
+                                    @* <a href="#" class="nav-item nav-link">Histórico</a>  *@
                                     <div class="nav-item dropdown">
                                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Ações</a>
                                         <div class="dropdown-menu m-0 bg-secondary rounded-0">
                                             <a href="#" class="dropdown-item">Realizar Venda</a>
                                             <a asp-controller="LotesHortalicas" asp-action="Index" class="dropdown-item">Consultar Lotes de Hortaliças</a>
                                             <a asp-controller="Hortalicas" asp-action="Index" class="dropdown-item">Consultar Hortaliças</a>
-                                            <a href="#" class="dropdown-item">Consultar Clientes</a>
+                                            <a asp-controller="Clientes" asp-action="Create" class="dropdown-item">Cadastrar Clientes</a>
                                             
                                         </div>
                                     </div>

@@ -27,8 +27,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 //DI Usuario
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-//DI Funcionario
-builder.Services.AddScoped<IFuncionarioRepository, FuncionarioRepository>();
+
 //DI Fornecedores
 builder.Services.AddScoped<IFornecedoresRepository, FornecedoresRepository>();
 builder.Services.AddScoped<IFornecedorService, FornecedoreService>();
@@ -63,6 +62,10 @@ builder.Services.AddScoped<IPlantioService, PlantioService>();
 //DI Colheitas
 builder.Services.AddScoped<IColheitaRepository, ColheitaRepository>();
 builder.Services.AddScoped<IColheitaService, ColheitaService>();
+
+//DI Funcionarios
+builder.Services.AddScoped<IFuncionarioRepository, FuncionarioRepository>();
+builder.Services.AddScoped<IFuncionarioService, FuncionarioService>();
 
 
 var app = builder.Build();

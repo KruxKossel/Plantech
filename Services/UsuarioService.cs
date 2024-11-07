@@ -127,5 +127,11 @@ namespace Plantech.Services
             return _mapper.Map<UsuarioDTO>(usuario);
         }
 
+        public async Task<UsuarioDTO> GetUltimoUsuarioAsync()
+        {
+            var usuarioId = await _usuarioRepository.GetUltimoUsuarioAsync();
+            return _mapper.Map<UsuarioDTO>(usuarioId);
+        }
+
     }
 }
