@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Plantech.ViewModels
 {
-    public class FuncionarioViewModel
+    public class FuncionarioCreateViewModel
     {
-        public string Id { get; set; }
-
         // Usuario
 
         [Required]
@@ -40,18 +38,10 @@ namespace Plantech.ViewModels
         [Display(Name = "Nome")]
         public string Nome { get; set; } = null!;
 
-         
+        // apêndice
 
-        // Cargo
-
-        [Display(Name = "Função")]
-
-        public string Funcao {get;set;}
-
-
-        [Display(Name = "Descrição")]
-        public string Descricao { get; set; }
-
-
+        [Required]
+        [Display(Name = "ID do Cargo")]
+        public int CargoId { get; set; } 
     }
 }

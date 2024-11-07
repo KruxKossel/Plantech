@@ -16,5 +16,7 @@ namespace Plantech.Interfaces
         Task<Cargos> GetCargoByUserIdAsync(int userId);
         Task<UsuarioDTO> GetByEmailAsync(string email);
         Task<FuncionarioDTO> GetFuncionarioByUserIdAsync(int userId);
+
+        Task<UsuarioDTO> GetUltimoUsuarioAsync();
     }
 }
