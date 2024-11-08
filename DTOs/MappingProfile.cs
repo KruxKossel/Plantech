@@ -123,9 +123,9 @@ namespace Plantech.MappingProfiles
             // Plantios
             CreateMap<Plantios, PlantioDTO>().ReverseMap();
             CreateMap<PlantioViewModel, PlantioDTO>().ReverseMap();
-            CreateMap<Plantios, PlantioDTO>()
-                .ForMember(dest => dest.Hortalica, opt => opt.MapFrom(src => src.Hortalica))
-                .ReverseMap();
+            // CreateMap<Plantios, PlantioDTO>()
+            //     .ForMember(dest => dest.Hortalica, opt => opt.MapFrom(src => src.Hortalica))
+            //     .ReverseMap();
 
             CreateMap<InsumosPlantios, InsumosPlantioDTO>().ReverseMap();
 
