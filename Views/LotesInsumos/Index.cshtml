@@ -9,7 +9,7 @@
 <h1>Lotes de Insumos</h1>
 
 
-@if (User.IsInRole("Agricultor") || User.IsInRole("Administrador") || User.IsInRole("Comprador"))
+@if (User.IsInRole("Administrador") || User.IsInRole("Comprador"))
 {
 <div class="card-index">
     <div style="max-height: 350px; overflow-y: auto;">
@@ -78,5 +78,77 @@
 <br>
 <div>
     <a asp-controller="Comprador" asp-action="Index" class="btn btn-primary">Voltar a Home</a>
+</div>
+}
+
+
+@if (User.IsInRole("Agricultor"))
+{
+<div class="card-index">
+    <div style="max-height: 350px; overflow-y: auto;">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Quantidade)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PrecoUnitario)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DataEntrada)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DataValidade)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Status)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Nome)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.InsumoId)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Quantidade)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PrecoUnitario)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DataEntrada)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DataValidade)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Status)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.InsumoId)
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.Id " class="btn btn-info">Details</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<br>
+<div>
+    <a asp-controller="Agricultor" asp-action="Index" class="btn btn-primary">Voltar a Home</a>
 </div>
 }

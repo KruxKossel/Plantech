@@ -17,14 +17,14 @@ using Newtonsoft.Json;
 
 namespace Plantech.Controllers
 {
-    public class VendasController : Controller
+    public class VendasController(IVendasService vendasServvice, IMapper mapper, IClienteService clienteService, IUsuarioService usuarioService, ILotesHortalicasService lotesHortalicasService) : Controller
     {
         // private readonly PlantechContext _context;
-        private readonly IVendasService _vendasService;
-        private readonly IMapper _mapper;
-        private readonly IClienteService _clienteService;
-        private readonly IUsuarioService _usuarioService;
-        private readonly ILotesHortalicasService _lotesHortalicas;
+        private readonly IVendasService _vendasService = vendasServvice;
+        private readonly IMapper _mapper = mapper;
+        private readonly IClienteService _clienteService = clienteService;
+        private readonly IUsuarioService _usuarioService = usuarioService;
+        private readonly ILotesHortalicasService _lotesHortalicas = lotesHortalicasService;
         private async Task<int> GetLoggedFuncionarioId()
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
@@ -42,16 +42,6 @@ namespace Plantech.Controllers
             var usuario = await _usuarioService.GetByIdAsync(userId);
             var funcionario = usuario.Funcionarios.FirstOrDefault();
             return funcionario != null ? funcionario.Id : 0;
-        }
-
-        public VendasController(IVendasService vendasServvice, IMapper mapper,IClienteService clienteService,IUsuarioService usuarioService, ILotesHortalicasService lotesHortalicasService)
-        {
-            // _context = context;
-            _vendasService = vendasServvice;
-            _mapper = mapper;
-            _clienteService = clienteService;
-            _usuarioService = usuarioService;
-            _lotesHortalicas = lotesHortalicasService;
         }
 
         // GET: Vendas
