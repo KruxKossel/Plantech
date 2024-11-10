@@ -37,7 +37,7 @@
                                 <div class="rounded position-relative  fruite-item ">
                                     <a asp-action="Details" asp-route-id="@item.Id">
                                         <div class="fruite-img">
-                                            @if (!string.IsNullOrEmpty(item.Hortalica.CaminhoImagem))
+                                            @if (item.Hortalica != null && !string.IsNullOrEmpty(item.Hortalica.CaminhoImagem))
                                             {
                                                 <img src="@Url.Content("~/images/" + item.Hortalica.CaminhoImagem)"
                                                     class="img-fluid w-100 rounded-top" style="height: 195px;" />
