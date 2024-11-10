@@ -14,7 +14,8 @@
         <form asp-action="Create" method="post" id="colheitaForm">
             <div class="form-group">
                 <label>Nome do Funcionário</label>
-                <input class="form-control" value="@ViewData["FuncionarioNome"]" readonly style="margin-bottom: 20px;"/>
+                <input class="form-control" value="@ViewData["FuncionarioNome"]" readonly
+                    style="margin-bottom: 20px;" />
             </div>
             <div class="d-flex gap-3">
                 <div class="col-8 form-group">
@@ -37,23 +38,23 @@
                 </div>
                 <div class="col-2 form-group">
                     <label asp-for="Quantidade" class="control-label"></label>
-                    <input asp-for="Quantidade" class="form-control" style="width: 40%;" min="1"/>
+                    <input asp-for="Quantidade" class="form-control" style="width: 40%;" min="1" />
                     <span asp-validation-for="Quantidade" class="text-danger"></span>
                 </div>
             </div>
 
             <input type="hidden" asp-for="DataColheita" />
             <input type="hidden" asp-for="FuncionarioId" />
+
+            <div class="form-group text-end " style="margin-right: 60px;">
+                <br>
+                <a asp-action="Index" class="btn btn-secondary" style="width: 150px;">Voltar</a>
+                <input type="submit" value="Realizar Colheita" class="btn btn-primary" />
+
+            </div>
         </form>
 
     </div>
-</div>
-
-<div class="form-group text-end " style="margin-right: 60px;">
-    <br>
-    <a asp-action="Index" class="btn btn-secondary" style="width: 150px;">Voltar</a>
-    <input type="submit" value="Realizar Colheita" class="btn btn-primary" />
-
 </div>
 
 @section Scripts {

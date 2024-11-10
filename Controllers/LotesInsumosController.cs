@@ -7,7 +7,7 @@ using Plantech.ViewModels;
 
 namespace Plantech.Controllers
 {
-    [Authorize(Roles = "Comprador, Administrador")]
+    [Authorize(Roles = "Comprador, Administrador, Vendedor")]
     public class LotesInsumosController : Controller
     {
         private readonly ILotesInsumosService _lotesInsumosService;
@@ -20,13 +20,13 @@ namespace Plantech.Controllers
             _insumoService = insumoService;
             _mapper = mapper;
         }
-        [Authorize(Roles = "Comprador, Administrador")]
+        [Authorize(Roles = "Comprador, Administrador, Vendedor")]
         // GET: LotesHortalicas
         public async Task<IActionResult> Index()
         {
             return View(await _lotesInsumosService.ListarLotes());
         }
-        [Authorize(Roles = "Comprador, Administrador")]
+        [Authorize(Roles = "Comprador, Administrador, Vendedor")]
         // GET: LotesHortalicas/Details/5
         public async Task<IActionResult> Details(int id)
         {
@@ -44,7 +44,7 @@ namespace Plantech.Controllers
             return View(lotesInsumo);
         }
 
-        [Authorize(Roles = "Comprador, Administrador")]
+        [Authorize(Roles = "Comprador, Administrador, Vendedor")]
         // GET: LotesHortalicas/Edit/5
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
@@ -63,10 +63,10 @@ namespace Plantech.Controllers
             var lotesInsumoVM =  _mapper.Map<LotesInsumoViewModel>(lotesInsumo);
             return View(lotesInsumoVM);
         }
-        [Authorize(Roles = "Comprador, Administrador")]
-        // POST: LotesHortalicas/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
+        
+        
+        [Authorize(Roles = "Comprador, Administrador, Vendedor")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id, DataValidade, Status, Nome")] LotesInsumoViewModel lotesInsumo)

@@ -18,6 +18,8 @@ public partial class InsumoDTO
     public string? Categoria { get; set; }
 
     public string Tipo { get; set; } = null!;
+    
+    public string Status { get; set; } = "ativo";
 
     public string? CaminhoImagem { get; set; }
     // public double PrecoUnitario { get; set; } 
