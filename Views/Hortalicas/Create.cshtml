@@ -2,6 +2,11 @@
 @{
     ViewData["Title"] = "Adicionar Hortaliças";
 }
+@section Styles {
+    <link rel="stylesheet" href="~/css/detalhes.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/edit.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
+}
 
 <br>
 <h2>@ViewData["Title"]</h2>
@@ -41,7 +46,7 @@
                 </div>
 
                 <img id="imagePreview" src="" alt="Imagem selecionada"
-                    style="display:none; width: 640px; height: 440px; border: 2px solid #ccc; margin-top: 10px;" />
+                    style="display:none; width: 640px; height: 440px; border: 2px solid #ccc; margin-top: 10px; object-fit: cover;" />
 
                 <div class="form-group text-end mt-3">
                     <button type="submit" class="btn btn-primary">Adicionar</button>

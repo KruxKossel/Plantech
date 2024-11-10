@@ -8,7 +8,7 @@
 }
 @if (User.IsInRole("Agricultor") || User.IsInRole("Administrador"))
 {
-    <h2>@ViewData["Title"]</h2>
+    <h2>Lista de Hortaliças</h2>
     <br>
 
     <form method="get" asp-action="Index">
@@ -19,8 +19,10 @@
             </div>
             <div class="" style="display: flex;margin-bottom: 20px;">
                 <button type="submit" class="btn btn-primary" style="margin-left: 15px;">Filtar</button>
-                <a asp-action="ExportarExcel" asp-route-filtro="@ViewData["FiltroAtual"]" class="btn btn-success" style="margin-left: 15px;">Exportar para Excel</a>
-                <a asp-action="RelatorioImpressao" asp-route-filtro="@ViewData["FiltroAtual"]" target="_blank" class="btn btn-success" style="margin-left: 15px;">Visualizar Relatório</a>
+                <a asp-action="ExportarExcel" asp-route-filtro="@ViewData["FiltroAtual"]" class="btn btn-success"
+                    style="margin-left: 15px;">Exportar para Excel</a>
+                <a asp-action="RelatorioImpressao" asp-route-filtro="@ViewData["FiltroAtual"]" target="_blank"
+                    class="btn btn-success" style="margin-left: 15px;">Visualizar Relatório</a>
             </div>
         </div>
     </form>
@@ -68,7 +70,8 @@
 
 @if (User.IsInRole("Vendedor"))
 {
-    <h2>@ViewData["Title"]</h2>
+    <br>
+    <h2>Lista de Hortaliças</h2>
     <br>
     <div class="card-index">
         <div style="max-height: 350px; overflow-y: auto;">
