@@ -160,6 +160,15 @@ namespace Plantech.MappingProfiles
             .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
             .ForMember(dest => dest.ClienteId, opt => opt.MapFrom(src => src.ClienteId));
 
+            // CreateMap<(Vendas, List<LotesHortalica>), AdicionarHortalicaViewModel>()
+            // .ForMember(dest => dest.Venda, opt => opt.MapFrom(src => src.Item1))
+            // .ForMember(dest => dest.LotesDisponiveis, opt => opt.MapFrom(src => src.Item2));
+
+            CreateMap<HortalicasVendaDTO, HortalicasVendas>();
+            CreateMap<HortalicasVendaViewModel,HortalicaDTO>().ReverseMap();
+            CreateMap<HortalicasVendas,HortalicasVendaDTO>();
+
+
         }
     }
 }

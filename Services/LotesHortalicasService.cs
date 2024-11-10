@@ -32,5 +32,9 @@ public class LotesHortalicasService(ILotesHortalicasRepository lotesHortalicasRe
         return _mapper.Map<List<LotesHortalicaDTO>>(lotesHortalicas);
     }
 
-
+    public async Task<List<LotesHortalicaDTO>> ListarLotesAtivos()
+    {
+        var lotesHortalicas = await _lotesHortalicasRepository.ListarLotesAtivos();
+        return _mapper.Map<List<LotesHortalicaDTO>>(lotesHortalicas);
+    }
 }
