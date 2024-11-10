@@ -17,6 +17,12 @@ public class VendasService : IVendasService
         _mapper = mapper;
     }
 
+    public async Task AdicionarHortalica(List<HortalicasVendaDTO> hortalicas)
+    {
+        var hortalica = _mapper.Map<List<HortalicasVendas>>(hortalicas);
+        await _vendasRepository.AdicionarHortalica(hortalica);  
+    }
+
     public async Task<VendaDTO> BuscarId(int id)
     {
         var venda = await _vendasRepository.BuscarId(id);

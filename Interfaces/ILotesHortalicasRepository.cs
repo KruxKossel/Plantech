@@ -11,6 +11,7 @@ namespace Plantech.Interfaces
     {
         Task <List<LotesHortalicas>> ListarLotes();
         Task <LotesHortalicas> GetLotesInsumoId(int id);
+        Task <List<LotesHortalicas>> ListarLotesAtivos();
         Task  EditarLote(LotesHortalicas lotesHortalica);
 
     }
