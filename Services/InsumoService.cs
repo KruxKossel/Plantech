@@ -50,4 +50,9 @@ public class InsumoService(IInsumoRepository insumoRepository, IMapper mapper): 
         var fornecedores = await _insumoRepository.ListarFornecedoresAsync();
         return _mapper.Map<List<FornecedoreDTO>>(fornecedores);
     }
+
+    public async Task AtualizarStatusAsync(int id)
+    {
+        await _insumoRepository.AtualizarStatusAsync(id);
+    }
 }

@@ -53,5 +53,15 @@ namespace Plantech.Repositories
         {
             return await _context.Hortalicas.ToListAsync();
         }
+
+        public async Task AtualizarStatusAsync(int id)
+        {
+            var hortalica = await _context.Hortalicas.FindAsync(id);
+            if(hortalica != null){
+                hortalica.Status = hortalica.Status == "ativo" ? "inativo" : "ativo";
+                _context.Hortalicas.Update(hortalica);
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }

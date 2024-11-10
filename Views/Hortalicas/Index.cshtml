@@ -36,6 +36,7 @@
                         <th>Descrição</th>
                         <th>Observações</th>
                         <th>Opções</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -45,10 +46,23 @@
                             <td>@item.Nome</td>
                             <td>@item.Descricao</td>
                             <td style="width: 550px;">@item.Observacoes</td>
+                            @if(item.Status == "ativo"){
+                            <td style="color: rgb(0, 139, 23);!important">@item.Status</td>
+                            }
+                            else{
+                            <td style="color: rgb(139, 0, 0);!important">@item.Status</td>
+                            }
                             <td>
                                 <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Editar</a>
                                 <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Detalhes</a>
-                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Deletar</a>
+                                @* <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Deletar</a> *@
+
+                                @if(User.IsInRole("Administrador")){
+                <form method="post" asp-action="MudarStatus" asp-route-id="@item.Id"
+                    onsubmit="return confirm('Tem certeza que deseja mudar o status?');" class="d-inline">
+                    <button type="submit" class="btn btn-warning">Mudar Status</button>
+                </form>
+                }
                             </td>
                         </tr>
                     }

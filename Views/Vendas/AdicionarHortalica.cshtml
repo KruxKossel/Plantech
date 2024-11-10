@@ -4,7 +4,7 @@
     ViewData["Title"] = "Lotes de Hortaliças";
 }
 
-@if (User.IsInRole("Vendedor"))
+@if (User.IsInRole("Vendedor") && User.IsInRole("Administrador"))
 {
     <div class="container-fluid fruite">
         <div class="container">
