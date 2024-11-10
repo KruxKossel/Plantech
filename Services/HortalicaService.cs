@@ -41,5 +41,10 @@ namespace Plantech.Services
             var hortalicas = await _hortalicaRepository.ListarAsync();
             return _mapper.Map<List<HortalicaDTO>>(hortalicas);
         }
+
+        public async Task AtualizarStatusAsync(int id)
+        {
+            await _hortalicaRepository.AtualizarStatusAsync(id);
+        }
     }
 }

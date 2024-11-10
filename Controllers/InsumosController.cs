@@ -195,36 +195,54 @@ namespace Plantech.Controllers
         //     return View(insumoVM);
         // }   
         
-        public async Task<IActionResult> Delete(int id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var insumo = await _insumoService.ObterPorIdAsync(id);
-            if (insumo == null)
-            {
-                return NotFound();
-            }
-
-            return View(insumo);
-        }
-
-        // POST: Insumos/Delete/5
+        
         [Authorize(Roles = "Administrador, Comprador")]
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("MudarStatus")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> MudarStatus(int id)
         {
-            var insumo = await _insumoService.ObterPorIdAsync(id);
-            if (insumo != null)
-            {
-                _insumoService.DeletarAsync(id);
-            }
-
+            var insumo = _insumoService.AtualizarStatusAsync(id);
             return RedirectToAction(nameof(Index));
         }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        // public async Task<IActionResult> Delete(int id)
+        // {
+        //     if (id == null)
+        //     {
+        //         return NotFound();
+        //     }
+
+        //     var insumo = await _insumoService.ObterPorIdAsync(id);
+        //     if (insumo == null)
+        //     {
+        //         return NotFound();
+        //     }
+
+        //     return View(insumo);
+        // }
+
+        // // POST: Insumos/Delete/5
+        // [Authorize(Roles = "Administrador, Comprador")]
+        // [HttpPost, ActionName("Delete")]
+        // [ValidateAntiForgeryToken]
+        // public async Task<IActionResult> DeleteConfirmed(int id)
+        // {
+        //     var insumo = await _insumoService.ObterPorIdAsync(id);
+        //     if (insumo != null)
+        //     {
+        //         _insumoService.DeletarAsync(id);
+        //     }
+
+        //     return RedirectToAction(nameof(Index));
+        // }
 
         private  bool InsumoExists(int id)
         {
