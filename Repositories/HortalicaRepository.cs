@@ -63,5 +63,13 @@ namespace Plantech.Repositories
                 await _context.SaveChangesAsync();
             }
         }
+
+        public async Task<IEnumerable<Hortalicas>> ObterHortalicasPorIdsAsync(List<int> ids)
+        {
+            return await _context.Hortalicas
+                .Where(h => ids.Contains(h.Id))
+                .ToListAsync();
+        }
+
     }
 }

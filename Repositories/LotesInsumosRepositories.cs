@@ -33,7 +33,8 @@ public class LotesInsumosRepository(PlantechContext context): ILotesInsumosRepos
 
     public async Task<List<LotesInsumos>> ListarLotes()
     {
-        return await _context.LotesInsumos.Include(l => l.Insumo).ToListAsync();
+        return await _context.LotesInsumos
+        .Include(l => l.Insumo).ToListAsync();
     }
 
 }
