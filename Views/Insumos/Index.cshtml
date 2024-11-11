@@ -6,40 +6,38 @@
 <br><br>
 @if (User.IsInRole("Comprador") || User.IsInRole("Administrador"))
 {
-<h2>Lista de Insumos</h2>
-<p>
-</p>
-<div class="card-index">
+    <h2>Lista de Insumos</h2>
+    <p>
+    </p>
+    <div class="card-index">
         <div style="max-height: 5000px; overflow-y: auto;">
             <table class="table table-striped table-hover">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nome)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Descricao)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Observacoes)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Categoria)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Tipo)
-            </th>
-            @* <th>
-                @Html.DisplayNameFor(model => model.FornecedorId)
-            </th> *@
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Nome)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Descricao)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Categoria)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Tipo)
+                        </th>
+                        <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
         </div>
-        </div>
-@foreach (var item in Model) {
+    </div>
+    @foreach (var item in Model)
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Nome)
@@ -48,30 +46,40 @@
                 @Html.DisplayFor(modelItem => item.Descricao)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Observacoes)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Categoria)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Tipo)
+            
+            @if(item.Status == "ativo"){
+            <td  style="color: rgb(0, 139, 69);!important">
+                @Html.DisplayFor(modelItem => item.Status)
             </td>
-            @* <td>
-                @Html.DisplayFor(modelItem => item.FornecedorId)
-            </td> *@
+            }else{
+            <td style="color: rgb(139, 0, 0);!important">
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            }
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Editar</a> 
-                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Detalhes</a> 
-                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary d-inline mr-2">Editar</a>
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary d-inline mr-2">Detalhes</a>
+                
+                
+                @if(User.IsInRole("Administrador")){
+                <form method="post" asp-action="MudarStatus" asp-route-id="@item.Id"
+                    onsubmit="return confirm('Tem certeza que deseja mudar o status?');" class="d-inline">
+                    <button type="submit" class="btn btn-warning">Mudar Status</button>
+                </form>
+                }
             </td>
         </tr>
+    }
 }
-}
-    </tbody>
+</tbody>
 </table>
-    </div>
-    </div>
-    <div class="text-end" style="margin-right: 15px;">
-        <br>
-        <a asp-action="Create" class="btn btn-primary ">Adicionar Insumo</a>
-    </div>
+</div>
+</div>
+<div class="text-end" style="margin-right: 15px;">
+    <br>
+    <a asp-action="Create" class="btn btn-primary ">Adicionar Insumo</a>
+</div>

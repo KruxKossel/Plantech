@@ -1,27 +1,22 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Plantech.Data;
 using Plantech.DTOs;
 using Plantech.Interfaces;
-using Plantech.Models;
 using Plantech.ViewModels;
+using Newtonsoft.Json;
 
 namespace Plantech.Controllers
 {
-    public class VendasController : Controller
+    public class VendasController(IVendasService vendasServvice, IMapper mapper, IClienteService clienteService, IUsuarioService usuarioService, ILotesHortalicasService lotesHortalicasService) : Controller
     {
         // private readonly PlantechContext _context;
-        private readonly IVendasService _vendasService;
-        private readonly IMapper _mapper;
-        private readonly IClienteService _clienteService;
-        private readonly IUsuarioService _usuarioService;
+        private readonly IVendasService _vendasService = vendasServvice;
+        private readonly IMapper _mapper = mapper;
+        private readonly IClienteService _clienteService = clienteService;
+        private readonly IUsuarioService _usuarioService = usuarioService;
+        private readonly ILotesHortalicasService _lotesHortalicas = lotesHortalicasService;
         private async Task<int> GetLoggedFuncionarioId()
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
@@ -39,15 +34,6 @@ namespace Plantech.Controllers
             var usuario = await _usuarioService.GetByIdAsync(userId);
             var funcionario = usuario.Funcionarios.FirstOrDefault();
             return funcionario != null ? funcionario.Id : 0;
-        }
-
-        public VendasController(IVendasService vendasServvice, IMapper mapper,IClienteService clienteService,IUsuarioService usuarioService)
-        {
-            // _context = context;
-            _vendasService = vendasServvice;
-            _mapper = mapper;
-            _clienteService = clienteService;
-            _usuarioService = usuarioService;
         }
 
         // GET: Vendas
@@ -72,7 +58,7 @@ namespace Plantech.Controllers
         {
             var usuarioLogadoID =  await GetLoggedFuncionarioId();
             var usuariobj = _usuarioService.GetByIdAsync(usuarioLogadoID);
-            Console.WriteLine("\n\n\n Entrou no Post \n\n\n");
+            // Console.WriteLine("\n\n\n Entrou no Post \n\n\n");
             var vendadto = _mapper.Map<VendaDTO>(vendavm);
             vendadto.FuncionarioId = usuarioLogadoID;
             
@@ -90,9 +76,11 @@ namespace Plantech.Controllers
             
             if (ModelState.IsValid)
             {
-                Console.WriteLine($"\n\n\n Entrou no ModelState\n Id Cliente {vendavm.ClienteId},\n Status {vendavm.Status}\n Data {vendavm.Data} \n   \n\n\n");
-                var idvenda = await _vendasService.CriarVenda(vendadto);
-                return RedirectToAction(nameof(Index), new { id = idvenda });
+                // Console.WriteLine($"\n\n\n Entrou no ModelState\n Id Cliente {vendavm.ClienteId},\n Status {vendavm.Status}\n Data {vendavm.Data} \n   \n\n\n");
+                // var idvenda = await _vendasService.CriarVenda(vendadto);
+                
+                TempData["venda"] =JsonConvert.SerializeObject(vendavm);
+                return RedirectToAction(nameof(AdicionarHortalica));
             }
             var clientes = await _clienteService.ListarAsync();
             var clientesVm = _mapper.Map<IEnumerable<ClienteViewModel>>(clientes);
@@ -100,6 +88,112 @@ namespace Plantech.Controllers
             return View(vendavm);
         }
 
+        [HttpGet("Vendas/NovaVenda/AdicionarHortalica")]
+        public async Task<IActionResult> AdicionarHortalica(){
+                var lotesHortalicaDTO = await _lotesHortalicas.ListarLotesAtivos();
+                var lotes = _mapper.Map<List<LotesHortalicaViewModel>>(lotesHortalicaDTO); 
+
+                var model = new AdicionarHortalicaViewModel{
+                    LotesDisponiveis = lotes
+                };
+                return View(model);
+        }
+        
+        [HttpPost("Vendas/NovaVenda/AdicionarHortalica")]
+        public async Task<IActionResult> AdicionarHortalica(AdicionarHortalicaViewModel model)
+        {
+            Console.WriteLine("\n\n\n ENTROU NO POST ADICIONAR HORTALICA \n\n\n");
+
+            if (TempData["venda"] == null)
+            {
+                return BadRequest("A venda não foi encontrada. A requisição é inválida.");
+            }
+
+            var venda = JsonConvert.DeserializeObject<VendaViewModel>((string)TempData["venda"]);
+            venda.FuncionarioId = await GetLoggedFuncionarioId();
+
+            Console.WriteLine("\n\n\n");
+            Console.WriteLine("Id: " + venda.Id);
+            Console.WriteLine("Data: " + (venda.Data.HasValue ? venda.Data.Value.ToString("yyyy-MM-dd") : "null"));
+            Console.WriteLine("TotalVendas: " + (venda.TotalVendas.HasValue ? venda.TotalVendas.Value.ToString("F2") : "null"));
+            Console.WriteLine("QuantidadeProdutos: " + (venda.QuantidadeProdutos.HasValue ? venda.QuantidadeProdutos.Value.ToString() : "null"));
+            Console.WriteLine("Status: " + venda.Status);
+            Console.WriteLine("ClienteId: " + venda.ClienteId);
+            Console.WriteLine("FuncionarioId: " + venda.FuncionarioId);
+            Console.WriteLine("\n\n\n");
+
+            if (ModelState.IsValid)
+            {
+                if (model.LotesSelecionados != null && model.LotesSelecionados.Any())
+                {
+                    var vendaDTO = _mapper.Map<VendaDTO>(venda);
+                    var vendaId = await _vendasService.CriarVenda(vendaDTO);
+
+                    var hortalicasVendaList = model.LotesSelecionados.Select(loteSelecionado => new HortalicasVendaDTO
+                    {
+                        VendaId = vendaId,
+                        LoteId = loteSelecionado.LoteId,
+                        Quantidade = loteSelecionado.Quantidade,
+                        PrecoUnitario = loteSelecionado.PrecoUnitario
+                    }).ToList();
+
+                    Console.WriteLine("\n\n\nLista de HortalicasVendaDTO:");
+                    foreach (var item in hortalicasVendaList)
+                    {
+                        Console.WriteLine($"\n\n\nVendaId: {item.VendaId} \nLoteId: {item.LoteId}, \nQuantidade: {item.Quantidade}, \nPrecoUnitario: {item.PrecoUnitario}\n\n\n");
+                    }
+
+                    await _vendasService.AdicionarHortalica(hortalicasVendaList);
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    // Carrega os lotes ativos se não houver lotes selecionados
+                    var lotesHortalicaDTO = await _lotesHortalicas.ListarLotesAtivos();
+                    var lotes = _mapper.Map<List<LotesHortalicaViewModel>>(lotesHortalicaDTO);
+                    model.LotesDisponiveis = lotes;
+                    return View(model);
+                }
+            }
+
+            return BadRequest("Os dados do formulário não são válidos.");
+        }
+        public async Task<IActionResult> Details(int id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var venda = await _vendasService.BuscarId(id);
+            var detalhes = await _vendasService.DetalharVenda(id);
+            var model = new VendaDetalhadaViewModel{
+                Data = venda.Data,
+                TotalVendas = venda.TotalVendas,
+                Status = venda.Status,
+                ClienteId = venda.ClienteId,
+                FuncionarioId = venda.FuncionarioId,
+                Cliente = venda.Cliente,
+                Funcionario = venda.Funcionario,
+                HortalicasVendas = detalhes.ToList()
+            };
+
+
+            if (venda == null)
+            {
+                return NotFound();
+            }
+
+            return View(model);
+        }
+    }
+            
+}
+        // GET: Vendas/Details/5
+            
+
+
+        
         // // GET: Vendas/Edit/5
         // public async Task<IActionResult> Edit(int? id)
         // {
@@ -162,22 +256,6 @@ namespace Plantech.Controllers
         //     ViewData["FuncionarioId"] = new SelectList(_context.Funcionarios, "Id", "Id", venda.FuncionarioId);
         //     return View(venda);
         // }
-        // GET: Vendas/Details/5
-        // public async Task<IActionResult> Details(int id)
-        // {
-        //     if (id == null)
-        //     {
-        //         return NotFound();
-        //     }
-
-        //     var venda = await _vendasServvice.BuscarId(id);
-        //     if (venda == null)
-        //     {
-        //         return NotFound();
-        //     }
-
-        //     return View(venda);
-        // }
 
         // // GET: Vendas/Delete/5
         // public async Task<IActionResult> Delete(int? id)
@@ -218,5 +296,3 @@ namespace Plantech.Controllers
         // {
         //     return _context.Vendas.Any(e => e.Id == id);
         // }
-    }
-}

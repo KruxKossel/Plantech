@@ -4,7 +4,6 @@
     ViewData["Title"] = "Detalhes da Compra";
 }
 
-
 @section Styles {
     <link rel="stylesheet" href="~/css/detalhes.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/edit.css" asp-append-version="true" />
@@ -13,8 +12,8 @@
 }
 
 <h2 class="text-center mb-4 mt-4">@ViewData["Title"]</h2>
-<section class="card-plan-5">
-    <div>
+
+    <div class="card-plan">
         <h3>OrdensCompra</h3>
         <hr />
         <dl class="row">
@@ -86,16 +85,18 @@
                 </h1>
             </dd>
         </div>
-</section>
 
-<div class="text-end">
-    <div>
-        <br>
-        <a asp-controller="OrdensCompras" asp-action="Index" class="btn btn-primary">Voltar</a>
     </div>
 
-    @* <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Voltar</a>
-    </div> *@
-</div>
+
+    <div class="text-end">
+        <div>
+            <br>
+            <a asp-controller="OrdensCompras" asp-action="Index" class="btn btn-primary" style="width: 150px;">Voltar</a>
+        </div>
+
+        @* <div>
+        <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+        <a asp-action="Index">Voltar</a>
+        </div> *@
+    </div>

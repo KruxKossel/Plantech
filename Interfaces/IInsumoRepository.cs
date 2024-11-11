@@ -14,5 +14,9 @@ namespace Plantech.Interfaces
         Task<List<Insumos>> ListarAsync();
         Task<InsumoDTO> ObterPorCnpjAsync(string cnpj);
         Task<List<Fornecedores>> ListarFornecedoresAsync();
+        Task AtualizarStatusAsync(int id);
+    
     }
+
+
 }

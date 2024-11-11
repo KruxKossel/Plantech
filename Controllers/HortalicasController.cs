@@ -316,35 +316,44 @@ namespace Plantech.Controllers
             return View(model);
         }
 
-
-
-        // GET: Hortalicas/Delete/5
-        [Authorize(Roles = "Agricultor, Administrador")]
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var hortalica = await _hortalicaService.ObterHortalicaPorIdAsync(id.Value);
-            if (hortalica == null)
-            {
-                return NotFound();
-            }
-
-            return View(hortalica);
-        }
-
-        // POST: Hortalicas/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "Administrador, Agricultor")]
+        [HttpPost, ActionName("MudarStatus")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Agricultor, Administrador")]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> MudarStatus(int id)
         {
-            await _hortalicaService.DeletarHortalicaAsync(id);
+            var insumo = _hortalicaService.AtualizarStatusAsync(id);
             return RedirectToAction(nameof(Index));
         }
+        
+        
+
+        // // GET: Hortalicas/Delete/5
+        // [Authorize(Roles = "Agricultor, Administrador")]
+        // public async Task<IActionResult> Delete(int? id)
+        // {
+        //     if (id == null)
+        //     {
+        //         return NotFound();
+        //     }
+
+        //     var hortalica = await _hortalicaService.ObterHortalicaPorIdAsync(id.Value);
+        //     if (hortalica == null)
+        //     {
+        //         return NotFound();
+        //     }
+
+        //     return View(hortalica);
+        // }
+
+        // // POST: Hortalicas/Delete/5
+        // [HttpPost, ActionName("Delete")]
+        // [ValidateAntiForgeryToken]
+        // [Authorize(Roles = "Agricultor, Administrador")]
+        // public async Task<IActionResult> DeleteConfirmed(int id)
+        // {
+        //     await _hortalicaService.DeletarHortalicaAsync(id);
+        //     return RedirectToAction(nameof(Index));
+        // }
 
         private async Task<bool> HortalicaExists(int id)
         {

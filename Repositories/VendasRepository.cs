@@ -18,6 +18,21 @@ public class VendasRepository : IVendasRepository
         _mapper = mapper;
     }
 
+    public async Task AdicionarHortalica(List<HortalicasVendas> hortalicas)
+    {
+             foreach(var hortalica in hortalicas){
+            if(hortalica.LoteId <= 0){
+                throw new ArgumentException("Hortalica deve ser maior que zero.");
+            }
+            // var existe = await _context.Hortalicas.FindAsync(hortalica.LoteId);
+            // if(existe == null){
+            //     throw new ArgumentException($"Hortalica com ID {hortalica.LoteId} não encontrado.");
+            // }
+            await _context.HortalicasVendas.AddAsync(hortalica);
+        }
+        await _context.SaveChangesAsync();
+    }
+
     public async Task<Vendas> BuscarId(int id)
     {
         return await _context.Vendas.Include(v => v.Cliente).Include(v => v.Funcionario).FirstOrDefaultAsync(m => m.Id == id);
@@ -31,14 +46,16 @@ public class VendasRepository : IVendasRepository
 
     }
 
-    public Task DeletarTuplasZeradas()
-    {
-        throw new NotImplementedException();
-    }
+
 
     public async Task<IEnumerable<HortalicasVendas>> DetalharVenda(int id)
     {
-         throw new NotImplementedException();
+         var venda = await BuscarId(id);
+        if (venda == null)
+        {
+            throw new ArgumentException($"Ordem de compra com ID {id} não encontrada.");
+        }
+        return await _context.HortalicasVendas.Include(h => h.Lote).Include(h =>h.Lote.Hortalica).Where(h => h.VendaId == id).ToListAsync();
     }
 
     public async Task<List<Vendas>> ListarVendas()

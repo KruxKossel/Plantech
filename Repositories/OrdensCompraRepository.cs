@@ -16,10 +16,16 @@ public class OrdensCompraRepository : IOrdensCompraRepository
         _context = plantechContext;
         _mapper = mapper;
     }
-    public Task AtualizarStatus(int id)
+    public async Task AtualizarStatus(int id)
     {
-        throw new NotImplementedException();
+        var ordensCompras = await _context.OrdensCompras.FindAsync(id);
+            if(ordensCompras != null){
+                ordensCompras.Status = ordensCompras.Status == "pendente" ? "pago" : "pendente";
+                _context.OrdensCompras.Update(ordensCompras);
+                await _context.SaveChangesAsync();
+            }
     }
+
 
     public Task AtualizarCompra(OrdensCompras ordensCompra)
     {

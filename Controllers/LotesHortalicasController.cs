@@ -15,16 +15,10 @@ using Plantech.ViewModels;
 namespace Plantech.Controllers
 {
     [Authorize(Roles = "Agricultor, Administrador, Vendedor")]
-    public class LotesHortalicasController : Controller
+    public class LotesHortalicasController(ILotesHortalicasService lotesHortalicasService, IMapper mapper) : Controller
     {
-        private readonly IMapper _mapper;
-        private readonly ILotesHortalicasService _lotesHortalicasSerivce;
-
-        public LotesHortalicasController(ILotesHortalicasService lotesHortalicasService, IMapper mapper)
-        {
-            _lotesHortalicasSerivce = lotesHortalicasService;
-            _mapper = mapper;
-        }
+        private readonly IMapper _mapper = mapper;
+        private readonly ILotesHortalicasService _lotesHortalicasSerivce = lotesHortalicasService;
 
         // GET: LotesHortalicas
         public async Task<IActionResult> Index()

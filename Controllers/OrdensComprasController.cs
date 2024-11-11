@@ -346,6 +346,23 @@ namespace Plantech.Controllers
         //     return View(ordensCompra);
         // }
 
+        
+                
+        [Authorize(Roles = "Administrador, Comprador")]
+        [HttpPost, ActionName("MudarStatus")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> MudarStatus(int id)
+        {
+            var insumo = _ordensCompraService.AtualizarStatus(id);
+            return RedirectToAction(nameof(Index));
+        }
+        
+        
+        
+        
+        
+        
+        
         // POST: OrdensCompras/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

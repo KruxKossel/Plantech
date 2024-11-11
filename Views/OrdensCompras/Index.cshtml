@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Index";
 }
+
 @if (User.IsInRole("Comprador") || User.IsInRole("Administrador"))
 {
     <br><br>
@@ -27,9 +28,15 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.Total)
                             </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Status)
-                            </td>
+                             @if(item.Status == "pago"){
+            <td  style="color: rgb(0, 139, 69);!important">
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            }else{
+            <td style="color: rgb(139, 0, 0);!important">
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            }
                             <td>
                                 @Html.DisplayFor(modelItem => item.DataCompra)
                             </td>
@@ -42,11 +49,18 @@
                             <td>
                                 @* <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> | *@
                                 <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Detalhes</a>
-                                @* @if( User.IsInRole("Administrador")){ *@
+                                
+                                @if( User.IsInRole("Administrador")){
+                                @if(item.Status == "pendente"){
                                 <form asp-action="Delete" asp-route-id="@item.Id" method="post" style="display:inline;">
                                     <button type="submit" class="btn btn-danger">Delete</button>
                                 </form>
-                                @* } *@
+                                }
+
+                                <form asp-action="MudarStatus" asp-route-id="@item.Id" method="post" style="display:inline;">
+                                    <button type="submit" class="btn btn-warning">Mudar Status</button>
+                                </form>
+                                }
 
                             </td>
                         </tr>
@@ -59,6 +73,10 @@
     <div class="text-end" style="margin-right: 15px;">
         <br>
         <a asp-action="NovaCompra" class="btn btn-primary">Nova Compra</a><br><br>
+    </div>
+
+    <div>
+        <a asp-controller="Comprador" asp-action="Index" class="btn btn-primary">Voltar a Home</a>
     </div>
 
     <br>

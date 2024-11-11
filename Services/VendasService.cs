@@ -17,6 +17,12 @@ public class VendasService : IVendasService
         _mapper = mapper;
     }
 
+    public async Task AdicionarHortalica(List<HortalicasVendaDTO> hortalicas)
+    {
+        var hortalica = _mapper.Map<List<HortalicasVendas>>(hortalicas);
+        await _vendasRepository.AdicionarHortalica(hortalica);  
+    }
+
     public async Task<VendaDTO> BuscarId(int id)
     {
         var venda = await _vendasRepository.BuscarId(id);
@@ -33,6 +39,12 @@ public class VendasService : IVendasService
     public Task DeletarTuplasZeradas()
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<IEnumerable<HortalicasVendaDTO>> DetalharVenda(int id)
+    {
+        var hortalicas = await _vendasRepository.DetalharVenda(id);
+        return _mapper.Map<IEnumerable<HortalicasVendaDTO>>(hortalicas);
     }
 
     public async Task<List<VendaDTO>> ListarVendas()

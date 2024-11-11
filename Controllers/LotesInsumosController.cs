@@ -7,26 +7,23 @@ using Plantech.ViewModels;
 
 namespace Plantech.Controllers
 {
-    [Authorize(Roles = "Comprador, Administrador, Vendedor")]
-    public class LotesInsumosController : Controller
+    [Authorize(Roles = "Comprador, Administrador, Agricultor")]
+    public class LotesInsumosController(ILotesInsumosService lotesInsumosService, IInsumoService insumoService, IMapper mapper) : Controller
     {
-        private readonly ILotesInsumosService _lotesInsumosService;
-        private readonly IInsumoService _insumoService;
-        private readonly IMapper _mapper;
+        private readonly ILotesInsumosService _lotesInsumosService = lotesInsumosService;
+        private readonly IInsumoService _insumoService = insumoService;
+        private readonly IMapper _mapper = mapper;
 
-        public LotesInsumosController(ILotesInsumosService lotesInsumosService,IInsumoService insumoService, IMapper mapper)
-        {
-            _lotesInsumosService = lotesInsumosService;
-            _insumoService = insumoService;
-            _mapper = mapper;
-        }
-        [Authorize(Roles = "Comprador, Administrador, Vendedor")]
+
+        [Authorize(Roles = "Comprador, Administrador, Agricultor")]
         // GET: LotesHortalicas
         public async Task<IActionResult> Index()
         {
             return View(await _lotesInsumosService.ListarLotes());
         }
-        [Authorize(Roles = "Comprador, Administrador, Vendedor")]
+
+
+        [Authorize(Roles = "Comprador, Administrador, Vendedor, Agricultor")]
         // GET: LotesHortalicas/Details/5
         public async Task<IActionResult> Details(int id)
         {
@@ -44,7 +41,7 @@ namespace Plantech.Controllers
             return View(lotesInsumo);
         }
 
-        [Authorize(Roles = "Comprador, Administrador, Vendedor")]
+        [Authorize(Roles = "Comprador, Administrador")]
         // GET: LotesHortalicas/Edit/5
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
@@ -66,7 +63,7 @@ namespace Plantech.Controllers
         
         
         
-        [Authorize(Roles = "Comprador, Administrador, Vendedor")]
+        [Authorize(Roles = "Comprador, Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id, DataValidade, Status, Nome")] LotesInsumoViewModel lotesInsumo)

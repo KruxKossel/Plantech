@@ -59,4 +59,14 @@ public class InsumoRepository(PlantechContext context): IInsumoRepository
     {
         return await _context.Fornecedores.ToListAsync();
     }
+
+    public async Task AtualizarStatusAsync(int id)
+    {
+         var insumos = await _context.Insumos.FindAsync(id);
+            if(insumos != null){
+                insumos.Status = insumos.Status == "ativo" ? "inativo" : "ativo";
+                _context.Insumos.Update(insumos);
+                await _context.SaveChangesAsync();
+            }
+    }
 }

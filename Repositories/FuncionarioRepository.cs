@@ -42,5 +42,13 @@ namespace Plantech.Repositories
             return await _context.Cargos.ToListAsync();
         }
 
+        public async Task<IEnumerable<Funcionarios>> ObterFuncionariosPorIdsAsync(List<int> ids)
+        {
+            return await _context.Funcionarios
+                .Where(f => ids.Contains(f.Id))
+                .ToListAsync();
+        }
+
+
     }
 }

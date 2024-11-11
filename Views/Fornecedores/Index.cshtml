@@ -71,9 +71,11 @@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Editar</a> 
                 <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Detalhes</a> 
+                @if(User.IsInRole("Administrador")){
                 <form asp-action="Delete" asp-route-id="@item.Id" method="post" style="display:inline;">
                     <button type="submit" class="btn btn-warning">Mudar Status</button>
                 </form>
+                }
             </td>
         </tr>
 }

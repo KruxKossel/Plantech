@@ -36,10 +36,21 @@ namespace Plantech.Services
             return _mapper.Map<HortalicaDTO>(hortalica);
         }
 
+        // public async Task<IEnumerable<Hortalicas>> ObterHortalicasPorIdsAsync(List<int> ids){
+
+        //     var hortalica = await _hortalicaRepository.ObterHortalicasPorIdsAsync(ids);
+        //     return _mapper.Map<HortalicaDTO>(hortalica.Id);
+        // }
+
         public async Task<List<HortalicaDTO>> ListarHortalicasAsync()
         {
             var hortalicas = await _hortalicaRepository.ListarAsync();
             return _mapper.Map<List<HortalicaDTO>>(hortalicas);
+        }
+
+        public async Task AtualizarStatusAsync(int id)
+        {
+            await _hortalicaRepository.AtualizarStatusAsync(id);
         }
     }
 }

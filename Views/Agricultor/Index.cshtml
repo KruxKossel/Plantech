@@ -1,46 +1,75 @@
-@model IEnumerable<Plantech.DTOs.PlantioDTO>
+@model PlantioColheitaViewModel
 
 @section Styles {
     <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
 }
-    <br><br>
+<br><br>
+
+@if (User.IsInRole("Administrador")){
+    
+        <nav class="navbar navbar-expand-lg navbar-light bg-light" style="height: 30px; width: 200px; margin-left: 87%;">
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Ações do Agricultor
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" asp-controller="Plantios" asp-action="Index">Plantios</a></li>
+                                <li><a class="dropdown-item" asp-controller="Colheitas" asp-action="Index">Colheitas</a></li>
+                                <li><a class="dropdown-item" asp-controller="Hortalicas" asp-action="Index">Hortaliças</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    }
+
 <div class="jumbotron">
     <h1>Bem-vindo Agricultor</h1>
     <br>
-    <p>
-        <a asp-controller="Hortalicas" asp-action="Index" class="btn btn-primary btn-lg">Hortaliças</a>
-    </p>
+    
 </div>
 <div>
     <canvas id="graficoPlantios" width="600" height="200"></canvas>
-
 </div>
 
 @section Scripts {
 
     <script>
         var ctx = document.getElementById('graficoPlantios').getContext('2d');
-        var datas = @Html.Raw(Json.Serialize(Model.Select(p => p.DataPlantio?.ToString("yyyy-MM-dd"))));
-        var quantidades = @Html.Raw(Json.Serialize(Model.Select(p => p.Quantidade)));
+        var datasPlantio = @Html.Raw(Json.Serialize(Model.Plantios.Select(p => p.DataPlantio?.ToString("yyyy-MM-dd"))));
+        var quantidadesPlantio = @Html.Raw(Json.Serialize(Model.Plantios.Select(p => p.Quantidade)));
+        var datasColheita = @Html.Raw(Json.Serialize(Model.Colheitas.Select(c => c.DataColheita?.ToString("yyyy-MM-dd"))));
+        var quantidadesColheita = @Html.Raw(Json.Serialize(Model.Colheitas.Select(c => c.Quantidade)));
 
-        console.log(datas, quantidades); // Para debugar
+        console.log(datasPlantio, quantidadesPlantio, datasColheita, quantidadesColheita); // Para debugar
 
         var graficoPlantios = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: datas,
+                labels: datasPlantio,
                 datasets: [{
                     label: 'Datas dos Plantios',
-                    data: quantidades,
+                    data: quantidadesPlantio,
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
                     borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Datas das Colheitas',
+                    data: quantidadesColheita,
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
                     borderWidth: 1
                 }]
             },
             options: {
                 scales: {
                     x: {
-                        type: 'category', // Usar categoria já que temos apenas datas
+                        type: 'category',
                     },
                     y: {
                         beginAtZero: true

@@ -47,7 +47,10 @@
                             <tr>
                                 <td>@plantio.Id</td>
                                 <td>@plantio.DataPlantio</td>
-                                <td>@plantio.HortalicaId</td>
+                                @foreach (var item in (SelectList)ViewData["HortalicaId"])
+                                {
+                                    <td>@item.Text</td>
+                                } 
                                 <td>@plantio.FuncionarioId</td>
                                 <td>@plantio.Quantidade</td>
                                 <td>@plantio.Status</td>
@@ -62,6 +65,10 @@
         <a asp-action="Create" class="btn btn-primary sm">Novo Plantio</a>
     </div>
 </div>
+
+    <div>
+        <a asp-controller="Agricultor" asp-action="Index" class="btn btn-primary">Voltar a Home</a>
+    </div>
 
 @section Scripts {
     <script>

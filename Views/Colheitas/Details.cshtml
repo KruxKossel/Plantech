@@ -1,9 +1,78 @@
-@* @model Plantech.ViewModels.ColheitaViewModel
+@model Plantech.ViewModels.ColheitaViewModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalhes da Colheita";
+    var funcionarioNomes = ViewData["FuncionarioNomes"] as Dictionary<int, string>;
+    var loteHortalicaNomes = ViewData["LoteHortalicaNomes"] as Dictionary<int, dynamic>;
+    var loteInsumoNomes = ViewData["LoteInsumoNomes"] as Dictionary<int, dynamic>;
+    var plantioHortalicaNomes = ViewData["PlantioHortalicaNomes"] as Dictionary<int, string>;
 }
 
-<h1>Details</h1>
+<h1>@ViewData["Title"]</h1>
 
-*@
+<div>
+    <h4>Colheita</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Hortaliça
+        </dt>
+        <dd class="col-sm-10">
+            @Html.Raw(plantioHortalicaNomes != null && plantioHortalicaNomes.ContainsKey(Model.PlantioId) ? plantioHortalicaNomes[Model.PlantioId] : "<span>N/A</span>")
+        </dd>
+        <dt class="col-sm-2">
+            Data da Colheita
+        </dt>
+        <dd class="col-sm-10">
+            @Model.DataColheita
+        </dd>
+        <dt class="col-sm-2">
+            Quantidade
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Quantidade
+        </dd>
+        <dt class="col-sm-2">
+            Funcionário
+        </dt>
+        <dd class="col-sm-10">
+            @Html.Raw(funcionarioNomes != null && funcionarioNomes.ContainsKey(Model.FuncionarioId) ? funcionarioNomes[Model.FuncionarioId] : "<span>N/A</span>")
+        </dd>
+        <dt class="col-sm-2">
+            Lote Hortaliça
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.LoteHortalicaId.HasValue && loteHortalicaNomes != null && loteHortalicaNomes.ContainsKey(Model.LoteHortalicaId.Value))
+            {
+                <span>@(loteHortalicaNomes[Model.LoteHortalicaId.Value].Text)</span>
+            }
+            else
+            {
+                <span>N/A</span>
+            }
+        </dd>
+        <dt class="col-sm-2">
+            Lote Insumo
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.LoteInsumoId.HasValue && loteInsumoNomes != null && loteInsumoNomes.ContainsKey(Model.LoteInsumoId.Value))
+            {
+                <span>@(loteInsumoNomes[Model.LoteInsumoId.Value].Text)</span>
+            }
+            else
+            {
+                <span>N/A</span>
+            }
+        </dd>
+        @* <dt class="col-sm-2">
+            Plantio
+        </dt>
+        <dd class="col-sm-10">
+            @Model.PlantioId
+        </dd> *@
+    </dl>
+    <div>
+       
+        <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+    </div>
+</div>
