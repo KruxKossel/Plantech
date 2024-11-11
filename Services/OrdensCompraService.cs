@@ -16,9 +16,9 @@ public class OrdensCompraService : IOrdensCompraService
         _mapper = mapper;
     }
     
-    public Task AtualizarStatus(int id)
+    public async Task AtualizarStatus(int id)
     {
-        throw new NotImplementedException();
+        await _ordensCompraRepository.AtualizarStatus(id);
     }
 
     public Task AtualizarCompra(OrdensCompraDTO ordensCompradto)

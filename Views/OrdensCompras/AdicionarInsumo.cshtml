@@ -4,11 +4,10 @@
 @if (User.IsInRole("Comprador") || User.IsInRole("Administrador"))
 {
     <br>
-
     <br>
     <h2>Adicionar Insumos à Ordem de Compra</h2>
     <br>
-    <form asp-action="AdicionarInsumo" asp-route-id="@Model.OrdemCompraId" method="post">
+    <form asp-action="AdicionarInsumo" asp-route-id="@Model.OrdemCompraId" method="post" id="adicionarInsumoForm">
         <input type="hidden" asp-for="OrdemCompraId" />
         <div class="card-index">
             <div style="max-height: 350px; overflow-y: auto;">
@@ -36,8 +35,9 @@
                                 <td class="text-center">
                                     <div class="input-group input-group-sm">
                                         <span class="input-group-text">R$</span>
-                                        <input type="number" step="0.01" name="DadosInsumos[@index].PrecoUnitario"
-                                            value="@insumo.PrecoUnitario.ToString("F2", CultureInfo.CurrentCulture)" required
+                                        <!-- Exibindo o preço com vírgula (cultura pt-BR) -->
+                                        <input type="text" name="DadosInsumos[@index].PrecoUnitario"
+                                            value="@insumo.PrecoUnitario.ToString("F2", new CultureInfo("pt-BR")).Replace(".", ",")" required
                                             class="form-control" />
                                     </div>
                                 </td>
@@ -58,8 +58,6 @@
             <a asp-action="Index" class="btn btn-danger">Cancelar</a>
             <button type="submit" class="btn btn-success">Adicionar Insumos</button>
         </div>
-
-
     </form>
 }
 else
