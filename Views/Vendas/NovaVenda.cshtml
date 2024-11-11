@@ -1,45 +1,94 @@
 @model Plantech.ViewModels.VendaViewModel
 
 @{
-    ViewData["Title"] = "NovaVenda";
+    ViewData["Title"] = "Nova Venda";
 }
 
-<h1>Create</h1>
+@section Styles {
+    <link rel="stylesheet" href="~/css/detalhes.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/edit.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
+}
 
-<h4>Venda</h4>
+<br><br>
+<h1>Nova Venda</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="NovaVenda">
             <div asp-validation-summary="All" class="text-danger"></div>
+            
             <div class="form-group">
-                <input asp-for="Data" type="hidden" />
+                <h2>Cliente</h2>
+                <input type="text" id="cnpj" class="form-control" placeholder="Selecione um CNPJ"
+                    onkeyup="filtrarCliente()" />
             </div>
-            <div class="form-group">
-                <input asp-for="Status" type="hidden" />
+            <br>
+            <div class="row">
+                <div class="col-6 form-group">
+                    <select id="fornecedorSelect" asp-for="ClienteId" class="form-control"
+                        asp-items="ViewBag.ClienteId">
+                        <option value="" disabled selected>Selecione o CNPJ</option> <!-- Opção padrão -->
+                    </select>
+                </div>
+                <div class="col-6 form-group d-flex align-items-end" style="margin-left: -20px;">
+                    <input type="submit" value="Criar Venda" class="btn btn-primary" />
+                </div>
             </div>
-            <div class="form-group">
-                <select id="fornecedorSelect" asp-for="ClienteId" class="form-control"
-                    asp-items="ViewBag.ClienteId">
-                    <option value="" disabled selected>Selecione o CNPJ</option> <!-- Opção padrão -->
-                </select>
-            </div>
-            <div class="form-group">
-                <input asp-for="FuncionarioId" type="hidden" />
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
+
+            <input asp-for="Data" type="hidden" />
+            <input asp-for="Status" type="hidden" />
+            <input asp-for="FuncionarioId" type="hidden" />
         </form>
     </div>
 </div>
-
+<br>
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-danger">Cancelar</a>
 </div>
 
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Aplica a máscara para o CNPJ
+            $('#cnpj').mask('00.000.000/0000-00');
+        });
+
+        function filtrarCliente() {
+            var input = document.getElementById("cnpj");
+            var filter = input.value.toLowerCase();
+            var select = document.getElementById("fornecedorSelect");
+            var options = select.options;
+
+            for (var i = 0; i < options.length; i++) {
+                var option = options[i];
+                if (filter === "") {
+                    option.style.display = "";
+                } else if (option.text.toLowerCase().includes(filter)) {
+                    option.style.display = "";
+                } else {
+                    option.style.display = "none";
+                }
+            }
+
+            if (filter === "") {
+                select.value = "";
+                select.options[0].selected = true;
+            } else {
+                for (var i = 0; i < options.length; i++) {
+                    var option = options[i];
+                    if (option.text.toLowerCase().includes(filter)) {
+                        select.value = option.value;
+                        break;
+                    }
+                }
+            }
+        }
+    </script>
 }
