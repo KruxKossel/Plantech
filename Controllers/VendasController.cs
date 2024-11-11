@@ -1,18 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Plantech.Data;
 using Plantech.DTOs;
 using Plantech.Interfaces;
-using Plantech.Models;
 using Plantech.ViewModels;
-using Newtonsoft;
 using Newtonsoft.Json;
 
 namespace Plantech.Controllers
@@ -107,67 +99,98 @@ namespace Plantech.Controllers
                 return View(model);
         }
         
-    [HttpPost("Vendas/NovaVenda/AdicionarHortalica")]
-public async Task<IActionResult> AdicionarHortalica(AdicionarHortalicaViewModel model)
-{
-    Console.WriteLine("\n\n\n ENTROU NO POST ADICIONAR HORTALICA \n\n\n");
-
-    if (TempData["venda"] == null)
-    {
-        return BadRequest("A venda não foi encontrada. A requisição é inválida.");
-    }
-
-    var venda = JsonConvert.DeserializeObject<VendaViewModel>((string)TempData["venda"]);
-    venda.FuncionarioId = await GetLoggedFuncionarioId();
-
-    Console.WriteLine("\n\n\n");
-    Console.WriteLine("Id: " + venda.Id);
-    Console.WriteLine("Data: " + (venda.Data.HasValue ? venda.Data.Value.ToString("yyyy-MM-dd") : "null"));
-    Console.WriteLine("TotalVendas: " + (venda.TotalVendas.HasValue ? venda.TotalVendas.Value.ToString("F2") : "null"));
-    Console.WriteLine("QuantidadeProdutos: " + (venda.QuantidadeProdutos.HasValue ? venda.QuantidadeProdutos.Value.ToString() : "null"));
-    Console.WriteLine("Status: " + venda.Status);
-    Console.WriteLine("ClienteId: " + venda.ClienteId);
-    Console.WriteLine("FuncionarioId: " + venda.FuncionarioId);
-    Console.WriteLine("\n\n\n");
-
-    if (ModelState.IsValid)
-    {
-        if (model.LotesSelecionados != null && model.LotesSelecionados.Any())
+        [HttpPost("Vendas/NovaVenda/AdicionarHortalica")]
+        public async Task<IActionResult> AdicionarHortalica(AdicionarHortalicaViewModel model)
         {
-            var vendaDTO = _mapper.Map<VendaDTO>(venda);
-            var vendaId = await _vendasService.CriarVenda(vendaDTO);
+            Console.WriteLine("\n\n\n ENTROU NO POST ADICIONAR HORTALICA \n\n\n");
 
-            var hortalicasVendaList = model.LotesSelecionados.Select(loteSelecionado => new HortalicasVendaDTO
+            if (TempData["venda"] == null)
             {
-                VendaId = vendaId,
-                LoteId = loteSelecionado.LoteId,
-                Quantidade = loteSelecionado.Quantidade,
-                PrecoUnitario = loteSelecionado.PrecoUnitario
-            }).ToList();
-
-            Console.WriteLine("\n\n\nLista de HortalicasVendaDTO:");
-            foreach (var item in hortalicasVendaList)
-            {
-                Console.WriteLine($"\n\n\nVendaId: {item.VendaId} \nLoteId: {item.LoteId}, \nQuantidade: {item.Quantidade}, \nPrecoUnitario: {item.PrecoUnitario}\n\n\n");
+                return BadRequest("A venda não foi encontrada. A requisição é inválida.");
             }
 
-            await _vendasService.AdicionarHortalica(hortalicasVendaList);
-            return RedirectToAction(nameof(Index));
+            var venda = JsonConvert.DeserializeObject<VendaViewModel>((string)TempData["venda"]);
+            venda.FuncionarioId = await GetLoggedFuncionarioId();
+
+            Console.WriteLine("\n\n\n");
+            Console.WriteLine("Id: " + venda.Id);
+            Console.WriteLine("Data: " + (venda.Data.HasValue ? venda.Data.Value.ToString("yyyy-MM-dd") : "null"));
+            Console.WriteLine("TotalVendas: " + (venda.TotalVendas.HasValue ? venda.TotalVendas.Value.ToString("F2") : "null"));
+            Console.WriteLine("QuantidadeProdutos: " + (venda.QuantidadeProdutos.HasValue ? venda.QuantidadeProdutos.Value.ToString() : "null"));
+            Console.WriteLine("Status: " + venda.Status);
+            Console.WriteLine("ClienteId: " + venda.ClienteId);
+            Console.WriteLine("FuncionarioId: " + venda.FuncionarioId);
+            Console.WriteLine("\n\n\n");
+
+            if (ModelState.IsValid)
+            {
+                if (model.LotesSelecionados != null && model.LotesSelecionados.Any())
+                {
+                    var vendaDTO = _mapper.Map<VendaDTO>(venda);
+                    var vendaId = await _vendasService.CriarVenda(vendaDTO);
+
+                    var hortalicasVendaList = model.LotesSelecionados.Select(loteSelecionado => new HortalicasVendaDTO
+                    {
+                        VendaId = vendaId,
+                        LoteId = loteSelecionado.LoteId,
+                        Quantidade = loteSelecionado.Quantidade,
+                        PrecoUnitario = loteSelecionado.PrecoUnitario
+                    }).ToList();
+
+                    Console.WriteLine("\n\n\nLista de HortalicasVendaDTO:");
+                    foreach (var item in hortalicasVendaList)
+                    {
+                        Console.WriteLine($"\n\n\nVendaId: {item.VendaId} \nLoteId: {item.LoteId}, \nQuantidade: {item.Quantidade}, \nPrecoUnitario: {item.PrecoUnitario}\n\n\n");
+                    }
+
+                    await _vendasService.AdicionarHortalica(hortalicasVendaList);
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    // Carrega os lotes ativos se não houver lotes selecionados
+                    var lotesHortalicaDTO = await _lotesHortalicas.ListarLotesAtivos();
+                    var lotes = _mapper.Map<List<LotesHortalicaViewModel>>(lotesHortalicaDTO);
+                    model.LotesDisponiveis = lotes;
+                    return View(model);
+                }
+            }
+
+            return BadRequest("Os dados do formulário não são válidos.");
         }
-        else
+        public async Task<IActionResult> Details(int id)
         {
-            // Carrega os lotes ativos se não houver lotes selecionados
-            var lotesHortalicaDTO = await _lotesHortalicas.ListarLotesAtivos();
-            var lotes = _mapper.Map<List<LotesHortalicaViewModel>>(lotesHortalicaDTO);
-            model.LotesDisponiveis = lotes;
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var venda = await _vendasService.BuscarId(id);
+            var detalhes = await _vendasService.DetalharVenda(id);
+            var model = new VendaDetalhadaViewModel{
+                Data = venda.Data,
+                TotalVendas = venda.TotalVendas,
+                Status = venda.Status,
+                ClienteId = venda.ClienteId,
+                FuncionarioId = venda.FuncionarioId,
+                Cliente = venda.Cliente,
+                Funcionario = venda.Funcionario,
+                HortalicasVendas = detalhes.ToList()
+            };
+
+
+            if (venda == null)
+            {
+                return NotFound();
+            }
+
             return View(model);
         }
     }
-
-    return BadRequest("Os dados do formulário não são válidos.");
+            
 }
-    }
-    }
+        // GET: Vendas/Details/5
+            
 
 
         
@@ -231,22 +254,6 @@ public async Task<IActionResult> AdicionarHortalica(AdicionarHortalicaViewModel 
         //     }
         //     ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Id", venda.ClienteId);
         //     ViewData["FuncionarioId"] = new SelectList(_context.Funcionarios, "Id", "Id", venda.FuncionarioId);
-        //     return View(venda);
-        // }
-        // GET: Vendas/Details/5
-        // public async Task<IActionResult> Details(int id)
-        // {
-        //     if (id == null)
-        //     {
-        //         return NotFound();
-        //     }
-
-        //     var venda = await _vendasServvice.BuscarId(id);
-        //     if (venda == null)
-        //     {
-        //         return NotFound();
-        //     }
-
         //     return View(venda);
         // }
 
