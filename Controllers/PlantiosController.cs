@@ -53,29 +53,28 @@ namespace Plantech.Controllers
             var plantios = await _plantioService.GetAllAsync();
             var viewModels = _mapper.Map<IEnumerable<PlantioViewModel>>(plantios);
 
-            
-
+            ViewData["HortalicaId"] = new SelectList(await _hortalicaService.ListarHortalicasAsync(), "Id", "Nome");
 
             return View(viewModels);
         }
 
         // GET: Plantios/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        // public async Task<IActionResult> Details(int? id)
+        // {
+        //     if (id == null)
+        //     {
+        //         return NotFound();
+        //     }
 
-            var plantio = await _plantioService.GetByIdAsync(id.Value);
-            if (plantio == null)
-            {
-                return NotFound();
-            }
+        //     var plantio = await _plantioService.GetByIdAsync(id.Value);
+        //     if (plantio == null)
+        //     {
+        //         return NotFound();
+        //     }
 
-            var viewModel = _mapper.Map<PlantioViewModel>(plantio);
-            return View(viewModel);
-        }
+        //     var viewModel = _mapper.Map<PlantioViewModel>(plantio);
+        //     return View(viewModel);
+        // }
 
         [HttpGet]
         public async Task<IActionResult> Create()
@@ -204,11 +203,6 @@ namespace Plantech.Controllers
 
             return View(model);
         }
-
-
-
-
-        
 
     }
 }

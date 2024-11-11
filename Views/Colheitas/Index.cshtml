@@ -2,6 +2,10 @@
 
 @{
     ViewData["Title"] = "Colheitas";
+    var funcionarioNomes = ViewData["FuncionarioNomes"] as Dictionary<int, string>;
+    var loteHortalicaNomes = ViewData["LoteHortalicaNomes"] as Dictionary<int, string>;
+    var loteInsumoNomes = ViewData["LoteInsumoNomes"] as Dictionary<int, string>;
+    var plantioHortalicaNomes = ViewData["PlantioHortalicaNomes"] as Dictionary<int, string>;
 }
 
 <br>
@@ -19,7 +23,7 @@
             <input type="date" id="endDate" class="form-control" />
         </div>
         <button id="filterButton" class="btn btn-primary"
-        style="padding: 0.2rem 0.4rem; height: 37px; margin-top: 33px;">
+                style="padding: 0.2rem 0.4rem; height: 37px; margin-top: 33px;">
             <i class="bi bi-search" style="font-size: 0.8rem;"></i> <!-- Ícone de lupa -->
         </button>
         <br><br>
@@ -34,10 +38,10 @@
                             <th>Hortaliça</th>
                             <th>Data de Colheita</th>
                             <th>Quantidade</th>
-                            <th>Funcionário</th>
-                            <th>Lote Hortaliça</th>
-                            <th>Lote Insumo</th>
-                            <th>Plantio</th>
+                            <th>Funcionário que Colheu</th>
+                            @* <th>Lote Hortaliça</th> *@
+                            @* <th>Lote Insumo</th> *@
+                            <th></th>
                             <th></th>
                         </tr>
                     </thead>
@@ -45,13 +49,15 @@
                         @foreach (var colheita in Model)
                         {
                             <tr>
-                                <td>@ViewData["hortalicas"]</td>
+                                <td>@plantioHortalicaNomes[colheita.PlantioId]</td> <!-- Nome da Hortaliça -->
                                 <td>@colheita.DataColheita</td>
                                 <td>@colheita.Quantidade</td>
-                                <td>@colheita.FuncionarioId</td>
-                                <td>@colheita.LoteHortalicaId</td>
-                                <td>@colheita.LoteInsumoId</td>
-                                <td>@colheita.PlantioId</td>
+                                <td>@funcionarioNomes[colheita.FuncionarioId]</td> <!-- Nome do Funcionário -->
+                                @* <td>@(colheita.LoteHortalicaId.HasValue ? loteHortalicaNomes[colheita.LoteHortalicaId.Value] : "N/A")</td> <!-- Nome do Lote de Hortaliça --> *@
+                                @* <td>@(colheita.LoteInsumoId.HasValue ? loteInsumoNomes[colheita.LoteInsumoId.Value] : "N/A")</td> <!-- Nome do Lote de Insumo --> *@
+                                <td>
+                                    <a asp-action="Details" asp-route-id="@colheita.Id" class="btn btn-primary">Detalhes</a>
+                                </td>
                                 <td></td>
                             </tr>
                         }
@@ -65,9 +71,9 @@
 </div>
 
 <br>
-    <div>
-        <a asp-controller="Agricultor" asp-action="Index" class="btn btn-primary">Voltar a Home</a>
-    </div>
+<div>
+    <a asp-controller="Agricultor" asp-action="Index" class="btn btn-primary">Voltar a Home</a>
+</div>
 
 @section Scripts {
     <script>
@@ -79,8 +85,8 @@
             const rows = table.getElementsByTagName("tr");
 
             // Converte as datas para o formato adequado
-            const startDate = startDateInput ? new Date(startDateInput.split("/").reverse().join("-")) : null;
-            const endDate = endDateInput ? new Date(endDateInput.split("/").reverse().join("-")) : null;
+            const startDate = startDateInput ? new Date(startDateInput.split("-")) : null;
+            const endDate = endDateInput ? new Date(endDateInput.split("-")) : null;
 
             // Itera sobre as linhas da tabela (começando a partir da segunda linha)
             for (let i = 1; i < rows.length; i++) {
@@ -88,7 +94,7 @@
 
                 // Verifica se há dados suficientes nas células
                 if (cells.length > 1) {
-                    const colheitaDate = new Date(cells[1].innerText.split("/").reverse().join("-")); // Coluna da Data de Colheita
+                    const colheitaDate = new Date(cells[1].innerText.split("-")); // Coluna da Data de Colheita
 
                     // Verifica se a data de colheita está dentro do intervalo
                     const isWithinRange = (!startDate || colheitaDate >= startDate) && (!endDate || colheitaDate <= endDate);

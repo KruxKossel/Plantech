@@ -27,6 +27,12 @@ namespace Plantech.Services
             return _mapper.Map<IEnumerable<FuncionarioDTO>>(funcionario);
         }
 
+        // public async Task<IEnumerable<Funcionarios>> ObterFuncionariosPorIdsAsync(List<int> ids)
+        // {
+        //     var funcionario = await _funcionarioRepository.ObterFuncionariosPorIdsAsync(ids);
+        //     return _mapper.Map<FuncionarioDTO>(funcionario.Id);
+        // }
+
         public async Task CreateFuncionarioAsync(FuncionarioDTO funcionariosDto){
             
             var funcionarios = _mapper.Map<Funcionarios>(funcionariosDto);
@@ -38,6 +44,8 @@ namespace Plantech.Services
             var cargos = await _funcionarioRepository.GetCargosAsync();
             return _mapper.Map<IEnumerable<CargoDTO>>(cargos);
         }
+
+
 
     }
 }

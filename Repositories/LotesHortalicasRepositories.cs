@@ -33,7 +33,8 @@ public class LotesHortalicasRepository(PlantechContext context): ILotesHortalica
 
     public async Task<List<LotesHortalicas>> ListarLotes()
     {
-        return await _context.LotesHortalicas.Include(l => l.Hortalica).ToListAsync();
+        return await _context.LotesHortalicas
+        .Include(l => l.Hortalica).ToListAsync();
     }
 
     public async Task<List<LotesHortalicas>> ListarLotesAtivos()

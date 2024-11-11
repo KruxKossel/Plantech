@@ -47,7 +47,10 @@
                             <tr>
                                 <td>@plantio.Id</td>
                                 <td>@plantio.DataPlantio</td>
-                                <td>@plantio.HortalicaId</td>
+                                @foreach (var item in (SelectList)ViewData["HortalicaId"])
+                                {
+                                    <td>@item.Text</td>
+                                } 
                                 <td>@plantio.FuncionarioId</td>
                                 <td>@plantio.Quantidade</td>
                                 <td>@plantio.Status</td>
