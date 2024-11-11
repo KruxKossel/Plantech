@@ -41,6 +41,12 @@ public class VendasService : IVendasService
         throw new NotImplementedException();
     }
 
+    public async Task<IEnumerable<HortalicasVendaDTO>> DetalharVenda(int id)
+    {
+        var hortalicas = await _vendasRepository.DetalharVenda(id);
+        return _mapper.Map<IEnumerable<HortalicasVendaDTO>>(hortalicas);
+    }
+
     public async Task<List<VendaDTO>> ListarVendas()
     {
         var vendas = await _vendasRepository.ListarVendas();

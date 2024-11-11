@@ -8,7 +8,5 @@ public interface IVendasRepository
     Task <List<Vendas>> ListarVendas();
     Task <Vendas> BuscarId(int id);
     Task AdicionarHortalica(List<HortalicasVendas> hortalicas);
-    Task DeletarTuplasZeradas();
-
     Task <IEnumerable<HortalicasVendas>> DetalharVenda(int id);
 }
