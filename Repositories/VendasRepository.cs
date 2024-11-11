@@ -46,14 +46,16 @@ public class VendasRepository : IVendasRepository
 
     }
 
-    public Task DeletarTuplasZeradas()
-    {
-        throw new NotImplementedException();
-    }
+
 
     public async Task<IEnumerable<HortalicasVendas>> DetalharVenda(int id)
     {
-         throw new NotImplementedException();
+         var venda = await BuscarId(id);
+        if (venda == null)
+        {
+            throw new ArgumentException($"Ordem de compra com ID {id} não encontrada.");
+        }
+        return await _context.HortalicasVendas.Include(h => h.Lote).Include(h =>h.Lote.Hortalica).Where(h => h.VendaId == id).ToListAsync();
     }
 
     public async Task<List<Vendas>> ListarVendas()

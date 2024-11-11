@@ -13,7 +13,7 @@ public partial class HortalicasVendaDTO
 
     public double? PrecoUnitario { get; set; }
 
-    // public virtual LotesHortalicas Lote { get; set; } = null!;
+    public virtual LotesHortalicaDTO Lote { get; set; } = null!;
 
     // public virtual Vendas Venda { get; set; } = null!;
 }
