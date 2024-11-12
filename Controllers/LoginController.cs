@@ -79,29 +79,29 @@ namespace Plantech.Controllers
             return View();
         }
 
-    //     [HttpGet]
-    //     public IActionResult Create()
-    //     {
-    //         return View();
-    //     }
+        // [HttpGet]
+        // public IActionResult Create()
+        // {
+        //     return View();
+        // }
 
-    //     [HttpPost]
-    //     public async Task<IActionResult> Create(UsuarioViewModel model)
-    //     {
-    //         if (ModelState.IsValid)
-    //         {
-    //             var usuarioDto = new UsuarioDTO
-    //             {
-    //                 NomeUsuario = model.NomeUsuario,
-    //                 Email = model.Email,
-    //                 Senha = model.Senha,
-    //                 Status = model.Status
-    //             };
+        // [HttpPost]
+        // public async Task<IActionResult> Create(UsuarioViewModel model)
+        // {
+        //     if (ModelState.IsValid)
+        //     {
+        //         var usuarioDto = new UsuarioDTO
+        //         {
+        //             NomeUsuario = model.NomeUsuario,
+        //             Email = model.Email,
+        //             Senha = model.Senha,
+        //             Status = model.Status
+        //         };
 
-    //             await _usuarioService.CreateAsync(usuarioDto);
-    //             return RedirectToAction("Index", "Home");
-    //         }
-    //         return View(model);
-    //     }
+        //         await _usuarioService.CreateAsync(usuarioDto);
+        //         return RedirectToAction("Index", "Home");
+        //     }
+        //     return View(model);
+        // }
     }
 }

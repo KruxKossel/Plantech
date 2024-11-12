@@ -55,9 +55,9 @@
                             @Html.DisplayFor(modelItem => item.Funcionario.Nome)
                         </td>
                         <td>
-                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Editar</a>
+                            @* <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Editar</a> *@
                             <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Detalhes</a>
-                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Deletar</a>
+                            @* <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Deletar</a> *@
                         </td>
                     </tr>
                 }
