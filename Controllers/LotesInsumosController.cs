@@ -23,7 +23,7 @@ namespace Plantech.Controllers
         }
 
 
-        [Authorize(Roles = "Comprador, Administrador, Vendedor")]
+        [Authorize(Roles = "Comprador, Administrador, Agricultor")]
         // GET: LotesHortalicas/Details/5
         public async Task<IActionResult> Details(int id)
         {

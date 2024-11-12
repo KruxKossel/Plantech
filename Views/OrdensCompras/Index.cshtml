@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Index";
 }
+
 @if (User.IsInRole("Comprador") || User.IsInRole("Administrador"))
 {
     <br><br>

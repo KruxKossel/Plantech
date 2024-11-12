@@ -4,13 +4,13 @@
     <br><br>
 
     @if (User.IsInRole("Administrador")){
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light" style="height: 30px; width: 200px; margin-left: 87%;">
             <div class="container-fluid">
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Ações do Agricultor
+                                Ações do Comprador
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" asp-controller="OrdensCompras" asp-action="Index">Compras</a></li>
