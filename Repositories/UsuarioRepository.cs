@@ -15,6 +15,9 @@ public class UsuarioRepository(PlantechContext context) : IUsuarioRepository
         return await _context.Usuarios
             .Include(u => u.Funcionarios)
             .FirstOrDefaultAsync(u => u.Id == id);
+        return await _context.Usuarios
+            .Include(u => u.Funcionarios)
+            .FirstOrDefaultAsync(u => u.Id == id);
     }
 
     public async Task<Usuarios> GetByUsernameAsync(string username)

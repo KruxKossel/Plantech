@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Plantech.DTOs;
 using Plantech.Models;
 using Plantech.ViewModels;

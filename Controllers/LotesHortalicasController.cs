@@ -15,12 +15,13 @@ using Plantech.ViewModels;
 namespace Plantech.Controllers
 {
     [Authorize(Roles = "Agricultor, Administrador, Vendedor")]
-    public class LotesHortalicasController(ILotesHortalicasService lotesHortalicasService, IMapper mapper) : Controller
+    public class LotesHortalicasController(ILotesHortalicasService lotesHortalicasService, IMapper mapper)(PlantechContext context) : Controller
     {
         private readonly IMapper _mapper = mapper;
         private readonly ILotesHortalicasService _lotesHortalicasSerivce = lotesHortalicasService;
 
         // GET: LotesHortalicas
+
         public async Task<IActionResult> Index()
         {
             var lotesDTO = await _lotesHortalicasSerivce.ListarLotes();

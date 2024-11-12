@@ -38,6 +38,7 @@
 
 @section Scripts {
 
+
     <script>
         var ctx = document.getElementById('graficoPlantios').getContext('2d');
         var datasPlantio = @Html.Raw(Json.Serialize(Model.Plantios.Select(p => p.DataPlantio?.ToString("yyyy-MM-dd"))));
@@ -79,3 +80,14 @@
         });
     </script>
 }
+
+<hr>
+<br>
+<div class="jumbotron">
+@if (User.IsInRole("Administrador")) {
+
+    <p>
+        <a asp-controller="Hortalicas" asp-action="Index" class="btn btn-primary btn-lg">Hortaliças</a>
+    </p>
+}
+</div>

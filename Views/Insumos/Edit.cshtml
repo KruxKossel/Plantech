@@ -1,7 +1,8 @@
 @model Plantech.ViewModels.InsumoViewModel
+@model Plantech.ViewModels.InsumoViewModel
 
 @{
-    ViewData["Title"] = "Editar";
+    ViewData["Title"] = "Editarar";
 }
 @section Styles {
     <link rel="stylesheet" href="~/css/detalhes.css" asp-append-version="true" />
@@ -88,6 +89,9 @@
 
 
 @section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }

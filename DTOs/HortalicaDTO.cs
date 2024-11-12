@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using Plantech.Models;
 
 namespace Plantech.DTOs;
+using Plantech.Models;
+
+namespace Plantech.DTOs;
 
 public partial class HortalicaDTO
 {

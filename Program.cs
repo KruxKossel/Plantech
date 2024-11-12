@@ -25,6 +25,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 // Add dependency injection for services and repositories
 //DI Usuario
+//DI Usuario
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
@@ -40,22 +41,6 @@ builder.Services.AddScoped<IInsumoService, InsumoService>();
 //DI Hortalica
 builder.Services.AddScoped<IHortalicaService, HortalicaService>();
 builder.Services.AddScoped<IHortalicaRepository, HortalicaRepository>();
-//DI Plantio
-builder.Services.AddScoped<IPlantioRepository, PlantioRepository>();
-builder.Services.AddScoped<IPlantioService, PlantioService>();
-//DI Ordens de Compra
-builder.Services.AddScoped<IOrdensCompraRepository, OrdensCompraRepository>();
-builder.Services.AddScoped<IOrdensCompraService, OrdensCompraService>();
-//DI  Insumo da comra
-builder.Services.AddScoped<IInsumoCompraRepository, InsumoCompraRepository>();
-builder.Services.AddScoped<IInsumoCompraService, InsumoCompraService>();
-//DI Lotes Insumo
-builder.Services.AddScoped<ILotesInsumosRepository, LotesInsumosRepository>();
-builder.Services.AddScoped<ILotesInsumosService, LotesInsumosService>();
-//DI Lotes Hortalicas
-builder.Services.AddScoped<ILotesHortalicasRepository, LotesHortalicasRepository>();
-builder.Services.AddScoped<ILotesHortalicasService, LotesHortalicasService>();
-//DI Plantio
 builder.Services.AddScoped<IPlantioRepository, PlantioRepository>();
 builder.Services.AddScoped<IPlantioService, PlantioService>();
 //DI Colheitas

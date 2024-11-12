@@ -39,3 +39,23 @@
 }
 
 
+
+
+.card-func {
+    margin-top: 20px;
+    font-size: 20px;
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    width: 600px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.411);
+    margin-right: 30px;
+}
+
+.card-plan {
+    font-size: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.411);
+    width: 1245px;
+}

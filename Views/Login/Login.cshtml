@@ -1,8 +1,13 @@
 @model Plantech.ViewModels.LoginViewModel
 @{
     Layout = "_Layout";
+    Layout = "_Layout";
 }
 
+@section Styles {
+    <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
+}
+<div class="d-flex justify-content-center align-items-center" style="height: 88h;">
 @section Styles {
     <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
 }
@@ -44,9 +49,16 @@
 
 
 
+
+
+
         </div>
 
+
     </div>
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }
     @section Scripts {
         <partial name="_ValidationScriptsPartial" />
     }

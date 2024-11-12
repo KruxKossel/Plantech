@@ -1,5 +1,6 @@
 @model Plantech.ViewModels.FuncionarioCreateViewModel
 
+
 @{
     ViewData["Title"] = "Adicionar Funcionários";
 }
@@ -16,11 +17,9 @@
 <h2>@ViewData["Title"]</h2>
 
 <form asp-action="Create" method="post" enctype="multipart/form-data">
-    @Html.AntiForgeryToken()
-    <div class="row">
-
+    <div class="row ms-2">
         <!-- Usuário -->
-        <div class="card col-6 p-4">
+        <div class="border rounded-2 p-2 shadow col-12 col-md-6 mb-3">
             <h4>Usuário</h4>
             <div class="form-group">
                 <label asp-for="NomeUsuario" class="control-label"></label>
@@ -44,9 +43,9 @@
             </div>
         </div>
 
-        <div class="col-6">
+        <div class="col-12 col-md-6 mb-3">
             <!--Funcionário -->
-            <div class="card-func p-4 mb-3">
+            <div class=" border rounded-2 p-2 shadow  mb-3">
                 <h4>Funcionário</h4>
                 <div class="form-group">
                     <label asp-for="Cpf" class="control-label"></label>
@@ -61,27 +60,20 @@
             </div>
 
             <!-- Cargo -->
-            <div class="card p-4" style="height: 270px;">
+            <div class="border rounded-2 p-2 shadow" style="height: 270px;">
                 <h4>Cargo</h4>
                 <div class="form-group">
-                    <label asp-for="CargoId" class="control-label"></label>
-                    <select asp-for="CargoId" class="form-control" style="margin-bottom: 20px;">
-                        <option value="">-- Selecionar --</option>
-                        @foreach (var item in (SelectList)ViewData["CargosFiltro"])
-                        {
-                            <option value="@item.Value">@item.Text</option>
-                        }
-                    </select>
-                    <span asp-validation-for="CargoId" class="text-danger"></span>
+                    <label for="Cargo">Cargo</label>
+                    <input type="text" id="Cargo" name="Cargo" class="form-control" />
+                    <span class="text-danger"></span>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="form-group mt-4 text-end">
-        <button type="submit" class="btn btn-primary" style="width: 150px; margin-right: 60px;">Salvar</button>
+    <div class="mt-4 text-end">
+        <a asp-controller="Funcionarios" asp-action="Index" class="btn btn-secondary mx-2">Voltar</a>
+        <button type="submit" class="btn btn-primary">Salvar</button>
     </div>
-    <div>
-        <a asp-controller="Funcionarios" asp-action="Index" class="btn btn-secondary" style="width: 150px; margin-top: -15px;">Voltar</a>
-    </div>
+
 </form>

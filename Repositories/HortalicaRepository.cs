@@ -8,6 +8,7 @@ using Plantech.Models;
 namespace Plantech.Repositories
 {
     public class HortalicaRepository(PlantechContext context) : IHortalicaRepository
+    public class HortalicaRepository(PlantechContext context) : IHortalicaRepository
     {
         private readonly PlantechContext _context = context;
 

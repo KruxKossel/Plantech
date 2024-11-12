@@ -5,6 +5,7 @@ using Plantech.Models;
 namespace Plantech.Interfaces
 {
     public interface IPlantioRepository
+    public interface IPlantioRepository
     {
         Task<IEnumerable<Plantios>> GetAllAsync();
         Task<Plantios> GetByIdAsync(int id);

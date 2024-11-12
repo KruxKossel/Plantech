@@ -1,4 +1,5 @@
 @model Plantech.ViewModels.InsumoViewModel
+@model Plantech.ViewModels.InsumoViewModel
 
 @{
     ViewData["Title"] = "Adicionar Insumoss";
@@ -72,6 +73,8 @@
 
 @section Scripts {
     @{
+        
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    
     }
 }

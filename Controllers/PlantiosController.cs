@@ -7,10 +7,20 @@ using Plantech.Interfaces;
 using AutoMapper;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Plantech.ViewModels;
+using Plantech.DTOs;
+using Plantech.Interfaces;
+using AutoMapper;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Plantech.Models;
 
 namespace Plantech.Controllers
 {
+
+    [Authorize(Roles = "Agricultor, Administrador")]
+    public class PlantiosController(IPlantioService plantioService, IMapper mapper, 
+                                    IUsuarioService usuarioService, IHortalicaService  hortalicaService) : Controller
 
     [Authorize(Roles = "Agricultor, Administrador")]
     public class PlantiosController(IPlantioService plantioService, IMapper mapper, 
@@ -134,6 +144,9 @@ namespace Plantech.Controllers
             
             if (ModelState.IsValid)
             {
+
+                Console.WriteLine("\n\n Entrou no if");
+                var plantioDTO = _mapper.Map<PlantioDTO>(model);
 
                 Console.WriteLine("\n\n Entrou no if");
                 var plantioDTO = _mapper.Map<PlantioDTO>(model);

@@ -1,8 +1,13 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Plantech.DTOs;
+using Plantech.Interfaces;
+using Plantech.ViewModels;
 using Plantech.DTOs;
 using Plantech.Interfaces;
 using Plantech.ViewModels;
@@ -11,7 +16,13 @@ namespace Plantech.Controllers
 {
     
     public class InsumosController(IInsumoService insumoRepository, IMapper mapper, IWebHostEnvironment webHostEnvironment) : Controller
+    
+    public class InsumosController(IInsumoService insumoRepository, IMapper mapper, IWebHostEnvironment webHostEnvironment) : Controller
     {
+        private readonly IInsumoService _insumoService = insumoRepository;
+        private readonly IMapper _mapper = mapper;
+
+    private readonly IWebHostEnvironment _webHostEnvironment = webHostEnvironment;
         private readonly IInsumoService _insumoService = insumoRepository;
         private readonly IMapper _mapper = mapper;
 
@@ -21,9 +32,15 @@ namespace Plantech.Controllers
             
             var insumos = await _insumoService.ListarAsync();  
             return View(insumos);
+        public async Task<IActionResult> Index(){
+            
+            var insumos = await _insumoService.ListarAsync();  
+            return View(insumos);
         }
 
         // GET: Insumos/Details/5
+        [Authorize(Roles = "Administrador, Comprador")]
+        public async Task<IActionResult> Details(int id)
         [Authorize(Roles = "Administrador, Comprador")]
         public async Task<IActionResult> Details(int id)
         {
@@ -96,6 +113,7 @@ namespace Plantech.Controllers
         [Authorize(Roles = "Administrador, Comprador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, InsumoViewModel insumoVM)
         public async Task<IActionResult> Edit(int id, InsumoViewModel insumoVM)
         {
             Console.WriteLine("\n\n\n Entrou no Post \n\n\n");
