@@ -13,10 +13,10 @@
 }
 
 <h2 class="text-center mb-4 mt-4">@ViewData["Title"]</h2>
-<div class="card-plan">
+<div class="border bg-white rounded-2 mt-2 p-2 shadow">
     <h3>Venda</h3>
     <hr />
-    <dl class="row">
+    <dl class="row ">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Status)
         </dt>
@@ -78,8 +78,7 @@
     </div>
     <div class="text-end">
         <dd class="d-flex justify-content-end w-100 mt-4">
-            <h1 style="color: rgb(8, 190, 8);" class="mb-0">Valor total: R$ @Html.DisplayFor(model => model.TotalVendas)
-            </h1>
+            <p style="color: rgb(8, 190, 8);" class="mb-0">Valor total: R$ @Html.DisplayFor(model => model.TotalVendas)</p>
         </dd>
     </div>
 </div>

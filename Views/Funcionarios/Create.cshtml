@@ -16,7 +16,7 @@
 <h2>@ViewData["Title"]</h2>
 
 <form asp-action="Create" method="post" enctype="multipart/form-data">
-    <div class="row ms-2">
+    <div class="row ms-2 bg-white">
         <!-- Usuário -->
         <div class="border rounded-2 p-2 shadow col-12 col-md-6 mb-3">
             <h4>Usuário</h4>
@@ -77,7 +77,7 @@
     </div>
 
     <div class="form-group mt-4 text-end">
+        <a asp-controller="Funcionarios" asp-action="Index" class="btn btn-secondary mx-2">Voltar</a>
         <button type="submit" class="btn btn-primary">Salvar</button>
-        <a asp-controller="Funcionarios" asp-action="Index" class="btn btn-secondary">Voltar</a>
     </div>
 </form>

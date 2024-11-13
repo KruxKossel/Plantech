@@ -13,38 +13,32 @@
 <br><br>
 <h1>Nova Venda</h1>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="NovaVenda">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            
-            <div class="form-group">
-                <h2>Cliente</h2>
-                <input type="text" id="cnpj" class="form-control" placeholder="Selecione um CNPJ"
-                    onkeyup="filtrarCliente()" />
-            </div>
-            <br>
-            <div class="row">
-                <div class="col-6 form-group">
-                    <select id="fornecedorSelect" asp-for="ClienteId" class="form-control"
-                        asp-items="ViewBag.ClienteId">
-                        <option value="" disabled selected>Selecione o CNPJ</option> <!-- Opção padrão -->
-                    </select>
-                </div>
-                <div class="col-6 form-group d-flex align-items-end" style="margin-left: -20px;">
-                    <input type="submit" value="Criar Venda" class="btn btn-primary" />
-                </div>
-            </div>
+<div class="row bg-white">
+    <form asp-action="NovaVenda">
+        <div asp-validation-summary="All" class="text-danger"></div>
 
-            <input asp-for="Data" type="hidden" />
-            <input asp-for="Status" type="hidden" />
-            <input asp-for="FuncionarioId" type="hidden" />
-        </form>
-    </div>
-</div>
-<br>
-<div>
-    <a asp-action="Index" class="btn btn-danger">Cancelar</a>
+        <div class="form-group">
+            <h2>Cliente</h2>
+            <input type="text" id="cnpj" class="form-control" placeholder="Selecione um CNPJ"
+                onkeyup="filtrarCliente()" />
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-6 form-group">
+                <select id="fornecedorSelect" asp-for="ClienteId" class="form-control" asp-items="ViewBag.ClienteId">
+                    <option value="" disabled selected>Selecione o CNPJ</option> <!-- Opção padrão -->
+                </select>
+            </div>
+            <div class="w-100 form-group text-end mt-2">
+                <a asp-action="Index" class="btn btn-danger mx-2">Cancelar</a>
+                <input type="submit" value="Criar Venda" class="btn btn-primary" />
+            </div>
+        </div>
+
+        <input asp-for="Data" type="hidden" />
+        <input asp-for="Status" type="hidden" />
+        <input asp-for="FuncionarioId" type="hidden" />
+    </form>
 </div>
 
 @section Scripts {

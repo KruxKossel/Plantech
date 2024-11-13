@@ -11,41 +11,38 @@
     <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
 }
 
-<br><br>
+<br>
 <h1>Nova Ordem de Compra</h1>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="NovaCompra">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @* <div class="form-group">
-            <label asp-for="FuncionarioId" class="control-label" ></label>
-            <select asp-for="FuncionarioId" class ="form-control" asp-items="ViewBag.FuncionarioId" ></select>
+<div class="row bg-white">
+    <form asp-action="NovaCompra">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @* <div class="form-group">
+        <label asp-for="FuncionarioId" class="control-label" ></label>
+        <select asp-for="FuncionarioId" class ="form-control" asp-items="ViewBag.FuncionarioId" ></select>
+        </div>
+        *@
+        <div class="form-group">
+            <h2><label asp-for="Fornecedor" class="control-label"></label></h2>
+            <input type="text" id="cnpj" class="form-control" placeholder="Selecione um CNPJ"
+                onkeyup="filtrarFornecedor()" />
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-6 form-group">
+                <select id="fornecedorSelect" asp-for="FornecedorId" class="form-control"
+                    asp-items="ViewBag.FornecedorId">
+                    <option value="" disabled selected>Buscar o CNPJ</option> <!-- Opção padrão -->
+                </select>
             </div>
-            *@
-            <div class="form-group">
-                <h2><label asp-for="Fornecedor" class="control-label"></label></h2>
-                <input type="text" id="cnpj" class="form-control" placeholder="Selecione um CNPJ"
-                    onkeyup="filtrarFornecedor()" />
+
+            <div class="w-100 form-group text-end">
+                <a asp-action="Index" class="btn btn-danger">Cancelar</a>
+                <input type="submit" value="Nova Ordem" class="btn btn-primary" />
             </div>
-            <br>
-            <div class="row">
-                <div class="col-6 form-group">
-                    <select id="fornecedorSelect" asp-for="FornecedorId" class="form-control"
-                        asp-items="ViewBag.FornecedorId">
-                        <option value="" disabled selected>Buscar o CNPJ</option> <!-- Opção padrão -->
-                    </select>
-                </div>
-                <div class="col-6 form-group d-flex align-items-end" style="margin-left: -20px;">
-                    <input type="submit" value="Nova Ordem" class="btn btn-primary" />
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-<br>
-<div>
-    <a asp-action="Index" class="btn btn-danger">Cancelar</a>
+
+        </div>
+    </form>
 </div>
 
 @section Scripts {

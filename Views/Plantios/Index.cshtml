@@ -4,30 +4,29 @@
     ViewData["Title"] = "Plantios";
 }
 
-<br>
 
-<div class="jumbotron">
-    <h1>@ViewData["Title"]</h1>
-    <br>
-    <div class="d-flex gap-2">
-        <div class="mb-3">
-            <label for="startDate" class="form-label">Data Início</label>
-            <input type="date" id="startDate" class="form-control" style="width: 140px;" />
+<div class="jumbotron mt-4 bg-white">
+    <div class="d-flex gap-2 d-flex justify-content-between">
+        <h1 class="mb-3 w-25">@ViewData["Title"]</h1>
+
+        <div class="d-flex w-50 justify-content-between mx-4">
+            <div class="mb-3">
+                <label for="startDate" class="form-label">Data Início</label>
+                <input type="date" id="startDate" class="form-control" style="width: 140px;" />
+            </div>
+            <div class="mb-3">
+                <label for="endDate" class="form-label">Data Fim</label>
+                <input type="date" id="endDate" class="form-control" />
+            </div>
+            <button id="filterButton" class="btn btn-primary"
+                style="padding: 0.2rem 0.4rem; height: 37px; margin-top: 33px;">
+                <i class="bi bi-search" style="font-size: 0.8rem;"></i> <!-- Ícone de lupa -->
+            </button>
         </div>
-        <div class="mb-3">
-            <label for="endDate" class="form-label">Data Fim</label>
-            <input type="date" id="endDate" class="form-control" />
-        </div>
-        <button id="filterButton" class="btn btn-primary"
-            style="padding: 0.2rem 0.4rem; height: 37px; margin-top: 33px;">
-            <i class="bi bi-search" style="font-size: 0.8rem;"></i> <!-- Ícone de lupa -->
-        </button>
-        <br><br>
     </div>
 
-    <div class="text-end" style="margin-right: 15px;">
-        <div class="card-index">
-
+    <div class="text-end">
+        <div class="shadow border rounded-2 p-2">
             <div style="max-height: 350px; overflow-y: auto;">
                 <table class="table table-striped table-hover" id="plantioTable">
                     <thead>
@@ -50,7 +49,7 @@
                                 @foreach (var item in (SelectList)ViewData["HortalicaId"])
                                 {
                                     <td>@item.Text</td>
-                                } 
+                                }
                                 <td>@plantio.FuncionarioId</td>
                                 <td>@plantio.Quantidade</td>
                                 <td>@plantio.Status</td>
@@ -61,14 +60,12 @@
                 </table>
             </div>
         </div>
-        <br>
-        <a asp-action="Create" class="btn btn-primary sm">Novo Plantio</a>
+        <div class="text-end mt-2">
+            <a asp-controller="Agricultor" asp-action="Index" class="btn btn-warning mx-2">Voltar a Home</a>
+            <a asp-action="Create" class="btn btn-primary sm">Novo Plantio</a>
+        </div>
     </div>
 </div>
-
-    <div>
-        <a asp-controller="Agricultor" asp-action="Index" class="btn btn-primary">Voltar a Home</a>
-    </div>
 
 @section Scripts {
     <script>
@@ -90,7 +87,7 @@
                 // Verifica se há dados suficientes nas células
                 if (cells.length > 1) {
                     const plantioDate = new Date(cells[1].innerText.split("/").reverse().join("-")); // Coluna da Data de Plantio
-                    
+
                     // Verifica se a data de plantio está dentro do intervalo
                     const isWithinRange = (!startDate || plantioDate >= startDate) && (!endDate || plantioDate <= endDate);
 
