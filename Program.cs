@@ -67,6 +67,9 @@ builder.Services.AddScoped<IFuncionarioService, FuncionarioService>();
 //DI Vendas
 builder.Services.AddScoped<IVendasRepository, VendasRepository>();
 builder.Services.AddScoped<IVendasService, VendasService>();
+//DI Relatorio
+builder.Services.AddScoped<IRelatorioRepository,RelatorioRepository>();
+builder.Services.AddScoped<IRelatorioService,RelatorioService>();
 
 
 var app = builder.Build();
