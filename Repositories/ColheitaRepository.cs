@@ -62,23 +62,20 @@ namespace Plantech.Repositories
 
         public async Task<IEnumerable<CulturasPerdidas>> GetCulturasPerdidas()
         {
-           return await _context.CulturasPerdidas 
-           .Include(c => c.Id) 
-           .Include(c => c.Nome) 
-           .Include(c => c.ColheitaId) 
-            .ToListAsync();
-
-
+            return await _context.CulturasPerdidas
+                .Include(c => c.Colheita) // Incluir a navegação 'Colheita'
+                .Include(c => c.HortalicasPerdidas) // Incluir a navegação 'HortalicasPerdidas'
+                .ToListAsync();
         }
+
 
         public async Task<IEnumerable<HortalicasPerdidas>> GetHortaPerdidas()
         {
-            return await _context.HortalicasPerdidas 
-           .Include(h => h.CulturaPerdidaId) 
-           .Include(h => h.HortalicaId) 
-           .Include(h => h.Quantidade) 
-            .ToListAsync();
-
+            return await _context.HortalicasPerdidas
+                .Include(h => h.CulturaPerdida) // Incluir a navegação 'CulturaPerdida'
+                .Include(h => h.Hortalica) // Incluir a navegação 'Hortalica'
+                .ToListAsync();
         }
+
     }
 }

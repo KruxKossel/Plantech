@@ -8,9 +8,11 @@ namespace Plantech.ViewModels
 {
     public class CulturasPerdidasViewModel
     {
-        public virtual List<HortalicasPerdidasDTO> HortalicasPerdidas { get; set; } = new List<HortalicasPerdidasDTO>();
+        public int? Quantidade { get; set; }
 
-         public virtual CulturasPerdidasDTO CulturaPerdida { get; set; } = null!;
+        public virtual CulturasPerdidasDTO CulturaPerdida { get; set; } = null!;
+
+        public virtual HortalicaDTO Hortalica { get; set; } = null!;
 
 
     }

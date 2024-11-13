@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -9,12 +10,15 @@ using Plantech.ViewModels;
 namespace Plantech.Controllers
 {
     [Authorize(Roles = "Agricultor, Administrador")]
-    public class AgricultorController(ILogger<AgricultorController> logger, IPlantioService plantioService, IColheitaService colheitaService) : Controller
+    public class AgricultorController(ILogger<AgricultorController> logger, 
+                                        IPlantioService plantioService, IColheitaService colheitaService,
+                                        IMapper mapper) : Controller
     {
         private readonly ILogger<AgricultorController> _logger = logger;
         private readonly IPlantioService _plantioService = plantioService;
 
         private readonly IColheitaService _colheitaService = colheitaService;
+        private readonly IMapper _mapper = mapper;
 
         public async Task<IActionResult> Index()
         {
@@ -30,15 +34,15 @@ namespace Plantech.Controllers
             return View(viewModel);
         }
 
+        [HttpGet]
         public async Task<IActionResult> CulturasPerdidas()
         {
+            var perdas = await _colheitaService.GetHortaPerdidas();
+            var model = _mapper.Map<List<CulturasPerdidasViewModel>>(perdas);
 
-            var perdas = new CulturasPerdidasViewModel();
-
-            
-
-            return View(perdas);
+            return View(model);
         }
+
 
     }
 }
