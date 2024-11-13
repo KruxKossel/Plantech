@@ -12,17 +12,23 @@ namespace Plantech.Controllers
 {
     [Authorize(Roles = "Administrador")]
     public class AdministradorController(ILogger<AdministradorController> logger, ILotesHortalicasService lotesHortalicasService, 
-                                            ILotesInsumosService lotesInsumosService) : Controller
+                                            ILotesInsumosService lotesInsumosService, IRelatorioService relatorioService) : Controller
     {
         private readonly ILogger<AdministradorController> _logger = logger;
         private readonly ILotesHortalicasService _lotesHortalicasService = lotesHortalicasService;
         private readonly ILotesInsumosService _lotesInsumosService = lotesInsumosService;
-
-        public IActionResult Index()
+        private readonly IRelatorioService _relatorioService = relatorioService;
+        public async Task<IActionResult> Index()
         {
-            
             return View();
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Relatorio()
+        {
+            return View(await _relatorioService.ProcessandoDados());
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> Pendencias()
