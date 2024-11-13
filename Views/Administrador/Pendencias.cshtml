@@ -2,20 +2,36 @@
     ViewData["Title"] = "Pendências";
 }
 
-<div class="jumbotron">
-    <br><br>
-    <h1></h1>
-    <br>
-    <p>
-       Pendencias de lote de Insumos  
-       <a asp-controller="LotesInsumos" asp-action="Index" class="dropdown-item">Lotes de Insumos</a>                                     
-    </p>
-    <p>
-        Pendencias de lote de hortaliças  
-        <a asp-controller="LotesHortalicas" asp-action="Pendencias" class="dropdown-item">Lotes de Hortaliça</a>
-    </p>
-    <p>
-        Pendencias de Compras não pagas  
-        <a asp-controller="OrdensCompras" asp-action="Index" class="dropdown-item">Compras</a>
-    </p>
+@section Styles {
+    <link rel="stylesheet" href="~/css/detalhes.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/edit.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
+}
+<br><br>
+<h1>Todas as Pendencias</h1><br>
+<div class="card-index">
+    <div style="max-height: 350px; overflow-y: auto;">
+        <div class="p-3">
+            <div>
+                <h4> Pendencias de lote de Insumos</h4>
+                <a asp-controller="LotesInsumos" asp-action="Index" class="dropdown-item">Lotes de Insumos</a><hr>
+            </div>
+
+            <div>
+                <h4>Pendencias de lote de hortaliças</h4>
+                <a asp-controller="LotesHortalicas" asp-action="Pendencias" class="dropdown-item">Lotes de Hortaliça</a><hr>
+            </div>
+
+            <div>
+                <h4>Pendencias de Compras não pagas</h4>
+                <a asp-controller="OrdensCompras" asp-action="Index" class="dropdown-item">Compras</a><hr>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<br>
+<div>
+    <a asp-action="Index" class="btn btn-secondary" style=" width: 150px;">Voltar</a>
 </div>

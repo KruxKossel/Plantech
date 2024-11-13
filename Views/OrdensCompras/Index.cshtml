@@ -74,10 +74,16 @@
         <br>
         <a asp-action="NovaCompra" class="btn btn-primary">Nova Compra</a><br><br>
     </div>
-
+    @if (User.IsInRole("Comprador")){
     <div>
         <a asp-controller="Comprador" asp-action="Index" class="btn btn-primary">Voltar a Home</a>
     </div>
+    }
+    @if (User.IsInRole("Administrador")){
+        <div>
+    <a asp-controller="Administrador" asp-action="Pendencias" class="btn btn-primary">Voltar a Home</a>
+</div>
+    }
 
     <br>
 }

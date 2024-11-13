@@ -78,10 +78,18 @@
         </table>
     </div>
 </div>
+@if (User.IsInRole("Comprador")){
 <br>
 <div>
     <a asp-controller="Comprador" asp-action="Index" class="btn btn-primary">Voltar a Home</a>
 </div>
+}
+@if (User.IsInRole("Administrador")){
+    <br>
+<div>
+    <a asp-controller="Administrador" asp-action="Pendencias" class="btn btn-primary">Voltar a Home</a>
+</div>
+}
 }
 
 
