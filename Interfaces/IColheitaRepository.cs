@@ -17,5 +17,15 @@ namespace Plantech.Interfaces
 
         Task CreateColheitaAsync(Colheitas colheita);
 
+
+
+        // Culturas e hortaliças perdidas
+
+        Task<IEnumerable<CulturasPerdidas>> GetCulturasPerdidas();
+
+        Task<IEnumerable<HortalicasPerdidas>> GetHortaPerdidas();
+
+
+
     }
 }

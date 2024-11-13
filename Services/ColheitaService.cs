@@ -76,5 +76,20 @@ namespace Plantech.Services
                 var colheita = _mapper.Map<Colheitas>(colheitaDto);
                 await _colheitaRepository.UpdateAsync(colheita);
             }
+
+
+            public async Task<IEnumerable<CulturasPerdidasDTO>> GetCulturasPerdidas()
+            {
+                var culturas = await _colheitaRepository.GetCulturasPerdidas();
+                return _mapper.Map<IEnumerable<CulturasPerdidasDTO>>(culturas);
+
+            }
+
+            public async Task<IEnumerable<HortalicasPerdidasDTO>> GetHortaPerdidas()
+            {
+                var perdidas = await _colheitaRepository.GetHortaPerdidas();
+                return _mapper.Map<IEnumerable<HortalicasPerdidasDTO>>(perdidas);
+
+            }
     }
 }

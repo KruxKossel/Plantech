@@ -17,18 +17,28 @@ namespace Plantech.Controllers
         private readonly IColheitaService _colheitaService = colheitaService;
 
         public async Task<IActionResult> Index()
-{
-    var plantios = await _plantioService.GetAllAsync();
-    var colheitas = await _colheitaService.GetAllAsync();
+        {
+            var plantios = await _plantioService.GetAllAsync();
+            var colheitas = await _colheitaService.GetAllAsync();
 
-    var viewModel = new PlantioColheitaViewModel
-    {
-        Plantios = plantios,
-        Colheitas = colheitas
-    };
+            var viewModel = new PlantioColheitaViewModel
+            {
+                Plantios = plantios,
+                Colheitas = colheitas
+            };
 
-    return View(viewModel);
-}
+            return View(viewModel);
+        }
+
+        public async Task<IActionResult> CulturasPerdidas()
+        {
+
+            var perdas = new CulturasPerdidasViewModel();
+
+            
+
+            return View(perdas);
+        }
 
     }
 }

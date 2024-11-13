@@ -22,5 +22,10 @@ namespace Plantech.Interfaces
         Task<IEnumerable<FuncionarioDTO>> GetFuncionariosAsync();
 
 
+        Task<IEnumerable<CulturasPerdidasDTO>> GetCulturasPerdidas();
+
+        Task<IEnumerable<HortalicasPerdidasDTO>> GetHortaPerdidas();
+
+
     }
 }

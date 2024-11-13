@@ -173,6 +173,16 @@ namespace Plantech.MappingProfiles
             CreateMap<HortalicasVendas,HortalicasVendaDTO>();
 
 
+
+            // Hortaliças perdidas e culturas perdidas
+
+            CreateMap<HortalicasPerdidasDTO, HortalicasPerdidas>().ReverseMap();
+            CreateMap<CulturasPerdidasDTO, CulturasPerdidas>().ReverseMap();
+
+            CreateMap<CulturasPerdidasViewModel, HortalicasPerdidasDTO>().ReverseMap();
+            CreateMap<CulturasPerdidasViewModel, CulturasPerdidasDTO>().ReverseMap();
+
+
         }
     }
 }
