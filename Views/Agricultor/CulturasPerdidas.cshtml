@@ -1,4 +1,4 @@
-@model IEnumerable<Plantech.ViewModels.CulturasPerdidasViewModel>
+@model IEnumerable<Plantech.ViewModels.CulturaPerdidaViewModel>
 
 @{
     ViewData["Title"] = "Culturas Perdidas";
@@ -14,16 +14,13 @@
             <thead>
                 <tr>
                     <th>
-                        Cultura Perdida Nome
-                    </th>
-                    <th>
-                        Data da Colheita
-                    </th>
-                    <th>
-                        Hortaliça
+                        Cultura Perdida 
                     </th>
                     <th>
                         Quantidade
+                    </th>
+                    <th>
+                        Data da Colheita
                     </th>
                     <th></th>
                 </tr>
@@ -33,16 +30,13 @@
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.CulturaPerdida.Nome)
+                            @Html.DisplayFor(modelItem => item.Nome)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.CulturaPerdida.Colheita.DataColheita)
+                            @Html.DisplayFor(modelItem => item.HortalicasPerdidas.FirstOrDefault().Quantidade)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.CulturaPerdida.Colheita.Plantio.Hortalica.Nome)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Quantidade)
+                            @Html.DisplayFor(modelItem => item.Colheita.DataColheita)
                         </td>
                     </tr>
                 }

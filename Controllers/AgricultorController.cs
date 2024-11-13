@@ -37,11 +37,14 @@ namespace Plantech.Controllers
         [HttpGet]
         public async Task<IActionResult> CulturasPerdidas()
         {
-            var perdas = await _colheitaService.GetHortaPerdidas();
-            var model = _mapper.Map<List<CulturasPerdidasViewModel>>(perdas);
+            var culturasPerdidas = await _colheitaService.GetCulturasPerdidas();
+            var viewModels = _mapper.Map<IEnumerable<CulturaPerdidaViewModel>>(culturasPerdidas);
 
-            return View(model);
+            
+
+            return View(viewModels);
         }
+
 
 
     }

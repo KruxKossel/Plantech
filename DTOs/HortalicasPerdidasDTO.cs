@@ -7,14 +7,12 @@ namespace Plantech.DTOs
 {
     public class HortalicasPerdidasDTO
     {
-        public int CulturaPerdidaId { get; set; }
-
-        public int HortalicaId { get; set; }
-
+        public int CulturaPerdidaId { get; set; } 
+        public int HortalicaId { get; set; } 
         public int? Quantidade { get; set; }
 
-        public virtual CulturasPerdidasDTO CulturaPerdida { get; set; } = null!;
+        public CulturasPerdidasDTO CulturaPerdida { get; set; } = null!;
 
-        public virtual HortalicaDTO Hortalica { get; set; } = null!;
+        public HortalicaDTO Hortalica { get; set; } = null!;
     }
 }

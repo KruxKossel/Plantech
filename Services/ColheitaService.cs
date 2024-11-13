@@ -80,8 +80,24 @@ namespace Plantech.Services
 
             public async Task<IEnumerable<CulturasPerdidasDTO>> GetCulturasPerdidas()
             {
-                var culturas = await _colheitaRepository.GetCulturasPerdidas();
-                return _mapper.Map<IEnumerable<CulturasPerdidasDTO>>(culturas);
+                var culturasPerdidas = await _colheitaRepository.GetCulturasPerdidas();
+                var culturasPerdidasDto = _mapper.Map<IEnumerable<CulturasPerdidasDTO>>(culturasPerdidas);
+
+                // Adicionar o nome da hortaliça e a data da colheita aos DTOs
+                // foreach (var cultura in culturasPerdidasDto)
+                // {
+                //     var colheita = culturasPerdidas.First(c => c.Id == cultura.Id).Colheita;
+                //     cultura.Colheita.DataColheita = colheita.DataColheita; // Supondo que há uma propriedade DataColheita em Colheita
+
+                //     foreach (var hortalica in cultura.HortalicasPerdidas)
+                //     {
+                //         var hortalicaModel = culturasPerdidas.SelectMany(c => c.HortalicasPerdidas).First(h => h.CulturaPerdidaId == hortalica.CulturaPerdidaId && h.HortalicaId == h.HortalicaId);
+                //         hortalica.Hortalica.Nome = hortalicaModel.Hortalica.Nome; // Supondo que há uma propriedade Nome em Hortalica
+                //     }
+                // }
+
+                return culturasPerdidasDto;
+    
 
             }
 
