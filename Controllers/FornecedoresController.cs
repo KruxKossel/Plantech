@@ -62,7 +62,7 @@ namespace Plantech.Controllers
             var fornecedoreDTO = _mapper.Map<FornecedoreDTO>(fornecedore);
             if (ModelState.IsValid)
             {
-                _fornecedorService.AdicionarAsync(fornecedoreDTO);
+               await _fornecedorService.AdicionarAsync(fornecedoreDTO);
                 return RedirectToAction(nameof(Index));
             }
             return View(fornecedore);
