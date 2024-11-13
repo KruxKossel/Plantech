@@ -28,6 +28,15 @@ namespace Plantech.Controllers
             return View(lotesVM);
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Administrador")]
+        public async Task<IActionResult> Pendencias()
+        {
+            var lotesDTO = await _lotesHortalicasSerivce.ListarLotes();
+            var lotesVM = _mapper.Map<List<LotesHortalicaViewModel>>(lotesDTO);
+            return View(lotesVM);
+        }
+
         // GET: LotesHortalicas/Details/5
         public async Task<IActionResult> Details(int id)
         {
@@ -48,6 +57,8 @@ namespace Plantech.Controllers
 
 
         // GET: LotesHortalicas/Edit/5
+        [HttpGet]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Edit(int id)
         {
             if (id == null)
@@ -61,7 +72,7 @@ namespace Plantech.Controllers
                 return NotFound();
             }
 
-            var loteVM =  _mapper.Map<LotesHortalicaViewModel>(loteDTO);
+            var loteVM =  _mapper.Map<LotesHortalicaPendenciaViewModel>(loteDTO);
             return View(loteVM);
         }
 
@@ -70,11 +81,24 @@ namespace Plantech.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id, PrecoVenda, Status, Nome")] LotesHortalicaViewModel lotesvm)
+        [Authorize(Roles = "Administrador")]
+        public async Task<IActionResult> Edit(int id, [Bind("Id, PrecoVenda, DataValidade, Status, Nome")] 
+                                                LotesHortalicaPendenciaViewModel lotesvm)
         {
             if (id != lotesvm.Id)
             {
                 return NotFound();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                foreach (var state in ModelState)
+                {
+                    foreach (var error in state.Value.Errors)
+                    {
+                        Console.WriteLine($"Key: {state.Key}, Error: {error.ErrorMessage}");
+                    }
+                }
             }
 
             if (ModelState.IsValid)
@@ -89,6 +113,7 @@ namespace Plantech.Controllers
                     }
 
                     // Atualiza apenas as propriedades necessárias, mantendo o Status
+                    loteExistente.PrecoVenda = lotesvm.PrecoVenda;
                     loteExistente.DataValidade = lotesvm.DataValidade;
                     loteExistente.Nome = lotesvm.Nome;
                     // loteExistente.Status = 

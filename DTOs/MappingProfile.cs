@@ -110,6 +110,10 @@ namespace Plantech.MappingProfiles
             CreateMap<LotesHortalicas, LotesHortalicaDTO>().ReverseMap();
             CreateMap<LotesHortalicaViewModel, LotesHortalicaDTO>().ReverseMap();
 
+            CreateMap<LotesHortalicaPendenciaViewModel, LotesHortalicaDTO>().ReverseMap();
+
+
+            
             // Colheitas
             CreateMap<Colheitas, ColheitaDTO>()
                 .ForMember(dest => dest.LoteHortalica, opt => opt.MapFrom(src => src.LoteHortalica))
