@@ -1,0 +1,17 @@
+@model Plantech.ViewModels.RelatorioViewModel
+@{
+    ViewData["Title"] = "Relatorio";
+}
+<br><br>
+<h1>@ViewData["Title"]</h1>
+
+<div class="container">
+    <ul class="list-group">
+        <li class="list-group-item">Total de Vendas: @Model.TotalVenda</li>
+        <li class="list-group-item">Total de Compras: @Model.TotalCompra</li>
+        <li class="list-group-item">Gastos: @Model.Gastos.ToString("C")</li>
+        <li class="list-group-item">Faturamento: @Model.Faturamento.ToString("C")</li>
+        <li class="list-group-item">Total de Colheitas: @Model.TotalColheita</li>
+        <li class="list-group-item">Total de Plantios Ativos: @Model.TotalPlantioAtivo</li>
+    </ul>
+</div>
