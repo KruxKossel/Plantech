@@ -4,101 +4,101 @@
     ViewData["Title"] = "Lotes de Hortaliças";
 }
 
-@if (User.IsInRole("Vendedor"))
-{
-    <div class="container-fluid fruite">
-        <div class="container">
-            <br>
-            <h1 class="mb-5" style="margin-left: -7px;">Lotes de Hortaliças</h1>
-            <div class="row g-4">
-                <div class="col-lg-12">
+<div class="container-fluid fruite">
+    <div class="container">
+        <br>
+        <h1 class="mb-5" style="margin-left: -7px;">Lotes de Hortaliças</h1>
+        <div class="row g-4">
+            <div class="col-lg-12">
 
-                    <form method="post" action="@Url.Action("AdicionarHortalica", "Vendas")">
-                        <div class="row g-4">
+                <form method="post" action="@Url.Action("AdicionarHortalica", "Vendas")">
+                    <div class="row g-4">
 
-                            <!-- Sidebar de Categorias e Filtro de Preço -->
-                            <div class="col-lg-3">
-                                <div class="row g-4">
-                                    <!-- Filtro de Preço -->
-                                    <div class="col-lg-12">
-                                        <div class="mb-3">
-                                            <h4 class="mb-2">Preço</h4>
-                                            <input type="range" class="form-range w-100" id="rangeInput" name="rangeInput"
-                                                min="0" max="200" value="0" oninput="updateFilter()">
-                                            <output id="amount" name="amount" for="rangeInput">0</output>
-                                        </div>
+                        <!-- Sidebar de Categorias e Filtro de Preço -->
+                        <div class="col-lg-3">
+                            <div class="row g-4">
+                                <!-- Filtro de Preço -->
+                                <div class="col-lg-12">
+                                    <div class="mb-3">
+                                        <h4 class="mb-2">Preço</h4>
+                                        <input type="range" class="form-range w-100" id="rangeInput" name="rangeInput"
+                                            min="0" max="200" value="0" oninput="updateFilter()">
+                                        <output id="amount" name="amount" for="rangeInput">0</output>
                                     </div>
                                 </div>
                             </div>
-                            @for (var i = 0; i < Model.LotesDisponiveis.Count; i++)
-                            {
-                                var lote = Model.LotesDisponiveis[i];
-                                <div class="col-md-4 col-lg-3 mb-4 fruite-item-1" data-price="@lote.PrecoVenda"
-                                    style="height: 375px">
-                                    <div class="rounded position-relative fruite-item">
-                                        <div class="fruite-img">
-                                            @if (lote.Hortalica != null && !string.IsNullOrEmpty(lote.Hortalica.CaminhoImagem))
-                                            {
-                                                <img src="@Url.Content("~/images/" + lote.Hortalica.CaminhoImagem)"
-                                                    class="img-fluid w-100 rounded-top" style="height: 195px;" />
-                                            }
-                                            else
-                                            {
-                                                <p>Imagem não disponível</p>
-                                            }
-                                        </div>
-                                        <div class="p-4 border border-secondary border-top-0 rounded-bottom"
-                                            style="height: 180px;">
-                                            <h4>@lote.Nome</h4>
-                                            <p>@lote.Hortalica?.Descricao</p>
-                                            <p class="text-dark fs-5 fw-bold mb-0">R$ @lote.PrecoVenda / kg</p>
-                                        </div>
-                                        <div class="mt-3">
-                                            <div class="qnt d-flex">
-                                                <label for=" quantidade-@i" class="form-label"
-                                                    style="margin-top: 5px;">Quantidade </label>
-                                                <input type="number" id="quantidade-@i" name="LotesSelecionados[@i].Quantidade"
-                                                    class="form-control form-control-sm" min="1" value="1"
-                                                    style="width: 100px; height: 5px; margin-left: 10px;"
-                                                    onchange="atualizarPrecoUnitario(@lote.Id)">
-                                                <input type="hidden" name="LotesSelecionados[@i].LoteId" value="@lote.Id" />
-                                                <input type="hidden" name="LotesSelecionados[@i].PrecoUnitario"
-                                                    value="@lote.PrecoVenda" />
-                                                <button type="button" id="adicionar-btn-@i" class="btn btn-success mt-3"
-                                                    onclick="adicionarRemoverLote(@i)"
-                                                    style="margin-left: 10px; margin-top: -3px!important; height: 35px;">Adicionar</button>
-                                            </div>
+                        </div>
+                        @for (var i = 0; i < Model.LotesDisponiveis.Count; i++)
+                        {
+                            var lote = Model.LotesDisponiveis[i];
+                            <div class="col-md-4 col-lg-3 mb-4 fruite-item-1" data-price="@lote.PrecoVenda"
+                                style="height: 375px">
+                                <div class="rounded position-relative fruite-item">
+                                    <div class="fruite-img">
+                                        @if (lote.Hortalica != null && !string.IsNullOrEmpty(lote.Hortalica.CaminhoImagem))
+                                        {
+                                            <img src="@Url.Content("~/images/" + lote.Hortalica.CaminhoImagem)"
+                                                class="img-fluid w-100 rounded-top" style="height: 195px;" />
+                                        }
+                                        else
+                                        {
+                                            <p>Imagem não disponível</p>
+                                        }
+                                    </div>
+                                    <div class="p-4 border border-secondary border-top-0 rounded-bottom"
+                                        style="height: 180px;">
+                                        <h4>@lote.Nome</h4>
+                                        <p>@lote.Hortalica?.Descricao</p>
+                                        <p class="text-dark fs-5 fw-bold mb-0">R$ @lote.PrecoVenda / kg</p>
+                                        <p class="text-dark fs-10 fw-bold mb-1">Quantidade: @lote.Quantidade Un. Lote</p>
+                                    </div>
+                                    <div class="mt-3">
+                                        <div class="qnt d-flex">
+                                            <label for=" quantidade-@i" class="form-label"
+                                                style="margin-top: 5px;">Quantidade </label>
+                                            <input type="number" id="quantidade-@i" name="LotesSelecionados[@i].Quantidade"
+                                                class="form-control form-control-sm" min="1" value="1"
+                                                style="width: 100px; height: 5px; margin-left: 10px;"
+                                                onchange="atualizarPrecoUnitario(@lote.Id)">
+                                            <input type="hidden" name="LotesSelecionados[@i].LoteId" value="@lote.Id" />
+                                            <input type="hidden" name="LotesSelecionados[@i].PrecoUnitario"
+                                                value="@lote.PrecoVenda" />
+                                            <button type="button" id="adicionar-btn-@i" class="btn btn-success mt-3"
+                                                onclick="adicionarRemoverLote(@i)"
+                                                style="margin-left: 10px; margin-top: -3px!important; height: 35px;">Adicionar</button>
                                         </div>
                                     </div>
-
                                 </div>
 
+                            </div>
 
-                            }
 
-                        </div>
-
-                        <!-- Inputs ocultos para enviar os lotes selecionados -->
-                        @foreach (var lote in Model.LotesSelecionados)
-                        {
-                            <input type="hidden" name="LotesSelecionados[@lote.LoteId].Quantidade" value="@lote.Quantidade" />
-                            <input type="hidden" name="LotesSelecionados[@lote.LoteId].LoteId" value="@lote.LoteId" />
-                            <input type="hidden" name="LotesSelecionados[@lote.LoteId].PrecoUnitario"
-                                value="@lote.PrecoUnitario" />
                         }
-                        <br>
-                        <div id="btn-1" class="text-end">
-                            <br>
-                            <button type="submit" class="btn btn-success mt-4">Adicionar Lotes Selecionados</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <br><br>
-            <a asp-controller="Vendedor" asp-action="Index" class="btn btn-primary mb-4">Voltar a Home</a>
-        </div>
-    </div>
 
+                    </div>
+
+                    <!-- Inputs ocultos para enviar os lotes selecionados -->
+                    @foreach (var lote in Model.LotesSelecionados)
+                    {
+                        <input type="hidden" name="LotesSelecionados[@lote.LoteId].Quantidade" value="@lote.Quantidade" />
+                        <input type="hidden" name="LotesSelecionados[@lote.LoteId].LoteId" value="@lote.LoteId" />
+                        <input type="hidden" name="LotesSelecionados[@lote.LoteId].PrecoUnitario"
+                            value="@lote.PrecoUnitario" />
+                    }
+                    <br>
+                    <div id="btn-1" class="text-end">
+                        <br>
+                        <button type="submit" class="btn btn-success mt-4">Adicionar Lotes Selecionados</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <br><br>
+        <a asp-controller="Vendedor" asp-action="Index" class="btn btn-primary mb-4">Voltar a Home</a>
+    </div>
+</div>
+
+@section Scripts {
     <!-- JavaScript para Filtro de Preço e Lógica de Botões -->
     <script>
         function updateFilter() {
@@ -162,7 +162,7 @@
         function updateFilter() {
             const maxPrice = document.getElementById('rangeInput').value;
             document.getElementById('amount').textContent = maxPrice;
-            
+
             document.querySelectorAll('.fruite-item-1').forEach(item => {
                 const itemPrice = parseFloat(item.getAttribute('data-price'));
                 if (itemPrice <= maxPrice) {
@@ -171,7 +171,7 @@
                     item.style.display = 'none';
                 }
             });
-          
+
         }
 
     </script>

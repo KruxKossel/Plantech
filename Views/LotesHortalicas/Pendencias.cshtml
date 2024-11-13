@@ -1,0 +1,80 @@
+@model IEnumerable<Plantech.ViewModels.LotesHortalicaViewModel>
+
+@{
+    ViewData["Title"] = "Pendencias";
+}
+
+
+<br>
+<h1>Lotes de Hortaliças</h1>
+
+<div class="card-index">
+    <div style="max-height: 350px; overflow-y: auto;">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Quantidade)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PrecoVenda)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DataEntrada)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DataValidade)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Status)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Nome)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.HortalicaId)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Quantidade)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PrecoVenda)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DataEntrada)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DataValidade)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Status)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.HortalicaId)
+                        </td>
+                        <td>
+
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Editar</a>
+                            <a asp-action="Details" asp-route-id="@item.Id " class="btn btn-primary">Detalhes</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<br>
+<div>
+    <a asp-controller="Administrador" asp-action="Index" class="btn btn-primary">Voltar a Home</a>
+</div>
+

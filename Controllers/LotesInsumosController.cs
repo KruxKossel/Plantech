@@ -41,7 +41,7 @@ namespace Plantech.Controllers
             return View(lotesInsumo);
         }
 
-        [Authorize(Roles = "Comprador, Administrador")]
+        [Authorize(Roles = "Administrador")]
         // GET: LotesHortalicas/Edit/5
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
@@ -63,10 +63,10 @@ namespace Plantech.Controllers
         
         
         
-        [Authorize(Roles = "Comprador, Administrador")]
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id, DataValidade, Status, Nome")] LotesInsumoViewModel lotesInsumo)
+        public async Task<IActionResult> Edit(int id, [Bind("Id, DataValidade, Nome")] LotesInsumoViewModel lotesInsumo)
         {
             if (id != lotesInsumo.Id)
             {
