@@ -9,9 +9,7 @@
 @{
     ViewData["Title"] = "Novo Plantio";
 }
-<br><br>
-<h2>@ViewData["Title"]</h2>
-<br>
+<h2 class="mt-2">@ViewData["Title"]</h2>
 <form asp-action="Create" method="post" enctype="multipart/form-data">
     <div class="row">
         <div class="card-plan p-5">
@@ -58,22 +56,17 @@
                             </label>
                         </div>
                     }
-                
                 </div>
-                <span id="insumoError" class="text-danger" style="display:none;">É necessário selecionar ao menos um
-                        insumo.</span>
             </div>
-
         </div>
+
     </div>
 
-    <div class="form-group mt-4 text-end">
-        <button type="submit" class="btn btn-primary" style="width: 150px; margin-right: 60px;">Salvar</button>
+    <div class="modal-footer">
+        <a asp-controller="Plantios" asp-action="Index" class="btn btn-secondary mx-2">Voltar</a>
+        <button type="submit" class="btn btn-primary">Salvar</button>
     </div>
-    <div>
-        <a asp-controller="Plantios" asp-action="Index" class="btn btn-secondary"
-            style="width: 150px; margin-top: -15px;">Voltar</a>
-    </div>
+
 </form>
 
 @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))

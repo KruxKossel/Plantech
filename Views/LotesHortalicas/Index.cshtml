@@ -65,14 +65,73 @@
 
 @if (User.IsInRole("Vendedor"))
 {
-    <div class="container-fluid fruite">
+    <div class="container-fluid fruite bg-white border shadow rounded-2 p-2">
+        <div class="container">
+            <h1 class="mb-5" style="margin-left: -7px;">Lotes de Hortaliças</h1>
+            <div class="row g-4">
+                <div class="col-12">
+                    <div class="row g-4">
+                        <!-- Sidebar de Categorias e Filtro de Preço -->
+                        <div class="">
+                            <div class="row g-4">
+                                <!-- Filtro de Preço -->
+                                <div class="col-lg-12">
+                                    <div class="mb-3">
+                                        <h4 class="mb-2">Preço</h4>
+                                        <input type="range" class="form-range w-100" id="rangeInput" name="rangeInput"
+                                            min="0" max="200" value="0" oninput="updateFilter()">
+                                        <output id="amount" name="amount" for="rangeInput">0</output>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Itens de Hortaliças -->
+                        @foreach (var item in Model)
+                        {
+                            
+                            <div class="col-md-4 col-lg-3 fruite-item-1" data-price="@item.PrecoVenda" style="height: 375px">
+                                <div class="rounded position-relative  fruite-item ">
+                                    <a asp-action="Details" asp-route-id="@item.Id">
+                                        <div class="fruite-img">
+                                            @if (item.Hortalica != null && !string.IsNullOrEmpty(item.Hortalica.CaminhoImagem))
+                                            {
+                                                <img src="@Url.Content("~/images/" + item.Hortalica.CaminhoImagem)"
+                                                    class="img-fluid w-100 rounded-top" style="height: 195px;" />
+                                            }
+                                        </div>
+                                        <div class="p-4 border border-secondary border-top-0 rounded-bottom"
+                                            style="height: 180px;">
+                                            <h4>@Html.DisplayFor(modelItem => item.Nome)</h4>
+                                            <p>@Html.DisplayFor(modelItem => item.Hortalica.Descricao)</p>
+                                            <p class="text-dark fs-5 fw-bold mb-0">R$ @item.PrecoVenda / kg</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <a asp-controller="Agricultor" asp-action="Index" class="btn btn-primary mb-4">Voltar a Home</a>
+            </div>
+        </div>
+    </div>
+
+}
+
+@if (User.IsInRole("Vendedor"))
+{
+    <div class="container-fluid fruite bg-white border shadow rounded-2 p-2">
         <div class="container">
             <h1 class="mb-5" style="margin-left: -7px;">Lotes de Hortaliças</h1>
             <div class="row g-4">
                 <div class="col-lg-12">
                     <div class="row g-4">
                         <!-- Sidebar de Categorias e Filtro de Preço -->
-                        <div class="col-lg-3">
+                        <div class="">
                             <div class="row g-4">
                                 <!-- Filtro de Preço -->
                                 <div class="col-lg-12">
@@ -113,8 +172,9 @@
                     </div>
                 </div>
             </div>
-            <br><br>
-            <a asp-controller="Vendedor" asp-action="Index" class="btn btn-primary mb-4">Voltar a Home</a>
+            <div class="modal-footer">
+            <a asp-controller="Agricultor" asp-action="Index" class="btn btn-secondary mb-4">Voltar a Home</a>
+            </div>
         </div>
     </div>
 

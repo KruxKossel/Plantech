@@ -33,65 +33,60 @@
 
 <body>
 
-    <div class="container-fluid">
-        <div class="container py-5">
-            <div class="row g-4 mb-5">
-                <div class="col-lg-8 col-xl-9">
-                    <div class="row g-4">
-                        <div class="col-lg-6">
-                            <div class="border rounded">
-                                <a href="#">
-                                    <img src="@Url.Content("~/images/" + Model.Insumo.CaminhoImagem)"
-                                        class="img-fluid rounded" alt="Imagem da Hortalica"
-                                        style="height: 300px; object-fit: cover;">
-                                </a>
-
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <h4 class="fw-bold mb-3">@Html.DisplayFor(model => model.Nome)</h4>
-                            <p class="mb-3">Categoria: Insumos</p>
-                            <h5 class="fw-bold mb-3">Lote N° @Html.DisplayFor(model => model.InsumoId)</h5>
-                            <h5 class="fw-bold mb-3">R$ @Html.DisplayFor(model => model.PrecoUnitario)</h5>
-                            <p class="mb-4">Descrição: @Html.DisplayFor(model => model.Nome)</p>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="tab-content mb-5">
-                                <div class="tab-pane active" id="nav-about" role="tabpanel">
-                                    <div class="px-2">
-                                        <div class="row g-4">
-                                            <div class="col-6">
-                                                <div class="row bg-light text-center justify-content-center py-2">
-                                                    <div class="col-6">Quantidade</div>
-                                                    <div class="col-6">@Html.DisplayFor(model => model.Quantidade) kg
-                                                    </div>
-                                                </div>
-                                                <div class="row text-center justify-content-center py-2">
-                                                    <div class="col-6">Data de Entrada</div>
-                                                    <div class="col-6">@Html.DisplayFor(model => model.DataEntrada)
-                                                    </div>
-                                                </div>
-                                                <div class="row text-center justify-content-center py-2">
-                                                    <div class="col-6">Data de Validade</div>
-                                                    <div class="col-6">@Html.DisplayFor(model => model.DataValidade)
-                                                    </div>
-                                                </div>
-                                                <div class="row text-center justify-content-center py-2">
-                                                    <div class="col-6">Status</div>
-                                                    <div class="col-6">@Html.DisplayFor(model => model.Status)</div>
-                                                </div>
+    <div class="container-fluid pt-5">
+        @* <div class="row g-4 mb-5"> *@
+        <div class="col-12">
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="border rounded">
+                        <a href="#">
+                            <img src="@Url.Content("~/images/" + Model.Insumo.CaminhoImagem)" class="img-fluid rounded"
+                                alt="Imagem da Hortalica" style="height: 300px; object-fit: cover;">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <h4 class="fw-bold mb-3">@Html.DisplayFor(model => model.Nome)</h4>
+                    <p class="mb-3">Categoria: Insumos</p>
+                    <h5 class="fw-bold mb-3">Lote N° @Html.DisplayFor(model => model.InsumoId)</h5>
+                    <h5 class="fw-bold mb-3">R$ @Html.DisplayFor(model => model.PrecoUnitario)</h5>
+                    <p class="mb-4">Descrição: @Html.DisplayFor(model => model.Nome)</p>
+                </div>
+                <div class="col-lg-12">
+                    <div class="tab-content ">
+                        <div class="tab-pane active" id="nav-about" role="tabpanel">
+                            <div class="px-2">
+                                <div class="row g-4">
+                                    <div class="col-6">
+                                        <div class="row bg-light text-center justify-content-center py-2">
+                                            <div class="col-6">Quantidade</div>
+                                            <div class="col-6">@Html.DisplayFor(model => model.Quantidade) kg
                                             </div>
+                                        </div>
+                                        <div class="row text-center justify-content-center py-2">
+                                            <div class="col-6">Data de Entrada</div>
+                                            <div class="col-6">@Html.DisplayFor(model => model.DataEntrada)
+                                            </div>
+                                        </div>
+                                        <div class="row text-center justify-content-center py-2">
+                                            <div class="col-6">Data de Validade</div>
+                                            <div class="col-6">@Html.DisplayFor(model => model.DataValidade)
+                                            </div>
+                                        </div>
+                                        <div class="row text-center justify-content-center py-2">
+                                            <div class="col-6">Status</div>
+                                            <div class="col-6">@Html.DisplayFor(model => model.Status)</div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Voltar e Editar Botões -->
-                        <div class="">
-                            <a asp-action="Index" class="btn btn-primary" style="width: 150px;">Voltar</a>
-                        </div>
                     </div>
+                </div>
+
+                <!-- Voltar e Editar Botões -->
+                <div class="text-end">
+                    <a asp-action="Index" class="btn btn-primary" style="width: 150px;">Voltar</a>
                 </div>
             </div>
         </div>

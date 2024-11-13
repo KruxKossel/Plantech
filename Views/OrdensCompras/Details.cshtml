@@ -11,9 +11,9 @@
     <link rel="stylesheet" href="~/css/detalhes.css" asp-append-version="true" />
 }
 
-<h2 class="text-center mb-4 mt-4">@ViewData["Title"]</h2>
+<h2 class="text-center mt-4">@ViewData["Title"]</h2>
 
-    <div class="card-plan p-5">
+    <div class="">
         <h3>OrdensCompra</h3>
         <hr />
         <dl class="row">
@@ -81,19 +81,15 @@
         </div>
         <div class="text-end">
             <dd class="d-flex justify-content-end w-100 mt-4">
-                <h1 style="color: rgb(8, 190, 8);" class="mb-0">Valor total: R$ @Html.DisplayFor(model => model.Total)
-                </h1>
+                <p style="color: rgb(8, 190, 8);" class="mb-0">Valor total: R$ @Html.DisplayFor(model => model.Total)</p>
             </dd>
         </div>
 
     </div>
 
 
-    <div class="text-end">
-        <div>
-            <br>
+    <div class="text-end mt-2 w-100">
             <a asp-controller="OrdensCompras" asp-action="Index" class="btn btn-primary" style="width: 150px;">Voltar</a>
-        </div>
 
         @* <div>
         <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |

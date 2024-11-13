@@ -13,7 +13,7 @@
 
 <h2>Editar Lotes Hortaliças</h2>
 <hr />
-<div class="card-func p-4">
+<div class=" p-4 bg-white">
     <div class="row">
         <div class="">
             <form asp-action="Edit">
@@ -38,22 +38,15 @@
 
 
                 <br>
-                <div class=" text-end form-group">
+                <div class=" text-end form-group mt-2">
+
+                    <a asp-action="Index" class="btn btn-secondary" style="width: 150px;">Voltar</a>
                     <input type="submit" value="Salvar" class="btn btn-primary" style="width: 150px;" />
                 </div>
             </form>
         </div>
     </div>
 </div>
-
-
-
-
-<br>
-<div>
-    <a asp-action="Index" class="btn btn-secondary" style="width: 150px;">Voltar</a>
-</div>
-
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
