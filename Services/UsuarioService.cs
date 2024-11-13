@@ -133,5 +133,9 @@ namespace Plantech.Services
             return _mapper.Map<UsuarioDTO>(usuarioId);
         }
 
+        public async Task MudarStatus(int id)
+        {
+           await _usuarioRepository.MudarStatus(id);
+        }
     }
 }

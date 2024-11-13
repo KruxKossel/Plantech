@@ -62,4 +62,14 @@ public class UsuarioRepository(PlantechContext context) : IUsuarioRepository
             .OrderByDescending(p => p.Id)
             .FirstOrDefaultAsync();
     }
+
+    public async Task MudarStatus(int id)
+    {
+        var user = await _context.Usuarios.FindAsync(id);
+        if(user != null){
+                user.Status = user.Status == "ativo" ? "inativo" : "ativo";
+                _context.Usuarios.Update(user);
+                await _context.SaveChangesAsync();
+            }
+    }
 }
