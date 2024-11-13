@@ -54,7 +54,7 @@
                         <div class="col-lg-6">
                             <h4 class="fw-bold mb-3">@Html.DisplayFor(model => model.Nome)</h4>
                             <p class="mb-3">Categoria: Hortalicas</p>
-                            <h5 class="fw-bold mb-3">Lote N° @Html.DisplayFor(model => model.Hortalica.Descricao)
+                            <h5 class="fw-bold mb-3">Lote N° @Html.DisplayFor(model => model.Id)
                                 <h5 class="fw-bold mb-3">R$ @Html.DisplayFor(model =>
                                     model.PrecoVenda)
                                 </h5>
@@ -90,7 +90,7 @@
                                                         <p class="mb-0">Quantidade</p>
                                                     </div>
                                                     <div class="col-6">
-                                                        <p class="mb-0">@Html.DisplayFor(model => model.Quantidade) kg
+                                                        <p class="mb-0">@Html.DisplayFor(model => model.Quantidade) Un. Lote
                                                         </p>
                                                     </div>
                                                 </div>
