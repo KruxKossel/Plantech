@@ -4,47 +4,34 @@
     ViewData["Title"] = "Pendencias";
 }
 
-
 <br>
 <h1>Lotes de Hortaliças</h1>
 
 <div class="card-index">
     <div style="max-height: 350px; overflow-y: auto;">
-        <table class="table table-striped table-hover">
+        <table class="table table-striped table-hover" id="lotesTable">
             <thead>
                 <tr>
                     <th>
                         @Html.DisplayNameFor(model => model.Quantidade)
                     </th>
-                    <th>
-                        Preço
-                    </th>
-                    <th>
-                        Data de Entrada
-                    </th>
-                    <th>
-                        Data de validade
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Status)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Nome)
-                    </th>
-                    <th>
-                        Hortaliça
-                    </th>
+                    <th>Preço</th>
+                    <th>Data de Entrada</th>
+                    <th>Data de Validade</th>
+                    <th>@Html.DisplayNameFor(model => model.Status)</th>
+                    <th>@Html.DisplayNameFor(model => model.Nome)</th>
+                    <th>Hortaliça</th>
                     <th></th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="lotesBody">
                 @foreach (var item in Model)
                 {
-                    <tr>
+                    <tr class="lote-row" data-preco="@(item.PrecoVenda.HasValue ? item.PrecoVenda.Value.ToString() : "null")">
                         <td>
                             @Html.DisplayFor(modelItem => item.Quantidade)
                         </td>
-                        <td>
+                        <td class="preco-cell">
                             @Html.DisplayFor(modelItem => item.PrecoVenda)
                         </td>
                         <td>
@@ -63,9 +50,8 @@
                             @Html.DisplayFor(modelItem => item.Hortalica.Nome)
                         </td>
                         <td>
-
                             <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Editar</a>
-                            <a asp-action="Details" asp-route-id="@item.Id " class="btn btn-primary">Detalhes</a>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Detalhes</a>
                         </td>
                     </tr>
                 }
@@ -78,3 +64,36 @@
     <a asp-controller="Administrador" asp-action="Pendencias" class="btn btn-primary">Voltar a Home</a>
 </div>
 
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const tableBody = document.getElementById("lotesBody");
+            const rows = Array.from(tableBody.getElementsByClassName("lote-row"));
+
+            // Ordena as linhas, colocando as com preço null no topo
+            rows.sort((a, b) => {
+                const priceA = a.getAttribute("data-preco") === "null" ? null : parseFloat(a.getAttribute("data-preco"));
+                const priceB = b.getAttribute("data-preco") === "null" ? null : parseFloat(b.getAttribute("data-preco"));
+
+                // Se o preço é null, adiciona um aviso e move para o topo
+                if (priceA === null && !a.querySelector('.preco-cell .text-danger')) {
+                    a.classList.add("table-warning");
+                    a.querySelector(".preco-cell").innerHTML += " <span class='text-danger'>(Atualizar Preço)</span>";
+                }
+                if (priceB === null && !b.querySelector('.preco-cell .text-danger')) {
+                    b.classList.add("table-warning");
+                    b.querySelector(".preco-cell").innerHTML += " <span class='text-danger'>(Atualizar Preço)</span>";
+                }
+
+                // Move os itens com preço null para o topo
+                if (priceA === null && priceB !== null) return -1;
+                if (priceA !== null && priceB === null) return 1;
+                return 0;
+            });
+
+            // Limpa o corpo da tabela e adiciona as linhas ordenadas
+            tableBody.innerHTML = "";
+            rows.forEach(row => tableBody.appendChild(row));
+        });
+    </script>
+}
