@@ -13,26 +13,42 @@
 
 @if (User.Identity.IsAuthenticated)
 {
+    @section Styles {
+    <link rel="stylesheet" href="~/css/detalhes.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/edit.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
+
+}
     @if (User.IsInRole("Administrador"))
     {
-        <h1>Selecione qual operação deseja gerenciar!</h1>
-        <hr>
-        <div>
-            <a asp-controller="Administrador" asp-action="Index" class="btn btn-primary">Gerenciamento</a>
+        <div class="botao-adm">
+            <h1>Selecione qual operação deseja gerenciar!</h1><br>
         </div>
-        <hr>
-        <div>
-            <a asp-controller="Agricultor" asp-action="Index" class="btn btn-primary">Ir para a fazenda</a>
+        <br><br>
+        <div class="botao-adm">
+            <div class="d-flex " style="gap: 50px;" >
+                <div>
+                    <a asp-controller="Administrador" asp-action="Index" class="btn btn-primary" style="width: 200px;">Gerenciamento</a>
+                </div>
+                
+                <div>
+                    <a asp-controller="Agricultor" asp-action="Index" class="btn btn-primary" style="width: 200px;">Ir para a fazenda</a>
+                </div>
+                
+                <div>
+                    <a asp-controller="Comprador" asp-action="Index" class="btn btn-primary" style="width: 200px;">Ir para a compra</a>
+                </div>
+                
+                <div>
+                    <a asp-controller="Vendedor" asp-action="Index" class="btn btn-primary" style="width: 200px;">Ir para a venda</a>
+                </div>
+            </div>
         </div>
-        <hr>
-        <div>
-            <a asp-controller="Comprador" asp-action="Index" class="btn btn-primary">Ir para a compra</a>
+        <div class="d-flex justify-content-center align-items-center">
+            <img style=" width: 350px; margin-top: 93px;" src="~/images/logo.png" alt="">
         </div>
-        <hr>
-        <div>
-            <a asp-controller="Vendedor" asp-action="Index" class="btn btn-primary">Ir para a venda</a>
-        </div>
-        <hr>
+        
     }
     @if (User.IsInRole("Agricultor"))
     {
