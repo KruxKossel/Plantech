@@ -8,6 +8,7 @@ namespace Plantech.ViewModels
 {
     public class PlantioIndexViewModel
     {
+        public int Id { get; set; }
         public DateOnly? DataPlantio { get; set; }
 
         

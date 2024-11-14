@@ -204,5 +204,51 @@ namespace Plantech.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var plantio = await _plantioService.GetByIdAsync(id.Value);
+            if (plantio == null)
+            {
+                return NotFound();
+            }
+
+            return View(plantio);
+        }
+
+        // POST: Hortalicas/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Agricultor, Administrador")]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            try
+            {
+                var checarStatus = await _plantioService.GetByIdAsync(id);
+                if (checarStatus.Status == "não colhida")
+                {
+                    await _plantioService.DeleteAsync(id);
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Não é possível deletar este plantio porque ele não está no status 'não colhida'.");
+                    return View(checarStatus);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log exception here
+                ModelState.AddModelError(string.Empty, "Ocorreu um erro ao tentar deletar o plantio. Por favor, tente novamente.");
+                return View();
+            }
+        }
+
+
     }
 }
