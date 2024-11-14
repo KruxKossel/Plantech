@@ -8,9 +8,9 @@
 {
     <br><br>
     <h2>Ordens de Compra</h2>
-    <div class="rounded-2 border shadow p-2 bg-white">
+    <div class="card-index">
         <div style="max-height: 350px; overflow-y: auto;">
-            <table class="table table-striped table-hover">
+            <table class="table table-striped table-hover" id="ordensCompraTable">
                 <thead>
                     <tr>
                         <th>Total</th>
@@ -21,47 +21,45 @@
                         <th></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="ordensCompraBody">
                     @foreach (var item in Model)
                     {
-                        <tr>
+                        <tr class="ordem-compra-row" data-status="@item.Status">
                             <td>
                                 @Html.DisplayFor(modelItem => item.Total)
                             </td>
-                             @if(item.Status == "pago"){
-            <td  style="color: rgb(0, 139, 69);!important">
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            }else{
-            <td style="color: rgb(139, 0, 0);!important">
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            }
+                            @if(item.Status == "pago"){
+                                <td style="color: rgb(0, 139, 69);">
+                                    @Html.DisplayFor(modelItem => item.Status)
+                                </td>
+                            }else{
+                                <td style="color: rgb(139, 0, 0);">
+                                    @Html.DisplayFor(modelItem => item.Status)
+                                </td>
+                            }
                             <td>
                                 @Html.DisplayFor(modelItem => item.DataCompra)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Fornecedor.Id)
+                                @Html.DisplayFor(modelItem => item.Fornecedor.RazaoSocial)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Funcionario.Id)
+                                @Html.DisplayFor(modelItem => item.Funcionario.Nome)
                             </td>
                             <td>
-                                @* <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> | *@
-                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary"><i class="bi bi-info-circle"></i></a>
-                                
-                                @if( User.IsInRole("Administrador")){
-                                @if(item.Status == "pendente"){
-                                <form asp-action="Delete" asp-route-id="@item.Id" method="post" style="display:inline;">
-                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                </form>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Detalhes</a>
+                                @if(User.IsInRole("Administrador"))
+                                {
+                                    @if(item.Status == "pendente")
+                                    {
+                                        <form asp-action="Delete" asp-route-id="@item.Id" method="post" style="display:inline;">
+                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                        </form>
+                                        <form asp-action="MudarStatus" asp-route-id="@item.Id" method="post" style="display:inline;">
+                                            <button type="submit" class="btn btn-warning">Mudar Status</button>
+                                        </form>
+                                    }
                                 }
-
-                                <form asp-action="MudarStatus" asp-route-id="@item.Id" method="post" style="display:inline;">
-                                    <button type="submit" class="btn btn-warning">Mudar Status</button>
-                                </form>
-                                }
-
                             </td>
                         </tr>
                     }
@@ -70,9 +68,54 @@
         </div>
     </div>
 
-    <div class="text-end mt-2">
-        <a asp-controller="Comprador" asp-action="Index" class="btn btn-secondary mx-2">Voltar</a>
-        <a asp-action="NovaCompra" class="btn btn-primary">Nova Compra</a>
+    <div class="text-end" style="margin-right: 15px;">
+        <br>
+        <a asp-action="NovaCompra" class="btn btn-primary">Nova Compra</a><br><br>
     </div>
+    @if (User.IsInRole("Comprador"))
+    {
+        <div>
+            <a asp-controller="Comprador" asp-action="Index" class="btn btn-primary">Voltar a Home</a>
+        </div>
+    }
+    @if (User.IsInRole("Administrador"))
+    {
+        <div>
+            <a asp-controller="Administrador" asp-action="Pendencias" class="btn btn-primary">Voltar a Home</a>
+        </div>
+    }
 
+    <br>
+}
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const tableBody = document.getElementById("ordensCompraBody");
+            const rows = Array.from(tableBody.getElementsByClassName("ordem-compra-row"));
+
+            // Ordena as linhas, colocando as com status "pendente" no topo
+            rows.sort((a, b) => {
+                const statusA = a.getAttribute("data-status");
+                const statusB = b.getAttribute("data-status");
+
+                // Se o status é "pendente", adiciona destaque e move para o topo
+                if (statusA === "pendente") {
+                    a.classList.add("table-warning");
+                }
+                if (statusB === "pendente") {
+                    b.classList.add("table-warning");
+                }
+
+                // Move os itens com status "pendente" para o topo
+                if (statusA === "pendente" && statusB !== "pendente") return -1;
+                if (statusA !== "pendente" && statusB === "pendente") return 1;
+                return 0;
+            });
+
+            // Limpa o corpo da tabela e adiciona as linhas ordenadas
+            tableBody.innerHTML = "";
+            rows.forEach(row => tableBody.appendChild(row));
+        });
+    </script>
 }

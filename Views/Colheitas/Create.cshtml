@@ -10,7 +10,7 @@
 <h1>Realizar Colheita</h1>
 <hr />
 <div class="row">
-    <div class=" card-plan p-4" >
+    <div class=" card-plan p-4" style="height: 450px;">
         <form asp-action="Create" method="post" id="colheitaForm">
             <div class="form-group">
                 <label>Nome do Funcionário</label>
@@ -46,11 +46,12 @@
             <input type="hidden" asp-for="DataColheita" />
             <input type="hidden" asp-for="FuncionarioId" />
 
-            <div class="modal-footer text-end mt-2">
-                <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+            <div class="form-group text-end " style="margin-right: 60px;">
+                <br>
+                <a asp-action="Index" class="btn btn-secondary" style="width: 150px;">Voltar</a>
                 <input type="submit" value="Realizar Colheita" class="btn btn-primary" />
-            </div>
 
+            </div>
         </form>
 
     </div>

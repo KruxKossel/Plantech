@@ -66,11 +66,22 @@ namespace Plantech.Controllers
         [Authorize(Roles = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id, DataValidade, Nome")] LotesInsumoViewModel lotesInsumo)
+        public async Task<IActionResult> Edit(int id, [Bind("Id, DataValidade, Status, Nome")] LotesInsumoViewModel lotesInsumo)
         {
             if (id != lotesInsumo.Id)
             {
                 return NotFound();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                foreach (var state in ModelState)
+                {
+                    foreach (var error in state.Value.Errors)
+                    {
+                        Console.WriteLine($"Key: {state.Key}, Error: {error.ErrorMessage}");
+                    }
+                }
             }
 
             if (ModelState.IsValid)

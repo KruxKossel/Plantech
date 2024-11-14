@@ -6,14 +6,18 @@ using Plantech.DTOs;
 
 namespace Plantech.ViewModels
 {
-    public class CulturasPerdidasViewModel
-    {
-        public int? Quantidade { get; set; }
+    public class CulturaPerdidaViewModel
+{
+    public int Id { get; set; }
+    public string Nome { get; set; } = null!;
+    public ColheitaDTO Colheita { get; set; } = null!;
+    public ICollection<HortalicasPerdidasDTO> HortalicasPerdidas { get; set; } = new List<HortalicasPerdidasDTO>();
+}
 
-        public virtual CulturasPerdidasDTO CulturaPerdida { get; set; } = null!;
+public class HortalicaPerdidaViewModel
+{
+    public string NomeHortalica { get; set; } = null!; // Nova propriedade
+    public int? Quantidade { get; set; }
+}
 
-        public virtual HortalicaDTO Hortalica { get; set; } = null!;
-
-
-    }
 }

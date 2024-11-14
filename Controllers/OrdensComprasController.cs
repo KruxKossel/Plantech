@@ -130,7 +130,7 @@ namespace Plantech.Controllers
                     // Console.WriteLine($"NOVA ORDEM");
                     // Console.WriteLine($"{ordensCompraDTO.Id}");
                     // Console.WriteLine($"{ordensCompraVM.Id}");
-                return RedirectToAction(nameof(AdicionarInsumo), new { id = novaCompra }); 
+                return RedirectToAction(nameof(AdicionarInsumo), new { id = novaCompra, idFornecedor = fornecedor.Id }); 
             
             }
             return View(ordensCompraVM);
@@ -147,8 +147,8 @@ namespace Plantech.Controllers
  
  
  
-        [HttpGet("OrdensCompras/AdicionarInsumo/{id}")]
-        public async Task<IActionResult> AdicionarInsumo(int id)
+        [HttpGet("OrdensCompras/AdicionarInsumo/{id}/{idFornecedor}")]
+        public async Task<IActionResult> AdicionarInsumo(int id, int idFornecedor)
         {
             try
             {
@@ -158,6 +158,7 @@ namespace Plantech.Controllers
                 var model = new AdicionarInsumoViewModel
                 {
                     OrdemCompraId = id,
+                    FornecedorId = idFornecedor,
                     InsumosDisponiveis = insumosViewModel
                 };
 
@@ -171,7 +172,7 @@ namespace Plantech.Controllers
         
         
         
-        [HttpPost("OrdensCompras/AdicionarInsumo/{id}")]
+        [HttpPost("OrdensCompras/AdicionarInsumo/{id}/{idFornecedor}")]
         public async Task<IActionResult> AdicionarInsumo(AdicionarInsumoViewModel model)
         {
             Console.WriteLine($"ID DA ORDEM DA COMPRA: {model.OrdemCompraId}");

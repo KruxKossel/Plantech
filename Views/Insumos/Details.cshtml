@@ -10,37 +10,31 @@
     <link rel="stylesheet" href="~/css/detalhes.css" asp-append-version="true" />
 }
 <br>
-<div>
-    <dl class="row bg-white">
-        <div class="col-12 col-md-6">
-            <dd>
+<section>
+    <div>
+           
+            <dd class=" IMG col-sm-8">
                 @if (!string.IsNullOrEmpty(Model.CaminhoImagem))
                 {
                     <img src="~/images/@Model.CaminhoImagem" class="img-thumbnail mt-2"
-                        style="object-fit: cover; width: 380px; height: 380px;" />
+                        style="object-fit: cover; width: 800px; height: 400px;" />
                 }
             </dd>
-        </div>
-
-        <div class="col-12 col-md-6">
             <dt class="col-sm-2 ms-3">Nome:</dt>
             <dd class="col-sm-11 ms-3">@Model.Nome</dd>
-            <hr>
             <dt class="col-sm-2 ms-3">Categoria:</dt>
             <dd class="col-sm-11 ms-3">@Model.Categoria</dd>
-            <hr>
             <dt class="col-sm-2 ms-3">Descrição:</dt>
             <dd class="col-sm-11 ms-3">@Model.Descricao</dd>
-            <hr>
             <dt class="col-sm-2 ms-3">Observações:</dt>
             <dd class="col-sm-11 ms-3">@Model.Observacoes</dd>
-            <hr>
             <dt class="col-sm-2 ms-3">Tipo:</dt>
             <dd class="col-sm-11 ms-3">@Model.Tipo</dd>
-            <hr>
-        </div>
-    </dl>
-</div>
-<div class=" text-end">
-    <a asp-action="Index" class="btn btn-secondary mt-3" style="width: 200px; margin-left: 10px;">Voltar</a>
-</div>
+
+        </dl>
+    </div>
+    <div class=" ">
+        <a asp-action="Index" class="btn btn-secondary mt-3" style="width: 200px; margin-left: 10px;">Voltar</a>
+    </div>
+
+</section>

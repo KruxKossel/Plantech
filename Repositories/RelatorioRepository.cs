@@ -8,15 +8,10 @@ using DocumentFormat.OpenXml.Office2010.Excel;
 
 namespace Plantech.Repositories;
 
-public class RelatorioRepository : IRelatorioRepository
+public class RelatorioRepository(PlantechContext plantechContext, IMapper mapper) : IRelatorioRepository
 {
-    private readonly PlantechContext _context;
-    private readonly IMapper _mapper;
-    
-    public RelatorioRepository(PlantechContext plantechContext, IMapper mapper){
-        _context = plantechContext;
-        _mapper = mapper;
-    }
+    private readonly PlantechContext _context = plantechContext;
+    private readonly IMapper _mapper = mapper;
 
     public async Task<RelatorioDTO> GerarDados()
     {

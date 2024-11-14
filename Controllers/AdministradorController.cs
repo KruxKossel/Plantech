@@ -18,9 +18,11 @@ namespace Plantech.Controllers
         private readonly ILotesHortalicasService _lotesHortalicasService = lotesHortalicasService;
         private readonly ILotesInsumosService _lotesInsumosService = lotesInsumosService;
         private readonly IRelatorioService _relatorioService = relatorioService;
-        public async Task<IActionResult> Index()
+
+        public async  Task<IActionResult> Index()
         {
-            return View();
+            var relatorioViewModel = await _relatorioService.ProcessandoDados(); 
+            return View(relatorioViewModel); 
         }
 
         [HttpGet]
@@ -28,7 +30,6 @@ namespace Plantech.Controllers
         {
             return View(await _relatorioService.ProcessandoDados());
         }
-
 
         [HttpGet]
         public async Task<IActionResult> Pendencias()

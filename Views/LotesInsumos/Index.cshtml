@@ -4,46 +4,38 @@
     ViewData["Title"] = "Index";
 }
 
+@section Styles {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="~/css/index.css" asp-append-version="true" />
+    
+}
 
 <br>
 <h1>Lotes de Insumos</h1>
-
 
 @if (User.IsInRole("Administrador") || User.IsInRole("Comprador"))
 {
     <div class="card-index">
         <div style="max-height: 350px; overflow-y: auto;">
-            <table class="table table-striped table-hover">
+            <table class="table table-striped table-hover" id="lotesInsumoTable">
                 <thead>
                     <tr>
                         <th>
                             @Html.DisplayNameFor(model => model.Quantidade)
                         </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.PrecoUnitario)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.DataEntrada)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.DataValidade)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Status)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Nome)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.InsumoId)
-                        </th>
+                        <th>Preço unitário</th>
+                        <th>Data de Entrada</th>
+                        <th>Data de Validade</th>
+                        <th>@Html.DisplayNameFor(model => model.Status)</th>
+                        <th>@Html.DisplayNameFor(model => model.Nome)</th>
+                        <th>Insumo</th>
                         <th></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="lotesInsumoBody">
                     @foreach (var item in Model)
                     {
-                        <tr>
+                        <tr class="lote-insumo-row" data-nome="@item.Nome">
                             <td>
                                 @Html.DisplayFor(modelItem => item.Quantidade)
                             </td>
@@ -55,6 +47,10 @@
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.DataValidade)
+                                <div class="tooltip-container" data-tooltip="Ajustar validade dos Lotes">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                    <span class="tooltip-text">Ajustar validade dos Lotes</span>
+                                </div>
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Status)
@@ -63,27 +59,36 @@
                                 @Html.DisplayFor(modelItem => item.Nome)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.InsumoId)
+                                @Html.DisplayFor(modelItem => item.Insumo.Nome)
                             </td>
                             <td>
                                 @if (User.IsInRole("Administrador"))
                                 {
                                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Editar</a>
-                                } 
-                            <a asp-action="Details" asp-route-id="@item.Id " class="btn btn-primary">Detalhes</a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                                }
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Detalhes</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
-<br>
-<div>
-    <a asp-controller="Comprador" asp-action="Index" class="btn btn-primary">Voltar a Home</a>
-</div>
+    @if (User.IsInRole("Comprador"))
+    {
+    <br>
+    <div>
+        <a asp-controller="Comprador" asp-action="Index" class="btn btn-primary">Voltar a Home</a>
+    </div>
+    }
+    @if (User.IsInRole("Administrador"))
+    {
+    <br>
+    <div>
+        <a asp-controller="Administrador" asp-action="Pendencias" class="btn btn-primary">Voltar a Home</a>
+    </div>
+    }
 }
-
 
 @if (User.IsInRole("Agricultor"))
 {
@@ -95,24 +100,12 @@
                     <th>
                         @Html.DisplayNameFor(model => model.Quantidade)
                     </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.PrecoUnitario)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.DataEntrada)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.DataValidade)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Status)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Nome)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.InsumoId)
-                    </th>
+                    <th>Preço unitário</th>
+                    <th>Data de Entrada</th>
+                    <th>Data de Validade</th>
+                    <th>@Html.DisplayNameFor(model => model.Status)</th>
+                    <th>@Html.DisplayNameFor(model => model.Nome)</th>
+                    <th>Insumo</th>
                     <th></th>
                 </tr>
             </thead>
@@ -131,6 +124,10 @@
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.DataValidade)
+                            <div class="tooltip-container" data-tooltip="Ajustar validade dos Lotes">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <span class="tooltip-text">Ajustar validade dos Lotes</span>
+                            </div>
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Status)
@@ -139,10 +136,10 @@
                             @Html.DisplayFor(modelItem => item.Nome)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.InsumoId)
+                            @Html.DisplayFor(modelItem => item.Insumo.Nome)
                         </td>
-                         <td>
-                            <a asp-action="Details" asp-route-id="@item.Id "class="btn btn-primary">Detalhes</a>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Detalhes</a>
                         </td>
                     </tr>
                 }
@@ -155,3 +152,38 @@
     <a asp-controller="Agricultor" asp-action="Index" class="btn btn-primary">Voltar a Home</a>
 </div>
 }
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const tableBody = document.getElementById("lotesInsumoBody");
+        const rows = Array.from(tableBody.getElementsByClassName("lote-insumo-row"));
+
+        // Ordena as linhas, colocando as com "Lote" ou "Rejeito" no nome no topo e adiciona um aviso na coluna "Data de Validade"
+        rows.sort((a, b) => {
+            const nomeA = a.getAttribute("data-nome");
+            const nomeB = b.getAttribute("data-nome");
+
+            const isLoteOrRejeitoA = nomeA.includes("Lote") || nomeA.includes("Rejeito");
+            const isLoteOrRejeitoB = nomeB.includes("Lote") || nomeB.includes("Rejeito");
+
+            // Adiciona um aviso na coluna "Data de Validade" se o nome contém "Lote" ou "Rejeito"
+            if (isLoteOrRejeitoA && !a.querySelector('.text-danger')) {
+                a.classList.add("table-warning");
+                @* a.querySelectorAll("td")[3].innerHTML += " <span class='text-danger'>(Ajustar validade dos Lotes)</span>"; *@
+            }
+            if (isLoteOrRejeitoB && !b.querySelector('.text-danger')) {
+                b.classList.add("table-warning");
+                @* b.querySelectorAll("td")[3].innerHTML += " <span class='text-danger'>(Ajustar validade dos Lotes)</span>"; *@
+            }
+
+            // Move os itens com "Lote" ou "Rejeito" no nome para o topo
+            if (isLoteOrRejeitoA && !isLoteOrRejeitoB) return -1;
+            if (!isLoteOrRejeitoA && isLoteOrRejeitoB) return 1;
+            return 0;
+        });
+
+        // Limpa o corpo da tabela e adiciona as linhas ordenadas
+        tableBody.innerHTML = "";
+        rows.forEach(row => tableBody.appendChild(row));
+    });
+</script>

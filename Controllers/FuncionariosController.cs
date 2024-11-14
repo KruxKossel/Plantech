@@ -150,4 +150,17 @@ public class FuncionariosController(IMapper mapper, IFuncionarioService funciona
 
         return View(model);
     }
+
+        [HttpPost, ActionName("MudarStatus")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> MudarStatus(int id)
+        {
+            await _usuarioService.MudarStatus(id);
+            return RedirectToAction(nameof(Index));
+        }
+
+
+        // fazer edit
+        // fazer detalhes
+
 }

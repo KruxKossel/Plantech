@@ -127,6 +127,8 @@ namespace Plantech.MappingProfiles
             // Plantios
             CreateMap<Plantios, PlantioDTO>().ReverseMap();
             CreateMap<PlantioViewModel, PlantioDTO>().ReverseMap();
+            CreateMap<PlantioIndexViewModel, PlantioDTO>().ReverseMap();
+            
             // CreateMap<Plantios, PlantioDTO>()
             //     .ForMember(dest => dest.Hortalica, opt => opt.MapFrom(src => src.Hortalica))
             //     .ReverseMap();
@@ -176,15 +178,14 @@ namespace Plantech.MappingProfiles
 
             // Hortaliças perdidas e culturas perdidas
 
-            CreateMap<HortalicasPerdidasDTO, HortalicasPerdidas>().ReverseMap();
-            CreateMap<CulturasPerdidasDTO, CulturasPerdidas>().ReverseMap();
+            // Mapeamentos individuais
+            CreateMap<CulturasPerdidas, CulturasPerdidasDTO>(); 
+            CreateMap<HortalicasPerdidas, HortalicasPerdidasDTO>();
 
-            CreateMap<CulturasPerdidasViewModel, HortalicasPerdidasDTO>().ReverseMap();
-            CreateMap<CulturasPerdidasViewModel, CulturasPerdidasDTO>().ReverseMap();
+            CreateMap<CulturasPerdidasDTO, CulturaPerdidaViewModel>(); 
+            CreateMap<HortalicasPerdidasDTO, HortalicaPerdidaViewModel>();
+        
 
-            // Adicionando mapeamento para listas 
-            CreateMap<HortalicasPerdidasDTO, CulturasPerdidasViewModel>().ReverseMap(); 
-            CreateMap<List<HortalicasPerdidasDTO>, List<CulturasPerdidasViewModel>>().ReverseMap();
 
 
         }

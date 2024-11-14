@@ -1,14 +1,83 @@
 @model Plantech.ViewModels.RelatorioViewModel
+
 @{
     ViewData["Title"] = "Home Administrador";
 }
 
-<br><br>
 <div class="jumbotron">
     <br><br>
     <h1>Bem-vindo Administrador</h1>
-    <br>
-    <p>
-        Suas funcionalidades estarão disponiveis em breve!
-    </p>
+    <br><br>
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Compras e Vendas</h2>
+            <canvas id="comprasVendasChart" width="400" height="250"></canvas>
+        </div>
+        <div class="col-md-6">
+            <h2>Gastos e Faturamento</h2>
+            <canvas id="gastosFaturamentoChart" width="400" height="250"></canvas>
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Dados da ViewModel
+            const totalCompras = @Model.TotalCompra;
+            const totalVendas = @Model.TotalVenda;
+            const gastos = @Model.Gastos;
+            const faturamento = @Model.Faturamento;
+            const meta = gastos * 2; // Meta é o dobro do gasto
+
+            // Configurando o gráfico de Compras e Vendas
+            const ctx1 = document.getElementById('comprasVendasChart').getContext('2d');
+            new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: ['Compras', 'Vendas'],
+                    datasets: [{
+                        label: 'Quantidade',
+                        data: [totalCompras, totalVendas],
+                        backgroundColor: ['#FF6384', '#36A2EB'],
+                        borderColor: ['#FF6384', '#36A2EB'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Configurando o gráfico de Gastos e Faturamento
+            const ctx2 = document.getElementById('gastosFaturamentoChart').getContext('2d');
+            new Chart(ctx2, {
+                type: 'line',
+                data: {
+                    labels: ['Gastos', 'Faturamento', 'Meta'],
+                    datasets: [{
+                        label: 'Valores em Reais',
+                        data: [gastos, faturamento, meta],
+                        backgroundColor: ['rgba(75, 192, 192, 0.2)'],
+                        borderColor: ['rgba(75, 192, 192, 1)'],
+                        borderWidth: 1,
+                        fill: false,
+                        lineTension: 0
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+}

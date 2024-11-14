@@ -7,6 +7,7 @@ namespace Plantech.ViewModels
     public class AdicionarInsumoViewModel
     {
         public int OrdemCompraId { get; set; }
+        public int FornecedorId { get; set; }
         public List<InsumoViewModel> InsumosDisponiveis { get; set; } = new();
 
         public List<InsumoDadosViewModel> DadosInsumos { get; set; } = new();

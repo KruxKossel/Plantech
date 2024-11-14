@@ -72,6 +72,8 @@ builder.Services.AddScoped<IRelatorioRepository,RelatorioRepository>();
 builder.Services.AddScoped<IRelatorioService,RelatorioService>();
 
 
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

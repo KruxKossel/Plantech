@@ -5,7 +5,8 @@
 }
 <br><br>
 <h1>Vendas</h1>
-<div class="border rounded-2 shadow bg-white p-2">
+<br>
+<div class="card-index">
     <div style="max-height: 350px; overflow-y: auto;">
         <table class="table table-striped table-hover">
             <thead>
@@ -55,7 +56,7 @@
                         </td>
                         <td>
                             @* <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Editar</a> *@
-                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary"><i class="bi bi-info-circle"></i></a>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Detalhes</a>
                             @* <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Deletar</a> *@
                         </td>
                     </tr>

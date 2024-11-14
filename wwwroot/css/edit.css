@@ -21,13 +21,12 @@
     margin-right: 30px;
 }
 
-.card-plan{
+.card-plan {
     font-size: 20px;
     background: white;
     border-radius: 10px;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.411);
-    width: 1290px;
-    padding: 30px;
+    width: 1245px;
 }
 
 .insumos-scroll {
@@ -39,3 +38,8 @@
 }
 
 
+.botao-adm{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Plantech.DTOs;
 
 namespace Plantech.ViewModels;
 
@@ -20,5 +21,7 @@ public partial class LotesInsumoViewModel
     // [HiddenInput(DisplayValue = false)]
     public string Status { get; set; }
     public string Nome { get; set; } = null!;
+
+    public InsumoDTO Insumo { get; set; }
 
 }

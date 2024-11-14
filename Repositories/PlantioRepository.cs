@@ -16,7 +16,11 @@ public class PlantioRepository(PlantechContext context) : IPlantioRepository
 
     public async Task<IEnumerable<Plantios>> GetAllAsync()
     {
-        return await _context.Plantios.Include(p => p.Hortalica).ToListAsync();
+        return await _context.Plantios
+        .Include(p => p.Hortalica)
+        .Include(p => p.Funcionario)
+        .Include(p => p.Colheitas)
+        .ToListAsync();
     }
 
 

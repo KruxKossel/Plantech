@@ -13,7 +13,7 @@
 <div class="">
     <form asp-action="Create" method="post" enctype="multipart/form-data">
         <div class="row">
-            <div class="border bg-white shadow rounded-2 p-4 col-12 col-md-6">
+            <div class="card col-6 p-4">
                 <div class="form-group">
                     <label asp-for="Nome" class="control-label"></label>
                     <input asp-for="Nome" class="form-control" />
@@ -32,12 +32,12 @@
                     <span asp-va lidation-for="Observacoes" class="text-danger"></span>
 
                 </div>
-                <div class="text-end">
+                <div>
                     <a asp-action="Index" class="btn btn-secondary" style=" margin-top:10px; width: 150px;">Voltar</a>
                 </div>
             </div>
-          
-            <div class="col-12 col-md-6">
+
+            <div class="col-6">
                 <div class="form-group">
                     <label asp-for="ImagemArquivo" class="control-label"></label>
                     <input asp-for="ImagemArquivo" class="form-control" type="file" id="imageUpload"
@@ -46,7 +46,7 @@
                 </div>
 
                 <img id="imagePreview" src="" alt="Imagem selecionada"
-                    style="display:none; object-fit: cover; width: 635px; height: 375px; border: 2px solid #ccc; margin-top: 10px;" />
+                    style="display:none; width: 640px; height: 440px; border: 2px solid #ccc; margin-top: 10px; object-fit: cover;" />
 
                 <div class="form-group text-end mt-3">
                     <button type="submit" class="btn btn-primary">Adicionar</button>
