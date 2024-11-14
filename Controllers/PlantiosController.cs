@@ -51,7 +51,7 @@ namespace Plantech.Controllers
         public async Task<IActionResult> Index()
         {
             var plantios = await _plantioService.GetAllAsync();
-            var viewModels = _mapper.Map<IEnumerable<PlantioViewModel>>(plantios);
+            var viewModels = _mapper.Map<IEnumerable<PlantioIndexViewModel>>(plantios);
 
             ViewData["HortalicaId"] = new SelectList(await _hortalicaService.ListarHortalicasAsync(), "Id", "Nome");
 

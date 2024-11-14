@@ -1,4 +1,4 @@
-@model IEnumerable<Plantech.ViewModels.PlantioViewModel>
+@model IEnumerable<Plantech.ViewModels.PlantioIndexViewModel>
 
 @{
     ViewData["Title"] = "Plantios";
@@ -32,7 +32,7 @@
                 <table class="table table-striped table-hover" id="plantioTable">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            @* <th>ID</th> *@
                             <th>Data de Plantio</th>
                             <th>Hortaliça</th>
                             <th>Funcionário</th>
@@ -45,13 +45,13 @@
                         @foreach (var plantio in Model)
                         {
                             <tr>
-                                <td>@plantio.Id</td>
+                                @* <td>@plantio.Id</td> *@
                                 <td>@plantio.DataPlantio</td>
                                 @foreach (var item in (SelectList)ViewData["HortalicaId"])
                                 {
                                     <td>@item.Text</td>
                                 } 
-                                <td>@plantio.FuncionarioId</td>
+                                <td>@plantio.Funcionario.Nome</td>
                                 <td>@plantio.Quantidade</td>
                                 <td>@plantio.Status</td>
                                 <td></td>

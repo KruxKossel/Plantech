@@ -22,6 +22,8 @@ public partial class InsumoDTO
     public string Status { get; set; } = "ativo";
 
     public string? CaminhoImagem { get; set; }
+
+    public FornecedoreDTO? Fornecedor { get; set; }
     // public double PrecoUnitario { get; set; } 
 
     // public int Quantidade { get; set; } 

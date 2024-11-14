@@ -23,7 +23,7 @@ public partial class LotesHortalicaDTO
 
     // public virtual ICollection<Colheitas> Colheitas { get; set; } = new List<Colheitas>();
 
-    public virtual HortalicaDTO Hortalica { get; set; } = null!;
+    public HortalicaDTO Hortalica { get; set; } = null!;
 
     // public virtual ICollection<HortalicasVendas> HortalicasVenda { get; set; } = new List<HortalicasVendas>();
 }

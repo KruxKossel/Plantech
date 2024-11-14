@@ -17,13 +17,13 @@
                         @Html.DisplayNameFor(model => model.Quantidade)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.PrecoVenda)
+                        Preço
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.DataEntrada)
+                        Data de Entrada
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.DataValidade)
+                        Data de validade
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.Status)
@@ -32,7 +32,7 @@
                         @Html.DisplayNameFor(model => model.Nome)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.HortalicaId)
+                        Hortaliça
                     </th>
                     <th></th>
                 </tr>
@@ -60,7 +60,7 @@
                             @Html.DisplayFor(modelItem => item.Nome)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.HortalicaId)
+                            @Html.DisplayFor(modelItem => item.Hortalica.Nome)
                         </td>
                         <td>
 

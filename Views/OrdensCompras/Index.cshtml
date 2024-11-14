@@ -28,38 +28,41 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.Total)
                             </td>
-                             @if(item.Status == "pago"){
-            <td  style="color: rgb(0, 139, 69);!important">
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            }else{
-            <td style="color: rgb(139, 0, 0);!important">
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            }
+                            @if(item.Status == "pago"){
+                                <td  style="color: rgb(0, 139, 69);!important">
+                                    @Html.DisplayFor(modelItem => item.Status)
+                                </td>
+                            }else{
+                                <td style="color: rgb(139, 0, 0);!important">
+                                    @Html.DisplayFor(modelItem => item.Status)
+                                </td>
+                            }
                             <td>
                                 @Html.DisplayFor(modelItem => item.DataCompra)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Fornecedor.Id)
+                                @Html.DisplayFor(modelItem => item.Fornecedor.RazaoSocial)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Funcionario.Id)
+                                @Html.DisplayFor(modelItem => item.Funcionario.Nome)
                             </td>
                             <td>
                                 @* <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> | *@
                                 <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Detalhes</a>
-                                
-                                @if( User.IsInRole("Administrador")){
-                                @if(item.Status == "pendente"){
-                                <form asp-action="Delete" asp-route-id="@item.Id" method="post" style="display:inline;">
-                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                </form>
-                                }
 
-                                <form asp-action="MudarStatus" asp-route-id="@item.Id" method="post" style="display:inline;">
-                                    <button type="submit" class="btn btn-warning">Mudar Status</button>
-                                </form>
+                                @if( User.IsInRole("Administrador")){
+                                    @if(item.Status == "pendente"){
+                                        <form asp-action="Delete" asp-route-id="@item.Id" method="post" style="display:inline;">
+                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                        </form>
+                                    }
+
+                                    @if (item.Status == "pendente")
+                                    {
+                                        <form asp-action="MudarStatus" asp-route-id="@item.Id" method="post" style="display:inline;">
+                                            <button type="submit" class="btn btn-warning">Mudar Status</button>
+                                        </form>
+                                    }
                                 }
 
                             </td>

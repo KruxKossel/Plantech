@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Plantech.DTOs;
 
 namespace Plantech.ViewModels;
 
@@ -31,4 +32,6 @@ public partial class InsumoViewModel
     public double PrecoUnitario { get; set; } 
 
     public int QtdInsumos { get; set; } 
+
+    public FornecedoreDTO? Fornecedor { get; set; }
 }

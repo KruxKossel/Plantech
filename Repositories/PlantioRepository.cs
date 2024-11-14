@@ -18,6 +18,8 @@ public class PlantioRepository(PlantechContext context) : IPlantioRepository
     {
         return await _context.Plantios
         .Include(p => p.Hortalica)
+        .Include(p => p.Funcionario)
+        .Include(p => p.Colheitas)
         .ToListAsync();
     }
 

@@ -33,9 +33,6 @@ namespace Plantech.ViewModels
         [Display(Name = "Insumos do Plantio")]
         public List<InsumosPlantioDTO> InsumosPlantios { get; set; } = new List<InsumosPlantioDTO>();
 
-        // [Display(Name = "Hortaliças")]
-        //  public HortalicaDTO Hortalica { get; set; }
-
 
         // guarda lotes insumo que serão listados
         [Display(Name = "Lotes de Insumo")]

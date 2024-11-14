@@ -22,10 +22,19 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @for (int index = 0; index < Model.InsumosDisponiveis.Count; index++)
+                        @{
+                            var insumosFiltrados = Model.InsumosDisponiveis
+                            .Where(i => i.Fornecedor != null && i.Fornecedor.Id == Model.FornecedorId)
+                            .ToList();
+
+                        }
+
+                        @if (insumosFiltrados.Any())
                         {
-                            var insumo = Model.InsumosDisponiveis[index];
-                            <tr>
+                            @for (int index = 0; index < insumosFiltrados.Count; index++)
+                            {
+                                var insumo = insumosFiltrados[index];
+                                 <tr>
                                 <td>@insumo.Nome</td>
                                 <td>@insumo.Descricao</td>
                                 <td class="text-center">
@@ -48,7 +57,15 @@
                                     <label>Selecionar</label>
                                 </td>
                             </tr>
+                            }
                         }
+                        else
+                        {
+                            <tr>
+                                <td colspan="5" class="text-center">Nenhum insumo disponível para o fornecedor selecionado.</td>
+                            </tr>
+                        }
+
                     </tbody>
                 </table>
             </div>
