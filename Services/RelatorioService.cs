@@ -8,14 +8,10 @@ using Plantech.ViewModels;
 
 namespace Plantech.Services;
 
-public class RelatorioService : IRelatorioService
+public class RelatorioService(IRelatorioRepository relatorioRepository, IMapper mapper) : IRelatorioService
 {
-    private readonly IRelatorioRepository _relatorioRepository;
-    private readonly IMapper _mapper;
-    public RelatorioService(IRelatorioRepository relatorioRepository, IMapper mapper){
-        _relatorioRepository = relatorioRepository;
-        _mapper = mapper;
-    }
+    private readonly IRelatorioRepository _relatorioRepository = relatorioRepository;
+    private readonly IMapper _mapper = mapper;
 
     public async Task<RelatorioDTO> GerarDados()
     {

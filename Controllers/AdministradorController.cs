@@ -21,8 +21,10 @@ namespace Plantech.Controllers
 
         public async  Task<IActionResult> Index()
         {
-            return View();
+            var relatorioViewModel = await _relatorioService.ProcessandoDados(); 
+            return View(relatorioViewModel); 
         }
+
         [HttpGet]
         public async Task<IActionResult> Relatorio()
         {
