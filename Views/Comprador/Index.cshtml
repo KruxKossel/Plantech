@@ -1,34 +1,69 @@
+@model IEnumerable<Plantech.DTOs.LotesInsumoDTO>
+
 @{
     ViewData["Title"] = "Home Comprador";
+    var nomes = Model.Select(m => m.Nome).ToArray();
+    var quantidades = Model.Select(m => m.Quantidade).ToArray();
 }
-    <br><br>
+<br><br>
 
-    @if (User.IsInRole("Administrador")){
-        <nav class="navbar navbar-expand-lg navbar-light bg-light" style="height: 30px; width: 200px; margin-left: 87%;">
-            <div class="container-fluid">
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Ações do Comprador
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" asp-controller="OrdensCompras" asp-action="Index">Compras</a></li>
-                                <li><a class="dropdown-item" asp-controller="Insumos" asp-action="Index">Insumos</a></li>
-                                <li><a class="dropdown-item" asp-controller="Fornecedores" asp-action="Index">Fornecedores</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
+@if (User.IsInRole("Administrador"))
+{
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="height: 30px; width: 200px; margin-left: 87%;">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Ações do Comprador
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" asp-controller="OrdensCompras" asp-action="Index">Compras</a></li>
+                            <li><a class="dropdown-item" asp-controller="Insumos" asp-action="Index">Insumos</a></li>
+                            <li><a class="dropdown-item" asp-controller="Fornecedores" asp-action="Index">Fornecedores</a></li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
-        </nav>
-    }
-
+        </div>
+    </nav>
+}
 
 <div class="jumbotron">
     <h1>Bem-vindo Comprador</h1>
     <br>
-    <p>
-        Suas funcionalidades estarão disponiveis em breve!
-    </p>
 </div>
+
+<div>
+    <canvas id="myChart" width="600" height="200"></canvas>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var lotesNomes = @Html.Raw(Json.Serialize(nomes));
+        var lotesQuantidades = @Html.Raw(Json.Serialize(quantidades));
+        
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: lotesNomes,
+                datasets: [{
+                    label: 'Quantidade de Lotes',
+                    data: lotesQuantidades,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+}
