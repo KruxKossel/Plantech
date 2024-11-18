@@ -22,10 +22,10 @@
                     <tr>
                         <th>@Html.DisplayNameFor(model => model.NomeUsuario)</th>
                         <th>@Html.DisplayNameFor(model => model.Email)</th>
-                        <th>@Html.DisplayNameFor(model => model.Status)</th>
-                        <th>@Html.DisplayNameFor(model => model.Cpf)</th>
+                        <th>@Html.DisplayNameFor(model => model.Status) F.</th>
+                        <th>@Html.DisplayNameFor(model => model.Usuario.Status) U.</th>
                         <th>@Html.DisplayNameFor(model => model.Nome)</th>
-                        <th>@Html.DisplayNameFor(model => model.Funcao)</th>
+                        <th>@Html.DisplayNameFor(model => model.Cargo.Funcao)</th>
                         @* <th>@Html.DisplayNameFor(model => model.Descricao)</th> *@
                         <th></th>
                     </tr>
@@ -43,17 +43,30 @@
                                     <td style="color: @(item.Status == "ativo" ? "rgb(0, 139, 69)" : "rgb(139, 0, 0)") !important;">
                                         @Html.DisplayFor(modelItem => item.Status)
                                     </td>
-                                    <td>@Html.DisplayFor(modelItem => item.Cpf)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Nome)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.Funcao)</td>
-                                    @* <td>@Html.DisplayFor(modelItem => item.Descricao)</td> *@
-                                    <td>
-                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Editar</a>
-                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Detalhes</a>
-                                        <form asp-action="MudarStatus" asp-route-id="@item.Id" method="post" style="display:inline;">
-                                            <button type="submit" class="btn btn-warning">Mudar Status</button>
-                                        </form>
+                                    <td
+                                        style="color: @( item.Usuario.Status == "ativo" ? "rgb(0, 139, 69)" : "rgb(139, 0, 0)") !important;">
+                                        @Html.DisplayFor(modelItem => item.Usuario.Status)
                                     </td>
+                                    <td>@Html.DisplayFor(modelItem => item.Nome)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Cargo.Funcao)</td>
+                                    @* <td>@Html.DisplayFor(modelItem => item.Id)</td> <!-- Adicione esta linha temporariamente --> *@
+
+                                    @if (item.Cargo.Funcao != "Administrador")
+                                    {
+                                        <td>
+                                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Editar</a>
+                                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Detalhes</a>
+                                            <form asp-action="MudarStatus" asp-route-id="@item.Id" method="post" style="display:inline;">
+                                                <button type="submit" class="btn btn-warning">Mudar Status</button>
+                                            </form>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Detalhes</a>
+                                        </td>
+                                    }
                                 </tr>
                             }
                         }

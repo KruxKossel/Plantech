@@ -18,8 +18,32 @@ namespace Plantech.Services
         public async Task<FuncionarioDTO> GetByIdAsync(int id)
         {
             var funcionario = await _funcionarioRepository.GetByIdAsync(id);
-            return _mapper.Map<FuncionarioDTO>(funcionario.Id);
+            if (funcionario == null)
+            {
+                return null; // ou lance uma exceção, se apropriado
+            }
+            return _mapper.Map<FuncionarioDTO>(funcionario); // mapear o objeto completo
         }
+
+        public async Task<CargoDTO> GetCargoByIdAsync(int id)
+        {
+            var cargo = await _funcionarioRepository.GetCargoByIdAsync(id);
+            if (cargo == null)
+            {
+                return null; // ou lance uma exceção, se apropriado
+            }
+            return _mapper.Map<CargoDTO>(cargo); // mapear o objeto completo
+        }
+
+
+
+
+        public async Task UpdateAsync(FuncionarioDTO funcionarioDto)
+        {
+            var funcionario = _mapper.Map<Funcionarios>(funcionarioDto);
+            await _funcionarioRepository.UpdateAsync(funcionario);
+        }
+
 
         public async Task<IEnumerable<FuncionarioDTO>> GetFuncionariosAsync()
         {

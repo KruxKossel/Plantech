@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Plantech.DTOs;
 
 namespace Plantech.ViewModels
 {
     public class FuncionarioViewModel
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         // Usuario
 
@@ -31,6 +32,8 @@ namespace Plantech.ViewModels
         [Display(Name = "Status")]
         public string Status { get; set; } = null!;
 
+        public  UsuarioDTO Usuario { get; set; }
+
 
 
         // Funcionario
@@ -44,13 +47,15 @@ namespace Plantech.ViewModels
 
         // Cargo
 
-        [Display(Name = "Função")]
+         public CargoDTO Cargo { get; set; }
 
-        public string Funcao {get;set;}
+        // [Display(Name = "Função")]
+
+        // public string Funcao {get;set;}
 
 
-        [Display(Name = "Descrição")]
-        public string Descricao { get; set; }
+        // [Display(Name = "Descrição")]
+        // public string Descricao { get; set; }
 
 
     }

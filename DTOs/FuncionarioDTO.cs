@@ -21,16 +21,16 @@ namespace Plantech.DTOs
 
         public CargoDTO Cargo { get; set; } = null!;
 
-        public virtual UsuarioDTO Usuario { get; set; } = null!;
+        public  UsuarioDTO Usuario { get; set; } = null!;
 
-    // public virtual ICollection<Colheitas> Colheitas { get; set; } = new List<Colheitas>();
+        public  ICollection<ColheitaDTO> Colheitas { get; set; } = new List<ColheitaDTO>();
 
         public ICollection<OrdensCompraDTO> OrdensCompras { get; set; } = new List<OrdensCompraDTO>();
 
-    // public virtual ICollection<Plantios> Plantios { get; set; } = new List<Plantios>();
+        public  ICollection<PlantioDTO> Plantios { get; set; } = new List<PlantioDTO>();
 
     
 
-    // public virtual ICollection<Vendas> Venda { get; set; } = new List<Vendas>();
+        public  ICollection<VendaDTO> Venda { get; set; } = new List<VendaDTO>();
     }
 }

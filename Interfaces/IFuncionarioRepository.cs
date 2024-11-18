@@ -20,5 +20,11 @@ namespace Plantech.Interfaces
 
         Task<IEnumerable<Cargos>> GetCargosAsync();
 
+        Task<Cargos> GetCargoByIdAsync(int id);
+
+        Task UpdateAsync(Funcionarios funcionarios);
+
+        
+
     }
 }

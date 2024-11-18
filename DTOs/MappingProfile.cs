@@ -26,18 +26,14 @@ namespace Plantech.MappingProfiles
             CreateMap<FornecedoreViewModel, FornecedoreDTO>().ReverseMap();
 
             // Funcionario
+          
             CreateMap<Funcionarios, FuncionarioDTO>()
                 .ForMember(dest => dest.OrdensCompras, opt => opt.MapFrom(src => src.OrdensCompras))
                 .ReverseMap();
 
-            CreateMap<FuncionarioDTO, FuncionarioViewModel>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-                .ForMember(dest => dest.Cpf, opt => opt.MapFrom(src => src.Cpf))
-                .ForMember(dest => dest.Nome, opt => opt.MapFrom(src => src.Nome))
-                .ReverseMap();
-
             CreateMap<FuncionarioCreateViewModel, FuncionarioDTO>()
                 .ForMember(dest => dest.CargoId, opt => opt.MapFrom(src => src.CargoId))
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ReverseMap();
 
             CreateMap<FuncionarioCreateViewModel, UsuarioDTO>()
@@ -45,6 +41,12 @@ namespace Plantech.MappingProfiles
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
                 .ForMember(dest => dest.Senha, opt => opt.MapFrom(src => src.Senha))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
+                .ReverseMap();
+
+            CreateMap<FuncionarioDTO, FuncionarioViewModel>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Cpf, opt => opt.MapFrom(src => src.Cpf))
+                .ForMember(dest => dest.Nome, opt => opt.MapFrom(src => src.Nome))
                 .ReverseMap();
 
             // Usuario
@@ -60,10 +62,10 @@ namespace Plantech.MappingProfiles
             // Cargos
             CreateMap<Cargos, CargoDTO>().ReverseMap();
             
-            CreateMap<CargoDTO, FuncionarioViewModel>()
-                .ForMember(dest => dest.Funcao, opt => opt.MapFrom(src => src.Funcao))
-                .ForMember(dest => dest.Descricao, opt => opt.MapFrom(src => src.Descricao))
-                .ReverseMap();
+            // CreateMap<CargoDTO, FuncionarioViewModel>()
+            //     .ForMember(dest => dest.Funcao, opt => opt.MapFrom(src => src.Funcao))
+            //     .ForMember(dest => dest.Descricao, opt => opt.MapFrom(src => src.Descricao))
+            //     .ReverseMap();
 
             // Ordens Compra
             CreateMap<OrdensCompras, OrdensCompraDTO>()

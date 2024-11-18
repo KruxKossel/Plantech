@@ -36,8 +36,20 @@ public class UsuarioRepository(PlantechContext context) : IUsuarioRepository
 
     public async Task UpdateAsync(Usuarios user)
     {
-        _context.Usuarios.Update(user);
-        await _context.SaveChangesAsync();
+        var existingEntity = await _context.Usuarios.FindAsync(user.Id);
+        if (existingEntity != null)
+        {
+            _context.Entry(existingEntity).State = EntityState.Detached;
+        }
+        _context.Entry(user).State = EntityState.Modified;
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateException ex)
+        { // Adicione logging aqui para ajudar na depuração 
+            throw new Exception("Erro ao atualizar usuário", ex);
+        }
     }
 
     public async Task DeleteAsync(int id)
@@ -49,7 +61,7 @@ public class UsuarioRepository(PlantechContext context) : IUsuarioRepository
             await _context.SaveChangesAsync();
         }
     }
-    
+
     public async Task<Usuarios> GetByEmailAsync(string email)
     {
         return await _context.Usuarios.Where(f => f.Email.Contains(email)).SingleOrDefaultAsync(u => u.Email == email);
@@ -66,10 +78,11 @@ public class UsuarioRepository(PlantechContext context) : IUsuarioRepository
     public async Task MudarStatus(int id)
     {
         var user = await _context.Usuarios.FindAsync(id);
-        if(user != null){
-                user.Status = user.Status == "ativo" ? "inativo" : "ativo";
-                _context.Usuarios.Update(user);
-                await _context.SaveChangesAsync();
-            }
+        if (user != null)
+        {
+            user.Status = user.Status == "ativo" ? "inativo" : "ativo";
+            _context.Usuarios.Update(user);
+            await _context.SaveChangesAsync();
+        }
     }
 }

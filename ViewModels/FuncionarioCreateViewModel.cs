@@ -8,7 +8,12 @@ namespace Plantech.ViewModels
 {
     public class FuncionarioCreateViewModel
     {
+
+        public int Id { get; set; }
+
         // Usuario
+
+        public int UsuarioId { get; set; }
 
         [Required]
         [StringLength(50, ErrorMessage = "O nome de usuário não pode exceder 50 caracteres.")]

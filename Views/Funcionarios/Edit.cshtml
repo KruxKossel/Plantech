@@ -1,7 +1,7 @@
 @model Plantech.ViewModels.FuncionarioCreateViewModel
 
 @{
-    ViewData["Title"] = "Adicionar Funcionários";
+    ViewData["Title"] = "Editar Funcionários";
 }
 
 
@@ -15,10 +15,11 @@
 <br>
 <h2>@ViewData["Title"]</h2>
 
-<form asp-action="Create" method="post" enctype="multipart/form-data">
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
     @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="UsuarioId" /> <!-- Adicione este campo -->
     <div class="row">
-
         <!-- Usuário -->
         <div class="card col-6 p-4">
             <h4>Usuário</h4>
@@ -49,7 +50,7 @@
         </div>
 
         <div class="col-6">
-            <!--Funcionário -->
+            <!-- Funcionário -->
             <div class="card-func p-4 mb-3">
                 <h4>Funcionário</h4>
                 <div class="form-group">
@@ -73,7 +74,8 @@
                         <option value="">-- Selecionar --</option>
                         @foreach (var item in (SelectList)ViewData["CargosFiltro"])
                         {
-                            <option value="@item.Value">@item.Text</option>
+                            @* Use Razor para determinar o atributo selected *@
+                            <option value="@item.Value" selected="@(item.Value == Model.CargoId.ToString() ? "selected" : null)">@item.Text</option>
                         }
                     </select>
                     <span asp-validation-for="CargoId" class="text-danger"></span>
@@ -89,3 +91,5 @@
         <a asp-controller="Funcionarios" asp-action="Index" class="btn btn-secondary" style="width: 150px; margin-top: -15px;">Voltar</a>
     </div>
 </form>
+
+

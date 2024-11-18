@@ -1,0 +1,36 @@
+@model Plantech.DTOs.FuncionarioDTO
+
+@{
+    ViewData["Title"] = "Details";
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/detalhes.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/edit.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/detalhes.css" asp-append-version="true" />
+}
+<br>
+<section>
+    <div>
+            <dt class="col-sm-2 ms-3">Nome:</dt>
+            <dd class="col-sm-11 ms-3">@Model.Nome</dd>
+            <dt class="col-sm-2 ms-3">CPF:</dt>
+            <dd class="col-sm-11 ms-3">@Model.Cpf</dd>
+            <dt class="col-sm-2 ms-3">Status do Funcionário:</dt>
+            <dd class="col-sm-11 ms-3">@Model.Status</dd>
+            <dt class="col-sm-2 ms-3">Cargo:</dt>
+            <dd class="col-sm-11 ms-3">@Model.Cargo.Funcao</dd>
+            <dt class="col-sm-2 ms-3">Descrição:</dt>
+            <dd class="col-sm-11 ms-3">@Model.Cargo.Descricao</dd>
+            <dt class="col-sm-2 ms-3">Usuario:</dt>
+            <dd class="col-sm-11 ms-3">@Model.Usuario.NomeUsuario</dd>
+            <dt class="col-sm-2 ms-3">Status do Usuário:</dt>
+            <dd class="col-sm-11 ms-3">@Model.Usuario.Status</dd>
+
+        </dl>
+    </div>
+    <div class=" ">
+        <a asp-action="Index" class="btn btn-secondary mt-3" style="width: 200px; margin-left: 10px;">Voltar</a>
+    </div>
+
+</section>
