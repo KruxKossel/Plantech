@@ -20,15 +20,48 @@ namespace Plantech.Repositories
                 .SingleOrDefaultAsync(f => f.UsuarioId == userId);
         }
 
-        public async Task<Funcionarios> GetByIdAsync(int id){
+        public async Task UpdateAsync(Funcionarios funcionario)
+        {
+            var existingEntity = await _context.Funcionarios.FindAsync(funcionario.Id);
+            if (existingEntity != null)
+            {
+                _context.Entry(existingEntity).State = EntityState.Detached;
+            }
 
-            return await _context.Funcionarios.FindAsync(id);
-
+            _context.Entry(funcionario).State = EntityState.Modified;
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                // Adicione logging aqui para ajudar na depuração
+                throw new Exception("Erro ao atualizar funcionário", ex);
+            }
         }
+
+
+
+        public async Task<Funcionarios> GetByIdAsync(int id)
+        {
+            return await _context.Funcionarios
+                .Include(f => f.Cargo) // Inclui a entidade Cargo
+                .Include(f => f.Usuario) // Inclui a entidade Usuario
+                .FirstOrDefaultAsync(f => f.Id == id); // Busca a entidade Funcionario pelo ID
+        }
+
+        public async Task<Cargos> GetCargoByIdAsync(int id){
+
+            return await _context.Cargos.FirstOrDefaultAsync(c => c.Id == id);
+        }
+
 
          public async Task<IEnumerable<Funcionarios>> GetFuncionariosAsync()
         {
-            return await _context.Funcionarios.ToListAsync();
+            return await _context.Funcionarios
+            .Include(f => f.Cargo) // Inclui a entidade Cargo
+            .Include(f => f.Usuario) // Inclui a entidade Usuario
+            .ToListAsync();
         }
 
         public async Task CreateFuncionarioAsync(Funcionarios funcionarios){

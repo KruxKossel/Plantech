@@ -23,29 +23,40 @@ public class FuncionariosController(IMapper mapper, IFuncionarioService funciona
     {
         var funcionarios = await _funcionarioService.GetFuncionariosAsync();
         var usuarios = await _usuarioService.GetAllAsync();
-        var cargos = await _funcionarioService.GetCargosAsync(); // remover do index e deixar só em detalhes
+        // Remova a busca por cargos aqui se não for necessário
+        // var cargos = await _funcionarioService.GetCargosAsync();
 
         var funcionariosViewModel = funcionarios.Select(funcionario =>
         {
             var usuario = usuarios.FirstOrDefault(u => u.Id == funcionario.UsuarioId);
-            var cargo = cargos.FirstOrDefault(c => c.Id == funcionario.CargoId);
+            // Remova ou adapte esta linha se não for necessário mapear cargos
+            // var cargo = cargos.FirstOrDefault(c => c.Id == funcionario.CargoId);
 
             var viewModel = _mapper.Map<FuncionarioViewModel>(funcionario);
-            _mapper.Map(usuario, viewModel);
-            _mapper.Map(cargo, viewModel);
+            if (usuario != null)
+            {
+                viewModel.NomeUsuario = usuario.NomeUsuario;
+                viewModel.Email = usuario.Email;
+                // Adicione outras propriedades que precisa mapear
+            }
+
+            // Remova esta linha se não for necessário mapear cargos
+            // _mapper.Map(cargo, viewModel);
 
             return viewModel;
-        });
+        }).ToList();
 
         return View(funcionariosViewModel);
     }
 
 
+
     [HttpGet]
-    public async Task<ActionResult> Create(){
+    public async Task<ActionResult> Create()
+    {
 
         Console.WriteLine("\n\n Entrou no GET");
-        
+
         var model = new FuncionarioCreateViewModel();
 
         var cargos = await _funcionarioService.GetCargosAsync();
@@ -63,9 +74,9 @@ public class FuncionariosController(IMapper mapper, IFuncionarioService funciona
         ViewData["CargosFiltro"] = new SelectList(cargosPossiveis, "Id", "Funcao");
 
         model.NomeUsuario = "Deltrano";
-       
-        
-        ViewData["NomeUsuario"] =  model.NomeUsuario;
+
+
+        ViewData["NomeUsuario"] = model.NomeUsuario;
 
         return View(model);
     }
@@ -97,7 +108,7 @@ public class FuncionariosController(IMapper mapper, IFuncionarioService funciona
             var funcionarioDto = _mapper.Map<FuncionarioDTO>(model);
             try
             {
-                
+
 
                 await _usuarioService.CreateAsync(usuarioDto);
 
@@ -105,7 +116,7 @@ public class FuncionariosController(IMapper mapper, IFuncionarioService funciona
 
                 var usuarioId = ultimoUsuario.Id;
 
-                
+
 
 
 
@@ -125,12 +136,12 @@ public class FuncionariosController(IMapper mapper, IFuncionarioService funciona
         }
 
         // Verifique o valor de CargoId recebido 
-        System.Diagnostics.Debug.WriteLine($"CargoId: {model.CargoId}"); 
+        System.Diagnostics.Debug.WriteLine($"CargoId: {model.CargoId}");
         Console.WriteLine($"CargoId: {model.CargoId}");
 
         var cargos = await _funcionarioService.GetCargosAsync();
 
-        
+
 
         var cargosPossiveis = cargos
         .Where(c => c.Funcao == "Agricultor" || c.Funcao == "Comprador" || c.Funcao == "Vendedor")
@@ -145,22 +156,149 @@ public class FuncionariosController(IMapper mapper, IFuncionarioService funciona
         ViewData["CargosFiltro"] = new SelectList(cargosPossiveis, "Id", "Funcao");
 
         model.NomeUsuario = "Deltrano";
-        
-        ViewData["NomeUsuario"] =  model.NomeUsuario;
+
+        ViewData["NomeUsuario"] = model.NomeUsuario;
 
         return View(model);
     }
 
-        [HttpPost, ActionName("MudarStatus")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> MudarStatus(int id)
+    [HttpPost, ActionName("MudarStatus")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> MudarStatus(int id)
+    {
+        await _usuarioService.MudarStatus(id);
+        return RedirectToAction(nameof(Index));
+    }
+
+
+    // GET: Funcionarios/Details/5
+    [HttpGet]
+    public async Task<IActionResult> Details(int? id)
+    {
+        if (id == null)
         {
-            await _usuarioService.MudarStatus(id);
-            return RedirectToAction(nameof(Index));
+            return NotFound();
+        }
+
+        var funcionario = await _funcionarioService.GetByIdAsync(id.Value);
+        if (funcionario == null)
+        {
+            return NotFound();
+        }
+
+        var viewModel = _mapper.Map<FuncionarioDTO>(funcionario);
+        return View(viewModel);
+    }
+
+    // GET: Funcionarios/Edit/5
+    [HttpGet]
+    public async Task<IActionResult> Edit(int id)
+    {
+        var funcionario = await _funcionarioService.GetByIdAsync(id);
+        Console.WriteLine($"Funcionario ID: {funcionario.Id}, Cargo ID: {funcionario.CargoId}");
+
+
+
+        if (funcionario == null)
+        {
+            return NotFound();
+        }
+
+        // Verificação de permissão
+        if (funcionario.Cargo.Funcao == "Administrador")
+        {
+            return Forbid(); // ou Unauthorized() dependendo do seu caso de uso
         }
 
 
-        // fazer edit
-        // fazer detalhes
+
+
+
+
+
+
+        var viewModel = _mapper.Map<FuncionarioCreateViewModel>(funcionario);
+        Console.WriteLine($"ViewModel Funcionario ID: {viewModel.Id}, ViewModel Cargo ID: {viewModel.CargoId}");
+
+        viewModel.Senha = funcionario.Usuario.Senha;
+        viewModel.Email = funcionario.Usuario.Email;
+        viewModel.NomeUsuario = funcionario.Usuario.NomeUsuario;
+
+        viewModel.Id = funcionario.Id;
+
+        var cargos = await _funcionarioService.GetCargosAsync();
+
+        var cargosPossiveis = cargos
+            .Where(c => c.Funcao == "Agricultor" || c.Funcao == "Comprador" || c.Funcao == "Vendedor")
+            .Select(c => new
+            {
+                c.Id,
+                c.Funcao,
+                c.Descricao
+            }).ToList();
+
+        ViewData["CargosFiltro"] = new SelectList(cargosPossiveis, "Id", "Funcao");
+
+        return View(viewModel);
+    }
+
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(int id, FuncionarioCreateViewModel viewModel)
+    {
+        if (id != viewModel.Id)
+        {
+            return NotFound();
+        }
+
+        // Verificação se o CargoId e UsuarioId existem antes de tentar atualizar
+        var cargoExistente = await _funcionarioService.GetCargoByIdAsync(viewModel.CargoId);
+        if (cargoExistente == null)
+        {
+            ModelState.AddModelError(nameof(viewModel.CargoId), "Cargo inválido ou inexistente.");
+            return View(viewModel);
+        }
+
+        var usuarioExistente = await _usuarioService.GetByIdAsync(viewModel.UsuarioId);
+        if (usuarioExistente == null)
+        {
+            ModelState.AddModelError(nameof(viewModel.UsuarioId), "Usuário inválido ou inexistente.");
+            return View(viewModel);
+        }
+
+        var funcionario = await _funcionarioService.GetByIdAsync(id);
+        if (funcionario == null || funcionario.Cargo.Funcao == "Administrador")
+        {
+            return Forbid(); // ou Unauthorized() dependendo do seu caso de uso
+        }
+
+        if (!ModelState.IsValid)
+        {
+            var cargos = await _funcionarioService.GetCargosAsync();
+            var cargosPossiveis = cargos
+                .Where(c => c.Funcao == "Agricultor" || c.Funcao == "Comprador" || c.Funcao == "Vendedor")
+                .Select(c => new { c.Id, c.Funcao }).ToList();
+
+            ViewData["CargosFiltro"] = new SelectList(cargosPossiveis, "Id", "Funcao");
+            return View(viewModel);
+        }
+
+        var funcionarioDto = _mapper.Map<FuncionarioDTO>(viewModel);
+        await _funcionarioService.UpdateAsync(funcionarioDto);
+
+        var usuarioDto = _mapper.Map<UsuarioDTO>(viewModel);
+        await _usuarioService.UpdateAsync(usuarioDto);
+        return RedirectToAction(nameof(Index));
+    }
+
+
+
+
+
+
+    // fazer edit
+
+
 
 }

@@ -17,5 +17,9 @@ namespace Plantech.Interfaces
         Task CreateFuncionarioAsync(FuncionarioDTO funcionariosDto);
 
         Task<IEnumerable<CargoDTO>> GetCargosAsync();
+
+        Task<CargoDTO> GetCargoByIdAsync(int id);
+
+         Task UpdateAsync(FuncionarioDTO funcionariosDto);
     }
 }
