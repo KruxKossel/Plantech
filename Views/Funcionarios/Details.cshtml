@@ -11,26 +11,39 @@
 }
 <br>
 <section>
-    <div>
-            <dt class="col-sm-2 ms-3">Nome:</dt>
-            <dd class="col-sm-11 ms-3">@Model.Nome</dd>
-            <dt class="col-sm-2 ms-3">CPF:</dt>
-            <dd class="col-sm-11 ms-3">@Model.Cpf</dd>
-            <dt class="col-sm-2 ms-3">Status do Funcionário:</dt>
-            <dd class="col-sm-11 ms-3">@Model.Status</dd>
-            <dt class="col-sm-2 ms-3">Cargo:</dt>
-            <dd class="col-sm-11 ms-3">@Model.Cargo.Funcao</dd>
-            <dt class="col-sm-2 ms-3">Descrição:</dt>
-            <dd class="col-sm-11 ms-3">@Model.Cargo.Descricao</dd>
-            <dt class="col-sm-2 ms-3">Usuario:</dt>
-            <dd class="col-sm-11 ms-3">@Model.Usuario.NomeUsuario</dd>
-            <dt class="col-sm-2 ms-3">Status do Usuário:</dt>
-            <dd class="col-sm-11 ms-3">@Model.Usuario.Status</dd>
+    <div class="row " style="justify-content: center;">
+        <div class="card-plan col-6">
+            <div style=" font-size: 25px; padding: 20px;">
+                <div class=" p-4 row" style="justify-content: center;">
+                    <div class="col-6">
+                        <dt class="ms-3">Nome:</dt>
+                        <dd class="ms-3">@Model.Nome</dd>
+                        <dt class="ms-3">CPF:</dt>
+                        <dd class="ms-3">@Model.Cpf</dd>
+                        <dt class="ms-3">Status do Funcionário:</dt>
+                        <dd class="ms-3">@Model.Status</dd>
+                        <dt class="ms-3">Cargo:</dt>
+                        <dd class="ms-3">@Model.Cargo.Funcao</dd>
+                    </div>
 
-        </dl>
-    </div>
-    <div class=" ">
-        <a asp-action="Index" class="btn btn-secondary mt-3" style="width: 200px; margin-left: 10px;">Voltar</a>
+                    <div class="col-6">
+
+                        <dt class=" ms-3">Descrição:</dt>
+                        <dd class="ms-3">@Model.Cargo.Descricao</dd>
+                        <dt class="ms-3">Usuario:</dt>
+                        <dd class=" ms-3">@Model.Usuario.NomeUsuario</dd>
+                        <dt class="ms-3">Status do Usuário:</dt>
+                        <dd class="ms-3">@Model.Usuario.Status</dd>
+
+                        </dl>
+                    </div>
+                    <div class=" ">
+                        <a asp-action="Index" class="btn btn-secondary mt-3"
+                            style="width: 200px; margin-left: 10px;">Voltar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 </section>

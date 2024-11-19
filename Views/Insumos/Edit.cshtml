@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
 }
 <br>
+
 <h2>Editar Insumos</h2>
 <form asp-action="Edit" method="post" enctype="multipart/form-data">
 
@@ -57,33 +58,36 @@
                 <div class="form-group">
                     <label asp-for="Status" class="control-label"></label>
                     <input asp-for="Status" class="form-control" readonly style="margin-bottom: 60px;" />
-                    <span asp-validation-for="Status" class="text-danger" ></span>
+                    <span asp-validation-for="Status" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-6 card p-4">
+                <input asp-for="ImagemArquivo" class="form-control" type="file" />
+                <span asp-validation-for="ImagemArquivo" class="text-danger"></span>
                 <div class="form-group">
-            @if (!string.IsNullOrEmpty(Model.CaminhoImagem))
-            {
-                <img src="~/images/@Model.CaminhoImagem" class="img-thumbnail mt-2"
-                    style="object-fit: cover; width: 100%; height: auto;" />
-            }
+                    @if (!string.IsNullOrEmpty(Model.CaminhoImagem))
+                    {
+                        <img src="~/images/@Model.CaminhoImagem" class="img-thumbnail mt-2"
+                            style="object-fit: cover; width: 100%; height: 400px;" />
+                    }
 
-                    <input asp-for="ImagemArquivo" class="form-control" type="file" />
-                    <span asp-validation-for="ImagemArquivo" class="text-danger"></span>
+
                 </div>
-            </div>
+                <div class="form-group mt-3 text-end">
+                    <br>
+                    <button type="submit" class="btn btn-primary"
+                        style="width: 180px; margin-right: 10px; margin-top: -60px;">Salvar</button>
+                </div>
+                <div>
+                    <a asp-action="Index" class="btn btn-secondary" style="width: 180px; margin-left: -650px; ">Voltar</a>
+                </div>
 
+            </div>
 
 
         </div>
     </div>
-            <div class="form-group mt-3 text-end">
-                <br>
-                <button type="submit" class="btn btn-primary" style="width: 180px; margin-right: 63px">Salvar</button>
-            </div>
-            <div>
-                <a asp-action="Index" class="btn btn-secondary" style="width: 180px;">Voltar</a>
-            </div>
+
 </form>
 
 
