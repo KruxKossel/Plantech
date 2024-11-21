@@ -11,8 +11,24 @@
 }
 <br>
 <section>
-    <div>
-           
+    <div class="row bg-white">
+        <div class="col-12 col-md-6">
+            <dt class="col-sm-2 ms-3">Nome:</dt>
+            <dd class="col-sm-11 ms-3">@Model.Nome</dd>
+            <hr>
+            <dt class="col-sm-2 ms-3">Categoria:</dt>
+            <dd class="col-sm-11 ms-3">@Model.Categoria</dd>
+            <hr>
+            <dt class="col-sm-2 ms-3">Descrição:</dt>
+            <dd class="col-sm-11 ms-3">@Model.Descricao</dd>
+            <hr>
+            <dt class="col-sm-2 ms-3">Observações:</dt>
+            <dd class="col-sm-11 ms-3">@Model.Observacoes</dd>
+            <hr>
+            <dt class="col-sm-2 ms-3">Tipo:</dt>
+            <dd class="col-sm-11 ms-3">@Model.Tipo</dd>
+        </div>
+        <div class="col-12 col-md-6">
             <dd class=" IMG col-sm-8">
                 @if (!string.IsNullOrEmpty(Model.CaminhoImagem))
                 {
@@ -20,21 +36,11 @@
                         style="object-fit: cover; width: 800px; height: 400px;" />
                 }
             </dd>
-            <dt class="col-sm-2 ms-3">Nome:</dt>
-            <dd class="col-sm-11 ms-3">@Model.Nome</dd>
-            <dt class="col-sm-2 ms-3">Categoria:</dt>
-            <dd class="col-sm-11 ms-3">@Model.Categoria</dd>
-            <dt class="col-sm-2 ms-3">Descrição:</dt>
-            <dd class="col-sm-11 ms-3">@Model.Descricao</dd>
-            <dt class="col-sm-2 ms-3">Observações:</dt>
-            <dd class="col-sm-11 ms-3">@Model.Observacoes</dd>
-            <dt class="col-sm-2 ms-3">Tipo:</dt>
-            <dd class="col-sm-11 ms-3">@Model.Tipo</dd>
-
+        </div>
         </dl>
     </div>
-    <div class=" ">
-        <a asp-action="Index" class="btn btn-secondary mt-3" style="width: 200px; margin-left: 10px;">Voltar</a>
+    <div class="text-end mt-2">
+        <a asp-action="Index" class="btn btn-secondary" style="width: 200px;">Voltar</a>
     </div>
 
 </section>

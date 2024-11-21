@@ -13,78 +13,69 @@
 <h2>Editar Insumos</h2>
 <form asp-action="Edit" method="post" enctype="multipart/form-data">
 
-    <div class="row">
-        <div class="d-flex">
-            <div class="col-6 card p-4">
-                <div asp-validation-summary="All" class="text-danger"></div>
-                <input type="hidden" asp-for="Id" />
+    <div class="row ms-2">
+        <div class="col-12 col-md-6 card p-4">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
 
-                <div class="form-group">
-                    <label asp-for="FornecedorId" class="control-label"></label>
-                    <select asp-for="FornecedorId" class="form-control" asp-items="ViewBag.FornecedorId"></select>
-                    <span asp-validation-for="FornecedorId" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="Nome" class="control-label"></label>
-                    <input asp-for="Nome" class="form-control" />
-                    <span asp-validation-for="Nome" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="Descricao" class="control-label"></label>
-                    <input asp-for="Descricao" class="form-control" />
-                    <span asp-validation-for="Descricao" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="Observacoes" class="control-label"></label>
-                    <input asp-for="Observacoes" class="form-control" />
-                    <span asp-validation-for="Observacoes" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="Categoria" class="control-label"></label>
-                    <input asp-for="Categoria" class="form-control" />
-                    <span asp-validation-for="Categoria" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="Tipo" class="control-label"></label>
-                    <input asp-for="Tipo" class="form-control" readonly />
-                    <span asp-validation-for="Tipo" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="Status" class="control-label"></label>
-                    <input asp-for="Status" class="form-control" readonly style="margin-bottom: 60px;" />
-                    <span asp-validation-for="Status" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="col-6 card p-4">
-                <input asp-for="ImagemArquivo" class="form-control" type="file" />
-                <span asp-validation-for="ImagemArquivo" class="text-danger"></span>
-                <div class="form-group">
-                    @if (!string.IsNullOrEmpty(Model.CaminhoImagem))
-                    {
-                        <img src="~/images/@Model.CaminhoImagem" class="img-thumbnail mt-2"
-                            style="object-fit: cover; width: 100%; height: 400px;" />
-                    }
-
-
-                </div>
-                <div class="form-group mt-3 text-end">
-                    <br>
-                    <button type="submit" class="btn btn-primary"
-                        style="width: 180px; margin-right: 10px; margin-top: -60px;">Salvar</button>
-                </div>
-                <div>
-                    <a asp-action="Index" class="btn btn-secondary" style="width: 180px; margin-left: -650px; ">Voltar</a>
-                </div>
-
+            <div class="form-group">
+                <label asp-for="FornecedorId" class="control-label"></label>
+                <select asp-for="FornecedorId" class="form-control" asp-items="ViewBag.FornecedorId"></select>
+                <span asp-validation-for="FornecedorId" class="text-danger"></span>
             </div>
 
+            <div class="form-group">
+                <label asp-for="Nome" class="control-label"></label>
+                <input asp-for="Nome" class="form-control" />
+                <span asp-validation-for="Nome" class="text-danger"></span>
+            </div>
 
+            <div class="form-group">
+                <label asp-for="Descricao" class="control-label"></label>
+                <input asp-for="Descricao" class="form-control" />
+                <span asp-validation-for="Descricao" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Observacoes" class="control-label"></label>
+                <input asp-for="Observacoes" class="form-control" />
+                <span asp-validation-for="Observacoes" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Categoria" class="control-label"></label>
+                <input asp-for="Categoria" class="form-control" />
+                <span asp-validation-for="Categoria" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Tipo" class="control-label"></label>
+                <input asp-for="Tipo" class="form-control" readonly />
+                <span asp-validation-for="Tipo" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <input asp-for="Status" class="form-control" readonly style="margin-bottom: 60px;" />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 card p-4">
+            <input asp-for="ImagemArquivo" class="form-control" type="file" />
+            <span asp-validation-for="ImagemArquivo" class="text-danger"></span>
+            <div class="form-group">
+                @if (!string.IsNullOrEmpty(Model.CaminhoImagem))
+                {
+                    <img src="~/images/@Model.CaminhoImagem" class="img-thumbnail mt-2"
+                        style="object-fit: cover; width: 100%; height: 400px;" />
+                }
+
+
+            </div>
+            <div class="form-group mt-3 text-end">
+                <a asp-action="Index" class="btn btn-secondary mx-2" style="width: 180px;">Voltar</a>
+                <button type="submit" class="btn btn-primary" style="width: 180px;">Salvar</button>
+            </div>
         </div>
     </div>
 

@@ -17,7 +17,7 @@
 
 <form asp-action="Create" method="post" enctype="multipart/form-data">
     @Html.AntiForgeryToken()
-    <div class="row">
+    <div class="row ms-2">
 
         <!-- Usuário -->
         <div class="card col-6 p-4">
@@ -83,9 +83,7 @@
     </div>
 
     <div class="form-group mt-4 text-end">
-        <button type="submit" class="btn btn-primary" style="width: 150px; margin-right: 60px;">Salvar</button>
-    </div>
-    <div>
-        <a asp-controller="Funcionarios" asp-action="Index" class="btn btn-secondary" style="width: 150px; margin-top: -15px;">Voltar</a>
+        <a asp-controller="Funcionarios" asp-action="Index" class="btn btn-secondary mx-2" style="width: 150px;">Voltar</a>
+        <button type="submit" class="btn btn-primary" style="width: 150px;">Salvar</button>
     </div>
 </form>

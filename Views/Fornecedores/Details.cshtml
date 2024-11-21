@@ -11,12 +11,12 @@
 }
 
 <br>
-<h2 class="text-center"> Detalhes do Fornecedor</h2>
+<h2 class="text-start"> Detalhes do Fornecedor</h2>
 
 <section>
-    <div class="row " style="justify-content: center;">
+    <div class="row m-2 p-2 " style="justify-content: center;">
         <div class="card-plan col-6">
-            <div style=" font-size: 25px; padding: 20px;">
+            <div style=" padding: 20px;">
                 <div class="row" style="justify-content: center;">
                     <div class="col-6">
                         <dt class="">CNPJ:</dt>
@@ -36,8 +36,9 @@
                     </div>
                 </div>
             </div>
-            <br><br>
-            <a asp-action="Index" class="btn btn-secondary mt-3" style="width: 200px; margin-left: 10px; margin-bottom: 30px; ">Voltar</a>
+            <div class="text-end my-2">
+                <a asp-action="Index" class="btn btn-secondary mt-3" style="width: 200px;">Voltar</a>
+            </div>
         </div>
     </div>
 

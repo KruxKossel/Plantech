@@ -19,7 +19,7 @@
     @Html.AntiForgeryToken()
     <input type="hidden" asp-for="Id" />
     <input type="hidden" asp-for="UsuarioId" /> <!-- Adicione este campo -->
-    <div class="row">
+    <div class="row ms-2">
         <!-- Usuário -->
         <div class="card col-6 p-4">
             <h4>Usuário</h4>
@@ -84,11 +84,9 @@
         </div>
     </div>
 
-    <div class="form-group mt-4 text-end">
-        <button type="submit" class="btn btn-primary" style="width: 150px; margin-right: 60px;">Salvar</button>
-    </div>
-    <div>
-        <a asp-controller="Funcionarios" asp-action="Index" class="btn btn-secondary" style="width: 150px; margin-top: -15px;">Voltar</a>
+    <div class="form-group mt-2 text-end">
+        <a asp-controller="Funcionarios" asp-action="Index" class="btn btn-secondary mx-2" style="width: 150px;">Voltar</a>
+        <button type="submit" class="btn btn-primary" style="width: 150px;">Salvar</button>
     </div>
 </form>
 
