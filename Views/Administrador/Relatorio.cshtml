@@ -8,9 +8,8 @@
     <link rel="stylesheet" href="~/css/edit.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
 }
-<br><br>
-<h1>@ViewData["Title"]</h1>
-<div class="card-index">
+<h1 class="mt-4">@ViewData["Title"]</h1>
+<div class="border shadow rounded p-2 bg-white">
     <div style="max-height: 350px; overflow-y: auto;">
         <ul class="list-group p-3" style="font-size: 22px;">
             <li class="list-group-item">Total de Vendas: @Model.TotalVenda</li>
@@ -21,7 +20,7 @@
             <li class="list-group-item">Total de Plantios Ativos: @Model.TotalPlantioAtivo</li>
         </ul>
     </div>
-</div><br>
-<div>
+</div>
+<div class="text-end mt-2">
     <a asp-action="Index" class="btn btn-secondary" style=" width: 150px;">Voltar</a>
 </div>

@@ -36,14 +36,14 @@
     <div class="container-fluid">
         <div class="container py-5">
             <div class="row g-4 mb-5">
-                <div class="col-lg-8 col-xl-9">
-                    <div class="row g-4">
+                <div class="col-12">
+                    <div class="row g-4 bg-white">
                         <div class="col-lg-6">
                             <div class="border rounded">
                                 <a href="#">
                                     <img src="@Url.Content("~/images/" + Model.Insumo.CaminhoImagem)"
                                         class="img-fluid rounded" alt="Imagem da Hortalica"
-                                        style="height: 300px; object-fit: cover;">
+                                        style="height: 300px; width: 600px; object-fit: cover;">
                                 </a>
 
                             </div>
@@ -88,8 +88,8 @@
                         </div>
 
                         <!-- Voltar e Editar Botões -->
-                        <div class="">
-                            <a asp-action="Index" class="btn btn-primary" style="width: 150px;">Voltar</a>
+                        <div class="text-end mt-2">
+                            <a asp-action="Index" class="btn btn-secondary" style="width: 150px;">Voltar</a>
                         </div>
                     </div>
                 </div>

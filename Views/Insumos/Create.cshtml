@@ -13,7 +13,7 @@
 <h2>@ViewData["Title"]</h2>
 <div class="">
     <form asp-action="Create" method="post" enctype="multipart/form-data">
-        <div class="row">
+        <div class="row ms-2">
             <div class="card col-6 p-4">
                 <div class="form-group">
                     <label asp-for="FornecedorId" class="control-label"></label>
@@ -44,10 +44,6 @@
                     <input asp-for="Tipo" class="form-control" />
                     <span asp-validation-for="Tipo" class="text-danger"></span>
                 </div>
-                <div>
-                    <a asp-action="Index" class="btn btn-secondary" style=" margin-top:10px; width: 150px;">Voltar</a>
-                </div>
-
             </div>
             <div class="col-6">
                 <div class="form-group">
@@ -59,12 +55,11 @@
 
                 <img id="imagePreview" src="" alt="Imagem selecionada"
                     style="display:none; width: 640px; height: 440px; border: 2px solid #ccc; margin-top: 10px;" />
-
-                <div class="form-group text-end mt-3">
-                    <button type="submit" class="btn btn-primary">Adicionar</button>
-                </div>
-
             </div>
+        </div>
+        <div class="text-end mt-2">
+            <a asp-action="Index" class="btn btn-secondary mx-2" style="width: 150px;">Voltar</a>
+            <button type="submit" class="btn btn-primary">Adicionar</button>
         </div>
 
     </form>

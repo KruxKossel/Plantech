@@ -8,49 +8,50 @@
 }
 <br>
 <h1>Realizar Colheita</h1>
-<hr />
 <div class="row">
-    <div class=" card-plan p-4" style="height: 450px;">
-        <form asp-action="Create" method="post" id="colheitaForm">
-            <div class="form-group">
+    <div class=" border shadow rounded-2 mx-2 p-2 bg-white">
+        <form asp-action="Create" method="post" id="colheitaForm" class="row g-3">
+            <div class="form-group col-12 col-md-3">
                 <label>Nome do Funcionário</label>
                 <input class="form-control" value="@ViewData["FuncionarioNome"]" readonly
                     style="margin-bottom: 20px;" />
             </div>
-            <div class="d-flex gap-3">
-                <div class="col-8 form-group">
-                    <label asp-for="PlantioId" class="control-label">Plantios não colhidos</label>
-                    <select asp-for="PlantioId" class="form-control">
-                        <option value="">Selecione um plantio</option>
-                        @if (ViewData["Plantios"] != null)
-                        {
-                            @foreach (var item in ViewData["Plantios"] as List<SelectListItem>)
+
+            <div class="d-flex gap-1 col-12 col-md-9">
+                <div class="row">
+                    <div class="form-group col-12 col-md-6">
+                        <label asp-for="PlantioId" class="control-label">Plantios não colhidos</label>
+                        <select asp-for="PlantioId" class="form-control">
+                            <option value="">Selecione um plantio</option>
+                            @if (ViewData["Plantios"] != null)
                             {
-                                <option value="@item.Value" data-quantidade="@item.Group?.Name">@item.Text</option>
+                                @foreach (var item in ViewData["Plantios"] as List<SelectListItem>)
+                                {
+                                    <option value="@item.Value" data-quantidade="@item.Group?.Name">@item.Text</option>
+                                }
                             }
-                        }
-                        else
-                        {
-                            <option value="">Nenhum plantio disponível para colheita.</option>
-                        }
-                    </select>
-                    <span asp-validation-for="PlantioId" class="text-danger"></span>
+                            else
+                            {
+                                <option value="">Nenhum plantio disponível para colheita.</option>
+                            }
+                        </select>
+                        <span asp-validation-for="PlantioId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-12 col-md-6">
+                        <label asp-for="Quantidade" class="control-label"></label>
+                        <input asp-for="Quantidade" class="form-control" min="1" />
+                        <span asp-validation-for="Quantidade" class="text-danger"></span>
+                    </div>
                 </div>
-                <div class="col-2 form-group">
-                    <label asp-for="Quantidade" class="control-label"></label>
-                    <input asp-for="Quantidade" class="form-control" style="width: 40%;" min="1" />
-                    <span asp-validation-for="Quantidade" class="text-danger"></span>
-                </div>
+
             </div>
 
             <input type="hidden" asp-for="DataColheita" />
             <input type="hidden" asp-for="FuncionarioId" />
 
-            <div class="form-group text-end " style="margin-right: 60px;">
-                <br>
-                <a asp-action="Index" class="btn btn-secondary" style="width: 150px;">Voltar</a>
+            <div class="form-group text-end mt-2">
+                <a asp-action="Index" class="btn btn-secondary mx-2">Voltar</a>
                 <input type="submit" value="Realizar Colheita" class="btn btn-primary" />
-
             </div>
         </form>
 

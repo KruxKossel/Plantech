@@ -6,51 +6,47 @@
     <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
 }
 <br>
-<h2 class="text-center">Adicionar Cliente</h2>
+<h2 class="text-start">Adicionar Cliente</h2>
 
-<div class="row " style="justify-content: center;">
-    <div class="card col-6">
-        <form asp-action="Create" method="post">
-            <div class="form-group">
-                <label asp-for="Cnpj" class="control-label"></label>
-                <input asp-for="Cnpj" class="form-control" />
-                <span asp-validation-for="Cnpj" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RazaoSocial" class="control-label"></label>
-                <input asp-for="RazaoSocial" class="form-control" />
-                <span asp-validation-for="RazaoSocial" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Endereco" class="control-label"></label>
-                <input asp-for="Endereco" class="form-control" />
-                <span asp-validation-for="Endereco" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Telefone" class="control-label"></label>
-                <input asp-for="Telefone" class="form-control" />
-                <span asp-validation-for="Telefone" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <select asp-for="Status" class="form-control">
-                    <option value="ativo">Ativo</option>
-                    <option value="inativo">Inativo</option>
-                </select>
-            </div>
-            <div class="form-group text-end mt-3">
-                <button type="submit" class="btn btn-primary">Adicionar</button>
-            </div>
-            <div>
-                <a asp-action="Index" class="btn btn-secondary" style=" width: 150px;">Voltar</a>
-            </div><br><br>
-        </form>
-    </div>
+<div class="border shadow rounded-2 p-2 bg-white">
+    <form asp-action="Create" method="post" class="row">
+        <div class="form-group col-12 col-md-4 col-lg-3">
+            <label asp-for="Cnpj" class="control-label"></label>
+            <input asp-for="Cnpj" class="form-control" />
+            <span asp-validation-for="Cnpj" class="text-danger"></span>
+        </div>
+        <div class="form-group col-12 col-md-4 col-lg-3">
+            <label asp-for="RazaoSocial" class="control-label"></label>
+            <input asp-for="RazaoSocial" class="form-control" />
+            <span asp-validation-for="RazaoSocial" class="text-danger"></span>
+        </div>
+        <div class="form-group col-12 col-md-4 col-lg-3">
+            <label asp-for="Endereco" class="control-label"></label>
+            <input asp-for="Endereco" class="form-control" />
+            <span asp-validation-for="Endereco" class="text-danger"></span>
+        </div>
+        <div class="form-group col-12 col-md-4 col-lg-3">
+            <label asp-for="Telefone" class="control-label"></label>
+            <input asp-for="Telefone" class="form-control" />
+            <span asp-validation-for="Telefone" class="text-danger"></span>
+        </div>
+        <div class="form-group col-12 col-md-4 col-lg-3">
+            <label asp-for="Email" class="control-label"></label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="form-group col-12 col-md-4 col-lg-3">
+            <label asp-for="Status" class="control-label"></label>
+            <select asp-for="Status" class="form-control">
+                <option value="ativo">Ativo</option>
+                <option value="inativo">Inativo</option>
+            </select>
+        </div>
+        <div class="form-group text-end mt-3">
+            <a asp-action="Index" class="btn btn-secondary mx-2" style=" width: 150px;">Voltar</a>
+            <button type="submit" class="btn btn-primary">Adicionar</button>
+        </div>
+    </form>
 </div>
 
 @section Scripts {

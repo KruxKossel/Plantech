@@ -22,7 +22,7 @@ class="btn btn-success" style="margin-left: 15px;">Visualizar Relatório</a>
 </form> *@
 @if (User.IsInRole("Vendedor") || User.IsInRole("Administrador"))
 {
-    <div class="card-index">
+    <div class="border shadow rounded p-2 bg-white">
         <div style="max-height: 350px; overflow-y: auto;">
             <table class="table table-striped table-hover">
                 <thead>
@@ -70,8 +70,14 @@ class="btn btn-success" style="margin-left: 15px;">Visualizar Relatório</a>
                                 </td>
                             }
                             <td>
-                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Editar</a>
-                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Detalhes</a>
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                                </svg></a>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                                </svg>
+                            </a>
                                 @if (User.IsInRole("Administrador")) {
                                 <form asp-action="Delete" asp-route-id="@item.Id" method="post" style="display:inline;">
                                     <button type="submit" class="btn btn-warning">Mudar Status</button>
@@ -82,15 +88,11 @@ class="btn btn-success" style="margin-left: 15px;">Visualizar Relatório</a>
                     }
                 </tbody>
             </table>
-            <div class="text-end" style="margin-right: 15px;">
-                <br>
-                <a asp-action="Create" class="btn btn-primary">Adicionar Cliente</a><br><br>
+            <div class="text-end mt-2">
+        <a asp-controller="Vendedor" asp-action="Index" class="btn btn-secondary mx-2">Voltar</a>
+                <a asp-action="Create" class="btn btn-primary">Adicionar Cliente</a>
             </div>
 
         </div>
-    </div>
-    <br>
-    <div>
-        <a asp-controller="Vendedor" asp-action="Index" class="btn btn-primary">Voltar a Home</a>
     </div>
 }

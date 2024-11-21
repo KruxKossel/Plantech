@@ -12,25 +12,25 @@
             <br><br>
             <h2>@ViewData["Title"]</h2><br>
             <form asp-action="Create" method="post">
-                <div class="form-group">
+                <div class="form-group col-12 col-md-4 col-lg-3">
                     <label asp-for="NomeUsuario" class="control-label"></label>
                     <input asp-for="NomeUsuario" class="form-control" />
                     <span asp-validation-for="NomeUsuario" class="text-danger"></span>
                 </div>
                 <br>
-                <div class="form-group">
+                <div class="form-group col-12 col-md-4 col-lg-3">
                     <label asp-for="Email" class="control-label"></label>
                     <input asp-for="Email" class="form-control" />
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
                 <br>
-                <div class="form-group">
+                <div class="form-group col-12 col-md-4 col-lg-3">
                     <label asp-for="Senha" class="control-label"></label>
                     <input asp-for="Senha" class="form-control" type="password" />
                     <span asp-validation-for="Senha" class="text-danger"></span>
                 </div>
                 <br>
-                <div class="form-group">
+                <div class="form-group col-12 col-md-4 col-lg-3">
                     <label asp-for="Status" class="control-label"></label>
                     <select asp-for="Status" class="form-control">
                         <option value="ativo">Ativo</option>
