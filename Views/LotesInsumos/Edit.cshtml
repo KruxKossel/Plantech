@@ -11,14 +11,16 @@
 }
 <br>
 
-<h2>Editar Lotes Insumos</h2>
-<hr />
-<div class="card-func p-4">
+<h2>Editar Lotes Hortaliças</h2>
+<div class="border shadow rounded-2 bg-white p-4">
     <div class="row">
         <div class="">
             <form asp-action="Edit">
 
-                <div class="form-group col-12 col-md-4 col-lg-3">
+                <div class="form-group" style="display: none;">
+                    <input asp-for="Status" type="hidden" />
+                </div>
+                <div class="form-group">
                     <label asp-for="Nome" class="control-label"></label>
                     <input asp-for="Nome" class="form-control" style="margin-bottom: 20px;" />
                     <span asp-validation-for="Nome" class="text-danger"></span>
@@ -26,29 +28,20 @@
                 <div class="col-md-6">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" asp-for="Id" />
-                    <div class="form-group col-12 col-md-4 col-lg-3">
+                    <div class="form-group">
                         <label asp-for="DataValidade" class="control-label"></label>
                         <input asp-for="DataValidade" type="date" class="form-control" />
                         <span asp-validation-for="DataValidade" class="text-danger"></span>
                     </div>
-                </div>
-
-
-                <br>
-                <div class=" text-end form-group">
-                    <input type="submit" value="Salvar" class="btn btn-primary" style="width: 150px;" />
                 </div>
             </form>
         </div>
     </div>
 </div>
 
-
-
-
-<br>
-<div>
-    <a asp-controller="Administrador" asp-action="Pendencias" class="btn btn-secondary" style="width: 150px;">Voltar</a>
+<div class="text-end mt-2">
+    <a asp-controller="Administrador" asp-action="Pendencias" class="btn btn-secondary mx-2" style="width: 150px;">Voltar</a>
+    <input type="submit" value="Salvar" class="btn btn-primary" style="width: 150px;" />
 </div>
 
 @section Scripts {

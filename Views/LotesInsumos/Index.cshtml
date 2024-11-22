@@ -83,13 +83,13 @@
     @if (User.IsInRole("Comprador"))
     {
     <div class="text-end mt-2">
-        <a asp-controller="Comprador" asp-action="Index" class="btn btn-secondary">Voltar</a>
+        <a asp-controller="Comprador" asp-action="Index" style=" width: 150px;" class="btn btn-secondary">Voltar</a>
     </div>
     }
     @if (User.IsInRole("Administrador"))
     {
     <div class="text-end mt-2">
-        <a asp-controller="Administrador" asp-action="Pendencias" class="btn btn-secondary">Voltar</a>
+        <a asp-controller="Administrador" asp-action="Pendencias" style=" width: 150px;" class="btn btn-secondary">Voltar</a>
     </div>
     }
 }
@@ -156,8 +156,8 @@
     </div>
 </div>
 <br>
-<div>
-    <a asp-controller="Agricultor" asp-action="Index" class="btn btn-secondary">Voltar</a>
+<div class="text-end mt-2">
+    <a asp-controller="Agricultor" asp-action="Index" class="btn btn-secondary" style="width:150px;">Voltar</a>
 </div>
 }
 

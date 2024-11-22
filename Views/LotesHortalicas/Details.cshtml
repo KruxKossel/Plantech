@@ -37,7 +37,7 @@
     <div class="container-fluid">
         <div class="container py-5">
             <div class="row g-4 mb-5">
-                <div class="col-lg-8 col-xl-9">
+                <div class="col-12">
                     <div class="row g-4">
 
                         <div class="col-lg-6">
@@ -148,10 +148,13 @@
                 </div>
             </div>
             @if(User.IsInRole("Administrador")){
+               <div>
                 <a asp-action="Pendencias" class="btn btn-primary" style="width: 150px;">Voltar</a>
+                  </div>
             } else {
             <div>
                 <a asp-action="Index" class="btn btn-primary" style="width: 150px;">Voltar</a>
+
             </div>
             }
         </div>

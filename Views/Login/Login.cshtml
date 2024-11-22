@@ -19,15 +19,15 @@
         <div class="container">
             <div class="d-flex justify-content-center align-items-center">
                 <form asp-action="Login" method="post" class="text-center">
-                    <div class="form-group col-12 col-md-4 col-lg-3">
-                        <label asp-for="Username" class="control-label">Usuário</label>
-                        <input asp-for="Username" class="form-control mx-auto" style="width: 500px;" />
+                    <div class="form-group col-12 col-md-4 col-lg-3 text-start">
+                        <label asp-for="Username" class="control-label" style="width:350px;">Usuário</label>
+                        <input asp-for="Username" class="form-control mx-auto" style="width: 350px;" />
                         <span asp-validation-for="Username" class="text-danger"></span>
                     </div>
                     <br>
-                    <div class="form-group col-12 col-md-4 col-lg-3">
-                        <label asp-for="Password" class="control-label">Senha</label>
-                        <input asp-for="Password" class="form-control mx-auto" style="width: 500px;" type="password" />
+                    <div class="form-group col-12 col-md-4 col-lg-3 text-start">
+                        <label asp-for="Password" class="control-label" style="width:350px;">Senha</label>
+                        <input asp-for="Password" class="form-control mx-auto" style="width: 350px;" type="password" />
                         <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
                     <br>
