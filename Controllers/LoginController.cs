@@ -6,12 +6,18 @@ using Plantech.ViewModels;
 using Plantech.DTOs;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Data;
+using AutoMapper;
 
 namespace Plantech.Controllers
 {
-    public class LoginController(IUsuarioService usuarioService) : Controller
+    public class LoginController(IUsuarioService usuarioService, IMapper mapper, IFuncionarioService funcionarioService) : Controller
     {
         private readonly IUsuarioService _usuarioService = usuarioService;
+
+        private readonly IFuncionarioService _funcionarioService = funcionarioService;
+
+        private readonly IMapper _mapper = mapper;
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
@@ -74,34 +80,87 @@ namespace Plantech.Controllers
         }
 
         [HttpGet]
-        public IActionResult Login()
+        public async Task<IActionResult> Login()
         {
+            var existeUser = await _usuarioService.GetUltimoUsuarioAsync();
+
+            // Verifique se existeUser é nulo antes de acessar sua propriedade Id
+            if (existeUser != null)
+            {
+                ViewData["ExiteUser"] = existeUser.Id;
+            }
+            else
+            {
+                ViewData["ExiteUser"] = null;
+            }
+
             return View();
         }
 
-        // [HttpGet]
-        // public IActionResult Create()
-        // {
-        //     return View();
-        // }
+        [HttpGet]
+        public async Task<IActionResult> Create()
+        {
+            var existeUser = await _usuarioService.GetUltimoUsuarioAsync();
 
-        // [HttpPost]
-        // public async Task<IActionResult> Create(UsuarioViewModel model)
-        // {
-        //     if (ModelState.IsValid)
-        //     {
-        //         var usuarioDto = new UsuarioDTO
-        //         {
-        //             NomeUsuario = model.NomeUsuario,
-        //             Email = model.Email,
-        //             Senha = model.Senha,
-        //             Status = model.Status
-        //         };
+            if (existeUser == null)
+            {
+                return View();
+            }
 
-        //         await _usuarioService.CreateAsync(usuarioDto);
-        //         return RedirectToAction("Index", "Home");
-        //     }
-        //     return View(model);
-        // }
+            return RedirectToAction("Login");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(FuncionarioCreateViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                foreach (var state in ModelState)
+                {
+                    foreach (var error in state.Value.Errors)
+                    {
+                        Console.WriteLine($"Key: {state.Key}, Error: {error.ErrorMessage}");
+                    }
+                }
+            }
+
+            // criar usuario, cargo e funcionário
+            // puxar id de cargo e usuario após criados e add no dto de funcionario
+            if (ModelState.IsValid)
+            {
+                var usuarioDto = _mapper.Map<UsuarioDTO>(model);
+                var funcionarioDto = _mapper.Map<FuncionarioDTO>(model);
+                try
+                {
+
+
+                    await _usuarioService.CreateAsync(usuarioDto);
+
+                    var ultimoUsuario = await _usuarioService.GetUltimoUsuarioAsync();
+
+                    var usuarioId = ultimoUsuario.Id;
+
+
+
+
+
+                    funcionarioDto.CargoId = model.CargoId; // puxar da view
+                    funcionarioDto.UsuarioId = usuarioId; // puxar do banco
+
+
+                    await _funcionarioService.CreateFuncionarioAsync(funcionarioDto);
+
+
+                    return RedirectToAction(nameof(Login));
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.ErrorMessage = ex.Message;
+                }
+            }
+
+            return View(model);
+
+        }
     }
 }
