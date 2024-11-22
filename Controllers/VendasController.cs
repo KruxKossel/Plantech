@@ -140,7 +140,9 @@ namespace Plantech.Controllers
                     Console.WriteLine("\n\n\nLista de HortalicasVendaDTO:");
                     foreach (var item in hortalicasVendaList)
                     {
-                        Console.WriteLine($"\n\n\nVendaId: {item.VendaId} \nLoteId: {item.LoteId}, \nQuantidade: {item.Quantidade}, \nPrecoUnitario: {item.PrecoUnitario}\n\n\n");
+                            var Gambiarra =  await _lotesHortalicas.GetLotesInsumoId(item.LoteId);
+                            item.PrecoUnitario = Gambiarra.PrecoVenda;
+                            Console.WriteLine($"\n\n\nVendaId: {item.VendaId} \nLoteId: {item.LoteId}, \nQuantidade: {item.Quantidade}, \nPrecoUnitario: {item.PrecoUnitario}\n\n\n");
                     }
 
                     await _vendasService.AdicionarHortalica(hortalicasVendaList);
