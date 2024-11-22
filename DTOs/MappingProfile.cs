@@ -26,9 +26,12 @@ namespace Plantech.MappingProfiles
             CreateMap<FornecedoreViewModel, FornecedoreDTO>().ReverseMap();
 
             // Funcionario
+
+            CreateMap<int, FuncionarioDTO>().ConvertUsing(src => new FuncionarioDTO { Id = src });
           
             CreateMap<Funcionarios, FuncionarioDTO>()
                 .ForMember(dest => dest.OrdensCompras, opt => opt.MapFrom(src => src.OrdensCompras))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
                 .ReverseMap();
 
             CreateMap<FuncionarioCreateViewModel, FuncionarioDTO>()

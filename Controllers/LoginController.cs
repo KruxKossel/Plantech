@@ -28,9 +28,19 @@ namespace Plantech.Controllers
             }
 
             var user = await _usuarioService.AuthenticateAsync(model.Username, model.Password);
-            if (user == null || user.Status != "ativo")
+            if (user == null || user.Status != "ativo" )
             {
                 // Autenticação falhou ou usuário inativo
+                ModelState.AddModelError(string.Empty, "Tentativa de login inválida.");
+                return View(model);
+            }
+
+            var funcionario = await _usuarioService.GetFuncionarioByUserIdAsync(user.Id);
+
+            Console.WriteLine($"Funcionario: {funcionario?.Id}, Status: {funcionario?.Status}");
+            if(funcionario == null || funcionario.Status != "ativo")
+            {
+                // Autenticação falhou ou funcionário inativo
                 ModelState.AddModelError(string.Empty, "Tentativa de login inválida.");
                 return View(model);
             }

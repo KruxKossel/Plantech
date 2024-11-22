@@ -121,7 +121,7 @@ namespace Plantech.Controllers
                     // Atualiza no banco de dados sem sobrescrever o Status
                     await _lotesHortalicasSerivce.EditarLote(loteExistente);
 
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Pendencias));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
