@@ -84,7 +84,7 @@ namespace Plantech.Services
         public async Task<FuncionarioDTO> GetFuncionarioByUserIdAsync(int userId){
 
             var funcionario = await _funcionarioRepository.GetByUserIdAsync(userId);
-            return _mapper.Map<FuncionarioDTO>(funcionario.Id);
+            return _mapper.Map<FuncionarioDTO>(funcionario);
 
         }
 
