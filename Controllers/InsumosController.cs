@@ -90,8 +90,10 @@ namespace Plantech.Controllers
             ViewData["FornecedorId"] = new SelectList(fornecedores, "Id", "Cnpj");
             var insumoVM = _mapper.Map<InsumoViewModel>(insumo);
             Console.WriteLine("\n\n\n Entrou no Get \n\n\n");
-            return View(insumoVM);
+            
+            
 
+            return View(insumoVM);
         }
         [Authorize(Roles = "Administrador, Comprador")]
         [HttpPost]
@@ -119,21 +121,28 @@ namespace Plantech.Controllers
                 }
             }
             if (ModelState.IsValid)
-            {
+            {   
+                Console.WriteLine(insumoVM.CaminhoImagem);
+                Console.WriteLine(insumoVM.CaminhoImagem);
+                Console.WriteLine(insumoVM.CaminhoImagem);
                 Console.WriteLine("\n\n\n Entrou no ModelState \n\n\n");
                 string uniqueFileName = insumoVM.CaminhoImagem;
+                var insumoDto = _mapper.Map<InsumoDTO>(insumoVM);
                 if (insumoVM.ImagemArquivo != null)
                 {
+
                     string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
                     uniqueFileName = Guid.NewGuid().ToString() + "_" + insumoVM.ImagemArquivo.FileName;
                     string filePath = Path.Combine(uploadsFolder, uniqueFileName);
                     using (var fileStream = new FileStream(filePath, FileMode.Create))
                     {
+                        insumoDto.CaminhoImagem = uniqueFileName;
                         await insumoVM.ImagemArquivo.CopyToAsync(fileStream);
                     }
+                await _insumoService.AtualizarAsync(insumoDto);
                 }
-                var insumoDto = _mapper.Map<InsumoDTO>(insumoVM);
-                insumoDto.CaminhoImagem = uniqueFileName;
+                var insumoDtoGambiarra = await _insumoService.ObterPorIdAsync(insumoDto.Id);
+                insumoDto.CaminhoImagem = insumoDtoGambiarra.CaminhoImagem;
                 await _insumoService.AtualizarAsync(insumoDto);
                 return RedirectToAction(nameof(Index));
             }
