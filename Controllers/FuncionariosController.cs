@@ -73,8 +73,6 @@ public class FuncionariosController(IMapper mapper, IFuncionarioService funciona
 
         ViewData["CargosFiltro"] = new SelectList(cargosPossiveis, "Id", "Funcao");
 
-        model.NomeUsuario = "Deltrano";
-
 
         ViewData["NomeUsuario"] = model.NomeUsuario;
 

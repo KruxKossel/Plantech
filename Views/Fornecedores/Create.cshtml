@@ -43,12 +43,9 @@
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group col-12 col-md-4 col-lg-3">
-                <label asp-for="Status" class="control-label"></label>
-                <select asp-for="Status" class="form-control">
-                    <option value="ativo">Ativo</option>
-                    <option value="inativo">Inativo</option>
-                </select>
-                <span asp-validation-for="Status" class="text-danger"></span>
+                <label class="control-label">Status</label>
+                <p class="form-control-plaintext">Ativo</p>
+                <input type="hidden" name="Status" value="ativo" />
             </div>
         </form>
     </div>

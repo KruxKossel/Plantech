@@ -31,13 +31,19 @@
                         <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
                     <br>
+
                     <div class="form-group text-center">
                         <!-- Link para criar uma nova conta -->
-                        @* <div class="form-group">
-                            <p>Não tem uma conta? <a asp-controller="Login" asp-action="Create">Crie uma aqui</a>.</p>
-                        </div> *@
+                        @if (ViewData["ExiteUser"] == null)
+                        {
+                            <div class="form-group">
+                                <p>Primeiro Login? <a asp-controller="Login" asp-action="Create">Realize o Primeiro Acesso
+                                        Aqui</a>.</p>
+                            </div>
+                        }
                         <button type="submit" class="btn btn-primary" style="width: 200px;">Login</button>
                     </div>
+
                 </form>
             </div>
 
