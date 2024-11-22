@@ -19,9 +19,9 @@ public partial class LotesInsumoViewModel
 
     public DateOnly? DataValidade { get; set; }
     // [HiddenInput(DisplayValue = false)]
-    public string Status { get; set; }
+    // public string Status { get; set; }
     public string Nome { get; set; } = null!;
 
-    public InsumoDTO Insumo { get; set; }
+    // public InsumoDTO? Insumo { get; set; }
 
 }

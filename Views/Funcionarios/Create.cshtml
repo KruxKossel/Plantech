@@ -21,15 +21,15 @@
 
         <!-- Usuário -->
         <div class="card col-6 p-4">
-            <h4>Usuário</h4>
+            <h4>Dados para Login</h4>
             <div class="form-group">
                 <label asp-for="NomeUsuario" class="control-label"></label>
-                <input asp-for="NomeUsuario" class="form-control" style="margin-bottom: 20px;" />
+                <input asp-for="NomeUsuario" class="form-control" style="margin-bottom: 20px;" placeholder="Usarname para fazer Login"/>
                 <span asp-validation-for="NomeUsuario" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" style="margin-bottom: 20px;" />
+                <input asp-for="Email" class="form-control" style="margin-bottom: 20px;" placeholder="Exemplo@email.com"/>
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -37,24 +37,24 @@
                 <input asp-for="Senha" class="form-control" style="margin-bottom: 20px;" />
                 <span asp-validation-for="Senha" class="text-danger"></span>
             </div>
-            <div class="form-group">
+
+            <input type="hidden" asp-for="Status" value="ativo"/>
+
+            @* <div class="form-group">
                 <label asp-for="Status" class="control-label"></label>
-                <select asp-for="Status" class="form-control">
-                    <option value="ativo">Ativo</option>
-                    <option value="inativo">Inativo</option>
-                </select>
+                <input asp-for="Status" class="form-control" style="margin-bottom: 20px;" value="ativo" readonly />
                 <span asp-validation-for="Status" class="text-danger"></span>
-            </div>
+            </div> *@
 
         </div>
 
         <div class="col-6">
             <!--Funcionário -->
             <div class="card-func p-4 mb-3">
-                <h4>Funcionário</h4>
+                <h4>Dados Pessoais do Funcionário</h4>
                 <div class="form-group">
                     <label asp-for="Cpf" class="control-label"></label>
-                    <input asp-for="Cpf" class="form-control" style="margin-bottom: 20px;" />
+                    <input asp-for="Cpf" class="form-control" style="margin-bottom: 20px;" placeholder="000.000.000-00"/>
                     <span asp-validation-for="Cpf" class="text-danger"></span>
                 </div>
                 <div class="form-group">
@@ -66,9 +66,8 @@
 
             <!-- Cargo -->
             <div class="card p-4" style="height: 270px;">
-                <h4>Cargo</h4>
                 <div class="form-group">
-                    <label asp-for="CargoId" class="control-label"></label>
+                    <label asp-for="CargoId" class="control-label">Cargo</label>
                     <select asp-for="CargoId" class="form-control" style="margin-bottom: 20px;">
                         <option value="">-- Selecionar --</option>
                         @foreach (var item in (SelectList)ViewData["CargosFiltro"])
