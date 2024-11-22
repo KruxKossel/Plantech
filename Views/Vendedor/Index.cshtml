@@ -8,19 +8,24 @@
 
 <br><br>
 
-@if (User.IsInRole("Administrador")){
-    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="height: 30px; width: 200px; margin-left: 87%;">
+@if (User.IsInRole("Administrador"))
+{
+    @* <nav class="navbar navbar-expand-lg navbar-light bg-light" style="height: 30px; width: 200px; margin-left: 87%;"> *@
+    <nav class="navbar navbar-expand-lg navbar-light w-100 justify-content-end" style="height: 30px; width: 200px;">
+
         <div class="container-fluid">
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
                             Ações do Vendedor
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" asp-controller="Cliente" asp-action="Index">Clientes</a></li>
                             <li><a class="dropdown-item" asp-controller="Vendas" asp-action="Index">Vendas</a></li>
-                            <li><a class="dropdown-item" asp-controller="Fornecedores" asp-action="Index">Fornecedores</a></li>
+                            <li><a class="dropdown-item" asp-controller="Fornecedores" asp-action="Index">Fornecedores</a>
+                            </li>
                         </ul>
                     </li>
                 </ul>
@@ -43,7 +48,7 @@
     <script>
         var vendasDatas = @Html.Raw(Json.Serialize(datas));
         var vendasTotais = @Html.Raw(Json.Serialize(totaisVendas));
-        
+
         var ctx = document.getElementById('vendasChart').getContext('2d');
         var vendasChart = new Chart(ctx, {
             type: 'line',

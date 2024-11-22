@@ -9,7 +9,9 @@
 
 @if (User.IsInRole("Administrador"))
 {
-    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="height: 30px; width: 200px; margin-left: 87%;">
+    @* <nav class="navbar navbar-expand-lg navbar-light bg-light" style="height: 30px; width: 200px; margin-left: 87%;"> *@
+        <nav class="navbar navbar-expand-lg navbar-light w-100 justify-content-end" style="height: 30px; width: 200px;">
+
         <div class="container-fluid">
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
@@ -17,7 +19,7 @@
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Ações do Comprador
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" asp-controller="OrdensCompras" asp-action="Index">Compras</a></li>
                             <li><a class="dropdown-item" asp-controller="Insumos" asp-action="Index">Insumos</a></li>
                             <li><a class="dropdown-item" asp-controller="Fornecedores" asp-action="Index">Fornecedores</a></li>
