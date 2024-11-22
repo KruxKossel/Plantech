@@ -147,9 +147,13 @@
                     </div>
                 </div>
             </div>
+            @if(User.IsInRole("Administrador")){
+                <a asp-action="Pendencias" class="btn btn-primary" style="width: 150px;">Voltar</a>
+            } else {
             <div>
                 <a asp-action="Index" class="btn btn-primary" style="width: 150px;">Voltar</a>
             </div>
+            }
         </div>
     </div>
 
