@@ -15,3 +15,25 @@
   MURILO ANTONIO MIGLIATI <br>
   RAFAEL HENRIQUE THOMAZ
 </p>
+
+##
+
+Plantech é um sistema de gerenciamento de fazendas urbanas, desenvolvido para facilitar o controle e organização das atividades agrícolas em um ambiente urbano. O sistema é dividido em quatro camadas de usuário: administrador, comprador, agricultor e vendedor, permitindo que cada camada realize operações de CRUD (Create, Read, Update, Delete) para gerenciar tudo o que entra e sai da fazenda.
+
+## Tecnologias Utilizadas
+
+- ![C#](https://img.shields.io/badge/C%23-239120?style=for-the-badge&logo=c-sharp&logoColor=white)
+- ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+- ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+- ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+- ![SCSS](https://img.shields.io/badge/SCSS-CC6699?style=for-the-badge&logo=sass&logoColor=white)
+- ![Bootstrap](https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white)
+- ![SQLite](https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white)
+
+## Funcionalidades
+
+- **Cadastro e Listagem de Produtos:** Permite que cada usuário (administrador, comprador, agricultor e vendedor) cadastre novos produtos e visualize a lista de produtos cadastrados.
+- **Gerenciamento de Estoque:** Controle completo do estoque de produtos, incluindo adição, atualização e remoção de itens.
+- **Relatórios:** Geração de relatórios detalhados sobre a entrada e saída de produtos na fazenda.
+- **Autenticação e Autorização:** Sistema de login para garantir que apenas usuários autorizados acessem certas funcionalidades.
+
